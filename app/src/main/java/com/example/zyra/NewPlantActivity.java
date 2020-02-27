@@ -28,6 +28,7 @@ public class NewPlantActivity extends AppCompatActivity {
 
         setupUI();
 
+        //setting up the spinner that has an array list
         ArrayAdapter<String> myAdapter = new ArrayAdapter<>(NewPlantActivity.this,
                 android.R.layout.simple_list_item_1, getResources().getStringArray(R.array.plants));
 

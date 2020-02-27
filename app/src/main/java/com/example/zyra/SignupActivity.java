@@ -1,7 +1,9 @@
 package com.example.zyra;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -27,6 +29,14 @@ public class SignupActivity extends AppCompatActivity {
         getSupportActionBar().setTitle("Sign Up");
 
         setupUI();
+
+        btnRegister.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(TAG, "onClick: Register");
+                goToLogin();
+            }
+        });
     }
 
     public void setupUI(){
@@ -35,5 +45,10 @@ public class SignupActivity extends AppCompatActivity {
         editPw = findViewById(R.id.editTextPassword);
         editConfirmPw = findViewById(R.id.editTextConfirmPassword);
         btnRegister = findViewById(R.id.btnRegister);
+    }
+
+    public void goToLogin(){
+        Intent intent = new Intent(SignupActivity.this, LoginActivity.class);
+        startActivity(intent);
     }
 }
