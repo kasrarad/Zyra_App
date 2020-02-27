@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">Zyra</string>
+
+    <string-array name="plants">
+        <item>Spider Plant</item>
+        <item>Aloe Vera</item>
+        <item>Peace Lily</item>
+        <item>Jade Plant</item>
+        <item>Weeping Fig</item>
+        <item>Others</item>
+    </string-array>
 </resources>
