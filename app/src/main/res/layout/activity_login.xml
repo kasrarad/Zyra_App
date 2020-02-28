@@ -3,7 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:padding="30dp"
     tools:context=".LoginActivity">
@@ -15,12 +14,13 @@
         android:padding="30dp"
         />
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:focusable="true"
-        android:focusableInTouchMode="true"
-        >
+    <!--Error Run time at FocusableInTouchMode-->
+<!--    <com.google.android.material.textfield.TextInputLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:focusable="true"-->
+<!--        android:focusableInTouchMode="true"-->
+<!--        >-->
 
         <EditText
             android:id="@+id/editTextUsername"
@@ -31,15 +31,16 @@
             android:inputType="text"
             android:textSize="20sp" />
 
-    </com.google.android.material.textfield.TextInputLayout>
+<!--    </com.google.android.material.textfield.TextInputLayout>-->
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:focusable="true"
-        android:focusableInTouchMode="true"
-        app:passwordToggleEnabled="true"
-        >
+    <!--Error Run time at FocusableInTouchMode-->
+<!--    <com.google.android.material.textfield.TextInputLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:focusable="true"-->
+<!--        android:focusableInTouchMode="true"-->
+<!--        android:passwordToggleEnabled="true"-->
+<!--        >-->
 
         <EditText
             android:id="@+id/editTextPassword"
@@ -48,9 +49,10 @@
             android:ems="10"
             android:hint="Password"
             android:inputType="textPassword"
-            android:textSize="20sp" />
+            android:textSize="20sp"
+            android:autofillHints="" />
 
-    </com.google.android.material.textfield.TextInputLayout>
+
 
     <Button
         android:id="@+id/btnLogin"
@@ -58,7 +60,6 @@
         android:layout_height="60dp"
         android:layout_marginTop="40dp"
         android:background="@drawable/button_rounded"
-        android:onClick="btnLogin"
         android:text="Login"
         android:textColor="#ffffff"
         android:textSize="22sp" />
@@ -69,7 +70,6 @@
         android:layout_height="60dp"
         android:layout_marginTop="10dp"
         android:background="@drawable/button_rounded"
-        android:onClick="btnSignUp"
         android:text="Register"
         android:textColor="#ffffff"
         android:textSize="22sp" />

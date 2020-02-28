@@ -9,13 +9,26 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 
 
 public class NewPlantActivity extends AppCompatActivity {
 
-    protected Spinner mySpinner;
+    protected Spinner myPlantSpinner;
+    protected Spinner myFrequencySpinner;
     protected EditText editPlantName;
     protected TextView textViewPlantType;
+    ArrayList<Items> itemsList;
+    ArrayAdapter<String> myPlantAdapter;
+    ArrayAdapter<String> myFrequencyAdapter;
+
+    private RecyclerView mRecyclerView;
+    private RecyclerView.Adapter mRecyclerAdapter;
+    private RecyclerView.LayoutManager mLayoutManager;
 
     private static final String TAG = "NewPlantActivity";
     @Override
@@ -29,18 +42,37 @@ public class NewPlantActivity extends AppCompatActivity {
         setupUI();
 
         //setting up the spinner that has an array list
-        ArrayAdapter<String> myAdapter = new ArrayAdapter<>(NewPlantActivity.this,
+        myPlantAdapter = new ArrayAdapter<>(NewPlantActivity.this,
                 android.R.layout.simple_list_item_1, getResources().getStringArray(R.array.plants));
 
-        myAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        mySpinner.setAdapter(myAdapter);
+        myPlantAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        myPlantSpinner.setAdapter(myPlantAdapter);
+
+        //setting up frequency spinner
+        myFrequencyAdapter = new ArrayAdapter<>(NewPlantActivity.this,
+                android.R.layout.simple_list_item_1, getResources().getStringArray(R.array.frequency));
+
+        myFrequencyAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        myFrequencySpinner.setAdapter(myFrequencyAdapter);
+
+        //setting up recycler view
+        itemsList = new ArrayList<>();
+
+        mLayoutManager = new LinearLayoutManager(this);
+        mRecyclerAdapter = new ItemsAdapter(itemsList);
+
+        mRecyclerView.setLayoutManager(mLayoutManager);
+        mRecyclerView.setAdapter(mRecyclerAdapter);
 
     }
 
     public void setupUI(){
-        mySpinner = findViewById(R.id.spinnerPlant);
+        myPlantSpinner = findViewById(R.id.spinnerPlant);
+        myFrequencySpinner = findViewById(R.id.spinnerFrequency);
         editPlantName = findViewById(R.id.editTextNewPlant);
         textViewPlantType = findViewById(R.id.textViewTypePlant);
+        mRecyclerView = findViewById(R.id.recyclerViewSensor);
+        mRecyclerView.setHasFixedSize(true);
     }
 }
 

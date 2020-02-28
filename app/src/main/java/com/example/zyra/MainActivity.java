@@ -71,5 +71,6 @@ public class MainActivity extends AppCompatActivity {
     public void goToPlantWiki(){
         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://en.wikipedia.org/wiki/Houseplant_care"));
         startActivity(intent);
+
     }
 }
