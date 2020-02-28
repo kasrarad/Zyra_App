@@ -2,24 +2,18 @@ package com.example.zyra;
 
 public class Items {
     private String mSensorA;
-    private String mSensorB;
-    private String mSensorC;
 
-    public Items(String sensorA, String sensorB, String sensorC) {
+    public Items(String sensorA) {
         mSensorA = sensorA;
-        mSensorB = sensorB;
-        mSensorC = sensorC;
+
+    }
+
+    public void changeSensorA(String text){
+        mSensorA = text;
     }
 
     public String getSensorA() {
         return mSensorA;
     }
 
-    public String getSensorB() {
-        return mSensorB;
-    }
-
-    public String getSensorC() {
-        return mSensorC;
-    }
 }

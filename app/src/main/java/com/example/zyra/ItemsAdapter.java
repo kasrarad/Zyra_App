@@ -12,17 +12,35 @@ import java.util.ArrayList;
 
 public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ItemsViewHolder> {
     private ArrayList<Items> mItemsList;
+    private OnItemClickListener mListener;
+
+    public interface OnItemClickListener {
+        void onItemClick(int position);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener){
+        mListener = listener;
+    }
 
     public static class ItemsViewHolder extends RecyclerView.ViewHolder {
         public TextView mTextViewSensorA;
-        public TextView mTextViewSensorB;
-        public TextView mTextViewSensorC;
 
-        public ItemsViewHolder(View itemView){
+
+        public ItemsViewHolder(View itemView, final OnItemClickListener listener){
             super(itemView);
             mTextViewSensorA = itemView.findViewById(R.id.textViewSensorA);
-            mTextViewSensorB = itemView.findViewById(R.id.textViewSensorB);
-            mTextViewSensorC = itemView.findViewById(R.id.textViewSensorC);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (listener!= null) {
+                        int position = getAdapterPosition();
+                        if(position != RecyclerView.NO_POSITION){
+                            listener.onItemClick(position);
+                        }
+                    }
+                }
+            });
         }
     }
 
@@ -34,7 +52,7 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ItemsViewHol
     @Override
     public ItemsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.sensor_items, parent, false);
-        ItemsViewHolder ivh = new ItemsViewHolder(v);
+        ItemsViewHolder ivh = new ItemsViewHolder(v, mListener);
         return ivh;
     }
 
@@ -43,8 +61,7 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ItemsViewHol
         Items currentItem = mItemsList.get(position);
 
         holder.mTextViewSensorA.setText(currentItem.getSensorA());
-        holder.mTextViewSensorB.setText(currentItem.getSensorB());
-        holder.mTextViewSensorC.setText(currentItem.getSensorC());
+
     }
 
     @Override

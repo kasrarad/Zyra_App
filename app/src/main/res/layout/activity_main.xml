@@ -39,7 +39,7 @@
         android:background="@drawable/mainbtn_rounded"
         android:text="View/Edit Selected Plant"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.526"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -47,11 +47,11 @@
         android:id="@+id/btnWiki"
         android:layout_width="194dp"
         android:layout_height="57dp"
-        android:layout_marginTop="556dp"
+        android:layout_marginTop="492dp"
         android:background="@drawable/mainbtn_rounded"
         android:text="Open the plant wikipedia"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.522"
+        app:layout_constraintHorizontal_bias="0.511"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
