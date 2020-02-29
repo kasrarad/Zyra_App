@@ -1,11 +1,13 @@
 package com.example.zyra;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,6 +18,8 @@ public class LoginActivity extends AppCompatActivity {
     protected EditText editPw;
     protected Button btnRegister;
     protected Button btnLogin;
+
+    protected SharedPreferences preferences;
 
     private static final String TAG = "LoginActivity";
 
@@ -44,7 +48,14 @@ public class LoginActivity extends AppCompatActivity {
                 Log.d(TAG, "onClick: Login");
                 String usernameValue = editUsername.getText().toString();
                 String passwordValue = editPw.getText().toString();
+
+                String registeredUsername = preferences.getString("profileusername", "");
+                String registeredPassword = preferences.getString("profilepassword", "");
+
+                if (usernameValue.equals(registeredUsername) && passwordValue.equals(registeredPassword))
                 btnLogin();
+                else
+                    Toast.makeText(LoginActivity.this, "Wrong information", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -64,6 +75,7 @@ public class LoginActivity extends AppCompatActivity {
         editPw = findViewById(R.id.editTextPassword);
         btnLogin = findViewById(R.id.btnLogin);
         btnRegister = findViewById(R.id.btnRegister);
+        preferences = getSharedPreferences("UserInfo",0);
     }
 
 }

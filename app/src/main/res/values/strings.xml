@@ -1,5 +1,9 @@
 <resources>
     <string name="app_name">Zyra</string>
+    <string name="profilefile">UserInfo</string>
+    <string name="profileusername">profileusername</string>
+    <string name="profilename">profilename</string>
+    <string name="profilepassword">profilepassword</string>
 
     <string-array name="plants">
         <item>Spider Plant</item>

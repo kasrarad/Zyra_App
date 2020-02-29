@@ -1,5 +1,6 @@
 package com.example.zyra;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -23,8 +24,8 @@ public class SignupActivity extends AppCompatActivity {
 
     SharedPreferences preferences;
 
-
     private static final String TAG = "SignupActivity";
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -47,8 +48,23 @@ public class SignupActivity extends AppCompatActivity {
                 String passwordValue = editPw.getText().toString();
                 String confirmpassValue = editConfirmPw.getText().toString();
 
-                    //Upload data to database.
+                preferences = getSharedPreferences(getString(R.string.profilefile), Context.MODE_PRIVATE);
 
+                SharedPreferences.Editor editor = preferences.edit();
+
+
+                if(nameValue.isEmpty() || usernameValue.isEmpty() || passwordValue.isEmpty() || confirmpassValue.isEmpty()){
+                    Toast.makeText(SignupActivity.this, "Please enter all information", Toast.LENGTH_SHORT).show();
+                }else if(!passwordValue.equals(confirmpassValue)) {
+                    Toast.makeText(SignupActivity.this, "Password do not match", Toast.LENGTH_SHORT).show();
+                }else{
+                    Toast.makeText(SignupActivity.this, "Account created!", Toast.LENGTH_SHORT).show();
+                    editor.putString(getString(R.string.profilename), nameValue);
+                    editor.putString(getString(R.string.profileusername), usernameValue);
+                    editor.putString(getString(R.string.profilepassword), passwordValue);
+                    editor.apply();
+                    goToLogin();
+                }
             }
         });
 
@@ -61,15 +77,16 @@ public class SignupActivity extends AppCompatActivity {
     }
 
 
-    public void setupUI(){
+    protected void setupUI(){
         editName = findViewById(R.id.editTextName);
         editUsername = findViewById(R.id.editTextUsername);
         editPw = findViewById(R.id.editTextPassword);
         editConfirmPw = findViewById(R.id.editTextConfirmPassword);
         btnRegister = findViewById(R.id.btnRegister);
+        btnCancel = findViewById(R.id.btnCancel);
     }
 
-    public void goToLogin(){
+    protected void goToLogin(){
         Intent intent = new Intent(SignupActivity.this, LoginActivity.class);
         startActivity(intent);
     }
