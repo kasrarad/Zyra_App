@@ -14,6 +14,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.zyra.DatabaseDummy.DatabaseHelper;
+
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 
@@ -88,6 +90,8 @@ public class NewPlantActivity extends AppCompatActivity {
                 mItemsAdapter.notifyItemChanged(position);
             }
         });
+
+
     }
 
     public void setupUI(){
@@ -106,7 +110,7 @@ public class NewPlantActivity extends AppCompatActivity {
     public void createItemsList(){
         //setting up recycler view
         mItemsList = new ArrayList<>();
-        mItemsList.add(new Items("Sensor A"));
+        mItemsList.add(new Items("Sensor A", "Sensor B"));
     }
         public void buildRecyclerView(){
         mLayoutManager = new LinearLayoutManager(this);
@@ -117,7 +121,7 @@ public class NewPlantActivity extends AppCompatActivity {
     }
 
     public void insertSensor(int position){
-        mItemsList.add(position, new Items("New Item At Position" + position));
+        mItemsList.add(position, new Items("New Item At Position" + position, "New Item at Position" + position));
         mItemsAdapter.notifyItemInserted(position);
     }
 

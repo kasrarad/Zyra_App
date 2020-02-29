@@ -24,12 +24,13 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ItemsViewHol
 
     public static class ItemsViewHolder extends RecyclerView.ViewHolder {
         public TextView mTextViewSensorA;
+        public TextView mTextViewSensorB;
 
 
         public ItemsViewHolder(View itemView, final OnItemClickListener listener){
             super(itemView);
             mTextViewSensorA = itemView.findViewById(R.id.textViewSensorA);
-
+            mTextViewSensorB = itemView.findViewById(R.id.textViewSensorB);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
