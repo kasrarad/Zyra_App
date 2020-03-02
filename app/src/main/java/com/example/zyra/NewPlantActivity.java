@@ -91,7 +91,6 @@ public class NewPlantActivity extends AppCompatActivity {
             }
         });
 
-
     }
 
     public void setupUI(){

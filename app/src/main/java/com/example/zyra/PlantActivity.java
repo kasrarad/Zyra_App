@@ -1,7 +1,14 @@
 package com.example.zyra;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.widget.Button;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -12,6 +19,8 @@ import com.example.zyra.PlantsRecycler.PlantsItem;
 import java.util.ArrayList;
 
 public class PlantActivity extends AppCompatActivity {
+
+    protected Button buttonAddPlant;
 
     private RecyclerView mRecyclerView;
     private PlantsAdapter mAdapter;
@@ -30,6 +39,12 @@ public class PlantActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_items, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
 
     public void removeItem(int position){
         mPlantslist.remove(position);
@@ -66,6 +81,21 @@ public class PlantActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch(item.getItemId()) {
+            case R.id.item1:
+                Toast.makeText(this, "Bluetooth!", Toast.LENGTH_SHORT).show();
+                return true;
+            case R.id.itemsettings:
+                goToNewPlantActivity();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
-
+    public void goToNewPlantActivity(){
+        Intent intent = new Intent(PlantActivity.this, NewPlantActivity.class);
+        startActivity(intent);
+    }
 }
