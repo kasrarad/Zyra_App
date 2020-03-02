@@ -110,7 +110,7 @@ public class NewPlantActivity extends AppCompatActivity {
     public void createItemsList(){
         //setting up recycler view
         mItemsList = new ArrayList<>();
-        mItemsList.add(new Items("Sensor A", "Sensor B"));
+        mItemsList.add(new Items("Sensor A"));
     }
         public void buildRecyclerView(){
         mLayoutManager = new LinearLayoutManager(this);
@@ -121,7 +121,7 @@ public class NewPlantActivity extends AppCompatActivity {
     }
 
     public void insertSensor(int position){
-        mItemsList.add(position, new Items("New Item At Position" + position, "New Item at Position" + position));
+        mItemsList.add(position, new Items("New Item At Position" + position));
         mItemsAdapter.notifyItemInserted(position);
     }
 

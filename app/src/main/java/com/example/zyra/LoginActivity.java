@@ -54,8 +54,10 @@ public class LoginActivity extends AppCompatActivity {
 
                 if (usernameValue.equals(registeredUsername) && passwordValue.equals(registeredPassword))
                 btnLogin();
+                else if(usernameValue.isEmpty() || passwordValue.isEmpty())
+                    Toast.makeText(LoginActivity.this, "Please enter your information", Toast.LENGTH_SHORT).show();
                 else
-                    Toast.makeText(LoginActivity.this, "Wrong information", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, "Some of your information isn't correct. Please try again", Toast.LENGTH_SHORT).show();
             }
         });
     }
