@@ -1,4 +1,4 @@
-package com.example.zyra;
+package com.example.zyra.SensorRecycler;
 
 public class Items {
     private String mSensorA;

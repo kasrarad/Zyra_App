@@ -14,9 +14,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.zyra.DatabaseDummy.DatabaseHelper;
+import com.example.zyra.SensorRecycler.Items;
+import com.example.zyra.SensorRecycler.ItemsAdapter;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 
