@@ -8,13 +8,8 @@
         app:showAsAction="ifRoom" />
 
     <item android:id="@+id/itemsettings"
-        android:title="Settings"
+        android:title="Add Plant"
+        android:icon="@drawable/ic_add_box"
         app:showAsAction="never" />
-
-    <item android:id="@+id/itemlogout"
-        android:title="Logout"
-        app:showAsAction="never">
-
-    </item>
 
 </menu>
