@@ -18,8 +18,8 @@ import java.util.List;
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String TAG = "DatabaseHelper";
-    private Context context;
     private static final String DATABASE_NAME = Config.DATABASE_NAME;
+    private Context context;
 
     public DatabaseHelper(Context context) {
         super(context, Config.DATABASE_NAME, null, Config.DATABASE_VERSION);
@@ -42,6 +42,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
     }
+
 
     public long insertPlant(Plants plants) {
         long id = -1;
@@ -93,4 +94,5 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
         return Collections.emptyList();
     }
+
 }

@@ -12,6 +12,10 @@
         <activity android:name=".PlantInfoActivity"/>
         <activity android:name=".NewPlantActivity"/>
         <activity android:name=".SignupActivity"/>
+        <activity android:name=".CreditsActivity"/>
+        <activity android:name=".AboutUsActivity"/>
+        <activity android:name=".SettingsActivity"/>
+        <activity android:name=".PlantActivity"/>
         <activity android:name=".MainActivity"/>
         <activity android:name=".LoginActivity">
             <intent-filter>
