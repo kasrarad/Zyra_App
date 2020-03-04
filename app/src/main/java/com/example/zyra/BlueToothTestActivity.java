@@ -63,8 +63,8 @@ public class BlueToothTestActivity extends AppCompatActivity {
         ledToggleButton.setOnTouchListener(new View.OnTouchListener()
         {   @Override
         public boolean onTouch(View v, MotionEvent event){
-            if(event.getAction() == MotionEvent.ACTION_DOWN) {led_on_off("0");}
-            if(event.getAction() == MotionEvent.ACTION_UP){led_on_off("1");}
+            if(event.getAction() == MotionEvent.ACTION_DOWN) {led_on_off("1");}
+            if(event.getAction() == MotionEvent.ACTION_UP){led_on_off("0");}
             return true;}
         });
 
