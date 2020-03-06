@@ -1,6 +1,8 @@
 package com.example.zyra;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -29,6 +31,13 @@ public class MainActivity extends AppCompatActivity {
 
         setupUI();
         setButtons();
+
+        // store the value(user's id) in the SharedPreferences
+        SharedPreferences preferences = getSharedPreferences("PlantName", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        final String usersId = "1";
+        editor.putString("userID", usersId);
+        editor.apply();
     }
 
 

@@ -1,5 +1,8 @@
 package com.example.zyra;
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -14,6 +17,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.zyra.Database.AddPlants;
 import com.example.zyra.SensorRecycler.Items;
 import com.example.zyra.SensorRecycler.ItemsAdapter;
 
@@ -39,12 +43,23 @@ public class NewPlantActivity extends AppCompatActivity {
     private EditText editTextInsert;
     private EditText editTextDelete;
 
+    // Add Plants
+    //EditText nameEditText, nameByUserEditText, temperatureEditText, moistureEditText, imageEditText, wikiEditText;
+    String userID, nameBySpecies, nameByUser, temperature, moisture, image, wiki;
+
     private static final String TAG = "NewPlantActivity";
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_newplant);
         Log.d(TAG, "onCreate: Started");
+
+        // Add back button
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        // get user id from SharedPreferences
+        SharedPreferences sharedPreferences = getSharedPreferences("PlantName", Context.MODE_PRIVATE);
+        userID = sharedPreferences.getString("userID", null);
 
         getSupportActionBar().setTitle("Add a new plant");
 
@@ -127,6 +142,28 @@ public class NewPlantActivity extends AppCompatActivity {
     public void deleteSensor(int position){
         mItemsList.remove(position);
         mItemsAdapter.notifyItemRemoved(position);
+    }
+
+    // Save Plants Button
+    // Add plants to the database
+    public void savePlantsButton(View view) {
+        //nameBySpecies = nameEditText.getText().toString();
+        nameBySpecies = "a";
+        nameByUser = editPlantName.getText().toString();
+        //temperature = temperatureEditText.getText().toString();
+        temperature = "10";
+        //moisture = moistureEditText.getText().toString();
+        moisture = "20";
+        image = "b";
+        wiki = "c";
+
+        String type = "Add";
+
+        AddPlants addPlants = new AddPlants(this);
+        addPlants.execute(type, userID, nameBySpecies, nameByUser, temperature, moisture, image, wiki);
+
+        Intent intent = new Intent(this, PlantActivity.class);
+        startActivity(intent);
     }
 }
 
