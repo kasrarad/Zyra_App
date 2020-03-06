@@ -4,6 +4,7 @@
     <string name="profileusername">profileusername</string>
     <string name="profilename">profilename</string>
     <string name="profilepassword">profilepassword</string>
+    <string name="hello_world">Bluetooth Address</string>
 
     <string-array name="plants">
         <item>Spider Plant</item>

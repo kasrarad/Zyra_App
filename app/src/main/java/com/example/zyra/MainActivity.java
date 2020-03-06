@@ -1,38 +1,24 @@
 package com.example.zyra;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ListView;
-import android.widget.TextView;
+import android.widget.ImageView;
 
-import com.example.zyra.DatabaseDummy.DatabaseHelper;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
-import java.util.ArrayList;
-import java.util.List;
+import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity {
 
-    protected TextView textPlant;
-    protected Button btnEditPlant;
-    protected Button btnWikiPlant;
-    protected FloatingActionButton floatingAddPlant;
+    protected ImageView imageViewLogo;
+    protected Button buttonPlantList;
+    protected Button buttonSettings;
+    protected Button buttonAboutUs;
+    protected Button buttonCredits;
+    protected Button blueToothActivityButton;
 
     private static final String TAG = "MainActivity";
-
-    protected ListView listViewPlants;
 
 
     @Override
@@ -41,115 +27,88 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Log.d(TAG, "onCreate: Started");
 
-        DatabaseHelper dbHelper = new DatabaseHelper(this);
-        dbHelper.insertPlant(new Plants("TitleTest", "PlantTypeTest"));
-
         setupUI();
-
-        loadListView();
-
-        floatingAddPlant.setOnClickListener(new View.OnClickListener(){
-
-            @Override
-            public void onClick(View v) {
-                Log.d(TAG, "onClick: Add New Plant Clicked");
-                goToNewPlantActivity();
-            }
-        });
-
-        listViewPlants.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-                Intent intentBundle = new Intent(MainActivity.this, PlantInfoActivity.class);
-                startActivity(intentBundle);
-            }
-        });
-
-        btnWikiPlant.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d(TAG, "onClick: Wiki");
-                goToPlantWiki();
-            }
-        });
-
+        setButtons();
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_items, menu);
-        return true;
-    }
-
-//    @Override
-//    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-//        switch (item.getItemId()){
-//            case R.id.item1:
-//                break;
-//
-//            case R.id.itemsettings:
-//                goToSettings();
-//                break;
-//
-//            case R.id.itemlogout:
-//
-//
-//        }
-//        return super.onOptionsItemSelected(item);
-//    }
 
     @Override
     protected void onStart() {
         super.onStart();
-
         }
-
 
     public void setupUI(){
-        textPlant = findViewById(R.id.textViewPlant);
-        btnEditPlant = findViewById(R.id.btnModifyPlant);
-        btnWikiPlant = findViewById(R.id.btnWiki);
-        listViewPlants = findViewById(R.id.listViewPlants);
-        floatingAddPlant = findViewById(R.id.floatingActionAddPlant);
+        imageViewLogo = findViewById(R.id.imageViewLogo);
     }
 
-    public void goToNewPlantActivity(){
-        Intent intent = new Intent(MainActivity.this, NewPlantActivity.class);
+    public void setButtons(){
+        buttonPlantList = findViewById(R.id.btnPlantList);
+        buttonSettings = findViewById(R.id.btnSettings);
+        buttonAboutUs = findViewById(R.id.btnAboutUs);
+        buttonCredits = findViewById(R.id.btnCredits);
+
+        blueToothActivityButton = findViewById(R.id.bluetoothActivityButton);
+
+        buttonPlantList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goToPlantList();
+            }
+        });
+
+        buttonCredits.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goToCredits();
+            }
+        });
+
+        buttonAboutUs.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goToAboutUs();
+            }
+        });
+
+        buttonSettings.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goToSettings();
+            }
+        });
+
+        blueToothActivityButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goToBlueToothTest();
+            }
+        });
+    }
+
+    public void goToSettings(){
+        Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
         startActivity(intent);
     }
 
-    public void goToEditPlantProfile(){
-        Intent intent = new Intent(MainActivity.this, InsertPlantInfoDialogFragment.class);
+    public void goToPlantList(){
+        Intent intent = new Intent(MainActivity.this, PlantActivity.class);
         startActivity(intent);
     }
 
-    public void goToPlantWiki(){
-        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://en.wikipedia.org/wiki/Houseplant_care"));
+    public void goToCredits(){
+        Intent intent = new Intent(MainActivity.this, CreditsActivity.class);
         startActivity(intent);
     }
 
-//    public void goToSettings(){
-//        Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
-//        startActivity(intent);
-//    }
-
-    protected void loadListView(){
-        DatabaseHelper dbHelper = new DatabaseHelper(this);
-        List<Plants> plants = dbHelper.getAllPlants();
-
-        ArrayList<String> plantListText = new ArrayList<>();
-
-        for (int i = 0; i < plants.size(); i++){
-            String temp = "";
-            temp += plants.get(i).getPlantTitle() + "\n";
-            temp += plants.get(i).getPlantType() + "\n";
-
-            plantListText.add(temp);
-        }
-
-        ArrayAdapter arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, plantListText);
-        listViewPlants.setAdapter(arrayAdapter);
+    public void goToAboutUs(){
+        Intent intent = new Intent(MainActivity.this, AboutUsActivity.class);
+        startActivity(intent);
     }
+
+    public void goToBlueToothTest(){
+        Intent intent = new Intent(MainActivity.this, BlueToothTestActivity.class);
+        startActivity(intent);
+    }
+
+
 }
