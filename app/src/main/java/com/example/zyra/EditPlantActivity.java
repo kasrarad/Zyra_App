@@ -133,6 +133,7 @@ public class EditPlantActivity extends AppCompatActivity {
             //Parsing jason Data
             try {
                 JSONObject jasonResult = new JSONObject(result.substring(result.indexOf("{"), result.lastIndexOf("}") + 1));
+                //JSONObject jasonResult = new JSONObject(result);
 
                 int success = Integer.parseInt(jasonResult.getString("success"));
                 if (success == 1) {
@@ -189,8 +190,6 @@ public class EditPlantActivity extends AppCompatActivity {
         EditPlants editPlants = new EditPlants(this);
         editPlants.execute(id, userID, nameBySpecies, nameByUser, temperature, moisture, image, wiki);
 
-        Intent intent = new Intent(this, PlantActivity.class);
-        startActivity(intent);
     }
 
     // Delete Plant from the database

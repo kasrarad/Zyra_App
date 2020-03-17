@@ -9,10 +9,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -20,7 +16,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.zyra.PlantsListView.PlantListViewAdapter;
-import com.example.zyra.PlantsListView.ViewHolder;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -88,11 +83,6 @@ public class PlantActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void temp(){
-        Intent intent = new Intent(this, PlantActivity.class);
-        startActivity(intent);
-    }
-
     //Get Plants Info
     class GetPlantInfo extends AsyncTask<String, Void, String> {
 
@@ -131,7 +121,8 @@ public class PlantActivity extends AppCompatActivity {
 
                 // Read the response from post request
                 InputStream inputStream = httpURLConnection.getInputStream();
-                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "iso-8859-1"));
+                //BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "iso-8859-1"));
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
                 String line = "";
                 while ((line = bufferedReader.readLine()) != null) {
                     result += line;
@@ -151,42 +142,49 @@ public class PlantActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String result) {
-            //Parsing jason Data
-            try {
-                allPlants = new ArrayList<>();
-                plantsNameListView = (ListView) findViewById(R.id.plantsNameListView);
-                JSONObject jasonResult = new JSONObject(result.substring(result.indexOf("{"), result.lastIndexOf("}") + 1));
+            if(result!=null){
+                //Parsing jason Data
+                try {
+                    allPlants = new ArrayList<>();
+                    plantsNameListView = (ListView) findViewById(R.id.plantsNameListView);
+                    JSONObject jasonResult = new JSONObject(result.substring(result.indexOf("{"), result.lastIndexOf("}") + 1));
+                    //JSONObject jasonResult = new JSONObject(result);
 
-                int success = Integer.parseInt(jasonResult.getString("success"));
-                if (success == 1) {
-                    JSONArray plants = jasonResult.getJSONArray("plants");
-                    for (int i = 0; i < plants.length(); i++) {
-                        JSONObject plant = plants.getJSONObject(i);
-                        int id = plant.getInt("id");
-                        String userID = plant.getString("userID");
-                        String nameBySpecies = plant.getString("nameBySpecies");
-                        String nameByUser = plant.getString("nameByUser");
-                        String temperature = plant.getString("temperature");
-                        String moisture = plant.getString("moisture");
-                        String image = plant.getString("image");
-                        String wiki = plant.getString("wiki");
-                        String line = nameByUser;
-                        allPlants.add(line);
-                    }
+                    int success = Integer.parseInt(jasonResult.getString("success"));
+                    if (success == 1) {
+                        JSONArray plants = jasonResult.getJSONArray("plants");
+                        for (int i = 0; i < plants.length(); i++) {
+                            JSONObject plant = plants.getJSONObject(i);
+                            int id = plant.getInt("id");
+                            String userID = plant.getString("userID");
+                            String nameBySpecies = plant.getString("nameBySpecies");
+                            String nameByUser = plant.getString("nameByUser");
+                            String temperature = plant.getString("temperature");
+                            String moisture = plant.getString("moisture");
+                            String image = plant.getString("image");
+                            String wiki = plant.getString("wiki");
+                            String line = nameByUser;
+                            allPlants.add(line);
+                        }
 
-                    if(allPlants.size() > 0){
-                        adapter = new PlantListViewAdapter(PlantActivity.this, allPlants);
-                        plantsNameListView.setAdapter(adapter);
-                    } else{
+                        if(allPlants.size() > 0){
+                            adapter = new PlantListViewAdapter(PlantActivity.this, allPlants);
+                            plantsNameListView.setAdapter(adapter);
+                        } else{
+                            Toast.makeText(PlantActivity.this, "No plants", Toast.LENGTH_SHORT).show();
+                        }
+
+                    } else {
                         Toast.makeText(PlantActivity.this, "No plants", Toast.LENGTH_SHORT).show();
                     }
-
-                } else {
-                    Toast.makeText(PlantActivity.this, "No plants", Toast.LENGTH_SHORT).show();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    Log.e("error ", e.getMessage());
                 }
-            } catch (JSONException e) {
-                e.printStackTrace();
-                Log.e("error ", e.getMessage());
+            } else{
+                Toast.makeText(PlantActivity.this, "No Internet connection", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(PlantActivity.this, MainActivity.class);
+                startActivity(intent);
             }
 
         }

@@ -1,8 +1,6 @@
 package com.example.zyra;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -13,6 +11,8 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.zyra.Database.Register;
+
 public class SignupActivity extends AppCompatActivity {
 
     protected EditText editName;
@@ -21,8 +21,6 @@ public class SignupActivity extends AppCompatActivity {
     protected EditText editConfirmPw;
     protected Button btnRegister;
     protected Button btnCancel;
-
-    SharedPreferences preferences;
 
     private static final String TAG = "SignupActivity";
 
@@ -48,22 +46,13 @@ public class SignupActivity extends AppCompatActivity {
                 String passwordValue = editPw.getText().toString();
                 String confirmpassValue = editConfirmPw.getText().toString();
 
-                preferences = getSharedPreferences(getString(R.string.profilefile), Context.MODE_PRIVATE);
-
-                SharedPreferences.Editor editor = preferences.edit();
-
-
                 if(nameValue.isEmpty() || usernameValue.isEmpty() || passwordValue.isEmpty() || confirmpassValue.isEmpty()){
                     Toast.makeText(SignupActivity.this, "Please enter all information", Toast.LENGTH_SHORT).show();
                 }else if(!passwordValue.equals(confirmpassValue)) {
                     Toast.makeText(SignupActivity.this, "Password do not match", Toast.LENGTH_SHORT).show();
                 }else{
-                    Toast.makeText(SignupActivity.this, "Account created!", Toast.LENGTH_SHORT).show();
-                    editor.putString(getString(R.string.profilename), nameValue);
-                    editor.putString(getString(R.string.profileusername), usernameValue);
-                    editor.putString(getString(R.string.profilepassword), passwordValue);
-                    editor.apply();
-                    goToLogin();
+                    Register register = new Register(SignupActivity.this);
+                    register.execute(nameValue, usernameValue, passwordValue);
                 }
             }
         });
@@ -88,6 +77,11 @@ public class SignupActivity extends AppCompatActivity {
 
     protected void goToLogin(){
         Intent intent = new Intent(SignupActivity.this, LoginActivity.class);
+        startActivity(intent);
+    }
+
+    protected void goToSignup(){
+        Intent intent = new Intent(SignupActivity.this, SignupActivity.class);
         startActivity(intent);
     }
 

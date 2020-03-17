@@ -1,7 +1,6 @@
 package com.example.zyra;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,6 +10,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -149,7 +149,7 @@ public class NewPlantActivity extends AppCompatActivity {
     public void savePlantsButton(View view) {
         //nameBySpecies = nameEditText.getText().toString();
         nameBySpecies = "a";
-        nameByUser = editPlantName.getText().toString();
+        nameByUser = editPlantName.getText().toString().trim();
         //temperature = temperatureEditText.getText().toString();
         temperature = "10";
         //moisture = moistureEditText.getText().toString();
@@ -157,13 +157,15 @@ public class NewPlantActivity extends AppCompatActivity {
         image = "b";
         wiki = "c";
 
-        String type = "Add";
+        if(nameByUser.equals("")){
+            Toast.makeText(NewPlantActivity.this, "Plant Name cannot be empty", Toast.LENGTH_SHORT).show();
+        } else{
+            String type = "Add";
 
-        AddPlants addPlants = new AddPlants(this);
-        addPlants.execute(type, userID, nameBySpecies, nameByUser, temperature, moisture, image, wiki);
+            AddPlants addPlants = new AddPlants(this);
+            addPlants.execute(type, userID, nameBySpecies, nameByUser, temperature, moisture, image, wiki);
+        }
 
-        Intent intent = new Intent(this, PlantActivity.class);
-        startActivity(intent);
     }
 }
 
