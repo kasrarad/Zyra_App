@@ -8,11 +8,10 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
-import android.view.MenuItem;
+import android.view.View;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.zyra.PlantsListView.PlantListViewAdapter;
@@ -49,6 +48,8 @@ public class PlantActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_plantlist);
 
+        floatingPlant = findViewById(R.id.floatingAddPlant);
+
         // Add back button
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -57,6 +58,13 @@ public class PlantActivity extends AppCompatActivity {
         userID = sharedPreferences.getString("userID", null);
 
         new GetPlantInfo().execute(userID);
+
+        floatingPlant.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goToNewPlantActivity();
+            }
+        });
 
     }
 
@@ -67,18 +75,20 @@ public class PlantActivity extends AppCompatActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch(item.getItemId()) {
-            case R.id.item1:
-                Toast.makeText(this, "Bluetooth!", Toast.LENGTH_SHORT).show();
-                return true;
-            case R.id.itemsettings:
-                goToNewPlantActivity();
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
+//    @Override
+//    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+//        switch(item.getItemId()) {
+//            case R.id.item1:
+//                Toast.makeText(this, "Bluetooth!", Toast.LENGTH_SHORT).show();
+//                return true;
+//            case R.id.itemsettings:
+//                goToNewPlantActivity();
+//                return true;
+//        }
+//        return super.onOptionsItemSelected(item);
+//    }
+
+
 
     public void goToNewPlantActivity(){
         Intent intent = new Intent(PlantActivity.this, NewPlantActivity.class);

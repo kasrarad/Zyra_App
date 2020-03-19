@@ -20,6 +20,7 @@
 <!--        android:src="@drawable/login_icon" />-->
 
 
+
     <ImageView
         android:layout_width="364dp"
         android:layout_height="545dp"
@@ -109,6 +110,7 @@
         tools:layout_editor_absoluteY="356dp"
         android:background="#F5F5DC"
         android:text="Bluetooth" />
+
 
 </RelativeLayout>
 
