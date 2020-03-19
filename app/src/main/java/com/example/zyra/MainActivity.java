@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -23,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
     protected Button buttonAboutUs;
     protected Button buttonCredits;
     protected Button blueToothActivityButton;
+    protected TextView textViewAppName;
 
     protected DatabaseHelper databaseHelper;
 
@@ -60,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void setupUI(){
         imageViewLogo = findViewById(R.id.imageViewLogo);
+        textViewAppName = findViewById(R.id.textViewZyra);
     }
 
     public void setButtons(){

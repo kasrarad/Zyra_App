@@ -16,6 +16,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.zyra.PlantsListView.PlantListViewAdapter;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -39,6 +40,7 @@ public class PlantActivity extends AppCompatActivity {
     protected ListView plantsNameListView;
     protected PlantListViewAdapter adapter;
     protected ArrayList<String> allPlants;
+    protected FloatingActionButton floatingPlant;
 
     protected String userID;
 
@@ -142,39 +144,33 @@ public class PlantActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String result) {
-            if(result!=null){
-                //Parsing jason Data
-                try {
-                    allPlants = new ArrayList<>();
-                    plantsNameListView = (ListView) findViewById(R.id.plantsNameListView);
-                    JSONObject jasonResult = new JSONObject(result.substring(result.indexOf("{"), result.lastIndexOf("}") + 1));
-                    //JSONObject jasonResult = new JSONObject(result);
+            //Parsing jason Data
+            try {
+                allPlants = new ArrayList<>();
+                plantsNameListView = (ListView) findViewById(R.id.plantsNameListView);
+                JSONObject jasonResult = new JSONObject(result.substring(result.indexOf("{"), result.lastIndexOf("}") + 1 ));
 
-                    int success = Integer.parseInt(jasonResult.getString("success"));
-                    if (success == 1) {
-                        JSONArray plants = jasonResult.getJSONArray("plants");
-                        for (int i = 0; i < plants.length(); i++) {
-                            JSONObject plant = plants.getJSONObject(i);
-                            int id = plant.getInt("id");
-                            String userID = plant.getString("userID");
-                            String nameBySpecies = plant.getString("nameBySpecies");
-                            String nameByUser = plant.getString("nameByUser");
-                            String temperature = plant.getString("temperature");
-                            String moisture = plant.getString("moisture");
-                            String image = plant.getString("image");
-                            String wiki = plant.getString("wiki");
-                            String line = nameByUser;
-                            allPlants.add(line);
-                        }
+                int success = Integer.parseInt(jasonResult.getString("success"));
+                if (success == 1) {
+                    JSONArray plants = jasonResult.getJSONArray("plants");
+                    for (int i = 0; i < plants.length(); i++) {
+                        JSONObject plant = plants.getJSONObject(i);
+                        int id = plant.getInt("id");
+                        String userID = plant.getString("userID");
+                        String nameBySpecies = plant.getString("nameBySpecies");
+                        String nameByUser = plant.getString("nameByUser");
+                        String temperature = plant.getString("temperature");
+                        String moisture = plant.getString("moisture");
+                        String image = plant.getString("image");
+                        String wiki = plant.getString("wiki");
+                        String line = nameByUser;
+                        allPlants.add(line);
+                    }
 
-                        if(allPlants.size() > 0){
-                            adapter = new PlantListViewAdapter(PlantActivity.this, allPlants);
-                            plantsNameListView.setAdapter(adapter);
-                        } else{
-                            Toast.makeText(PlantActivity.this, "No plants", Toast.LENGTH_SHORT).show();
-                        }
-
-                    } else {
+                    if(allPlants.size() > 0){
+                        adapter = new PlantListViewAdapter(PlantActivity.this, allPlants);
+                        plantsNameListView.setAdapter(adapter);
+                    } else{
                         Toast.makeText(PlantActivity.this, "No plants", Toast.LENGTH_SHORT).show();
                     }
                 } catch (JSONException e) {

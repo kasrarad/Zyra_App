@@ -115,10 +115,6 @@ public class NewPlantActivity extends AppCompatActivity {
         textViewPlantType = findViewById(R.id.textViewTypePlant);
         mRecyclerView = findViewById(R.id.recyclerViewSensor);
         mRecyclerView.setHasFixedSize(true);
-        btnInsert = findViewById(R.id.btnInsertSensor);
-        btnDelete = findViewById(R.id.btnDeleteSensor);
-        editTextInsert = findViewById(R.id.editTextInsertSensor);
-        editTextDelete = findViewById(R.id.editTextDeleteSensor);
     }
 
     public void createItemsList(){
