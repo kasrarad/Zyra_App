@@ -95,6 +95,11 @@ public class PlantActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    public void temp(){
+        Intent intent = new Intent(this, PlantActivity.class);
+        startActivity(intent);
+    }
+
     //Get Plants Info
     class GetPlantInfo extends AsyncTask<String, Void, String> {
 
@@ -133,8 +138,7 @@ public class PlantActivity extends AppCompatActivity {
 
                 // Read the response from post request
                 InputStream inputStream = httpURLConnection.getInputStream();
-                //BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "iso-8859-1"));
-                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "iso-8859-1"));
                 String line = "";
                 while ((line = bufferedReader.readLine()) != null) {
                     result += line;
@@ -183,14 +187,13 @@ public class PlantActivity extends AppCompatActivity {
                     } else{
                         Toast.makeText(PlantActivity.this, "No plants", Toast.LENGTH_SHORT).show();
                     }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                    Log.e("error ", e.getMessage());
+
+                } else {
+                    Toast.makeText(PlantActivity.this, "No plants", Toast.LENGTH_SHORT).show();
                 }
-            } else{
-                Toast.makeText(PlantActivity.this, "No Internet connection", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(PlantActivity.this, MainActivity.class);
-                startActivity(intent);
+            } catch (JSONException e) {
+                e.printStackTrace();
+                Log.e("error ", e.getMessage());
             }
 
         }
