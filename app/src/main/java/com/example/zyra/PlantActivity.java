@@ -8,19 +8,17 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
+
 import android.widget.ListView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.zyra.PlantsListView.PlantListViewAdapter;
-import com.example.zyra.PlantsListView.ViewHolder;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -44,6 +42,7 @@ public class PlantActivity extends AppCompatActivity {
     protected ListView plantsNameListView;
     protected PlantListViewAdapter adapter;
     protected ArrayList<String> allPlants;
+    protected FloatingActionButton floatingPlant;
 
     protected String userID;
 
@@ -52,6 +51,8 @@ public class PlantActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_plantlist);
 
+
+        floatingPlant = findViewById(R.id.floatingAddPlant);
         // Add back button
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -60,6 +61,13 @@ public class PlantActivity extends AppCompatActivity {
         userID = sharedPreferences.getString("userID", null);
 
         new GetPlantInfo().execute(userID);
+
+        floatingPlant.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goToNewPlantActivity();
+            }
+        });
 
     }
 
@@ -70,18 +78,21 @@ public class PlantActivity extends AppCompatActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch(item.getItemId()) {
-            case R.id.item1:
-                Toast.makeText(this, "Bluetooth!", Toast.LENGTH_SHORT).show();
-                return true;
-            case R.id.itemsettings:
-                goToNewPlantActivity();
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
+
+//    @Override
+//    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+//        switch(item.getItemId()) {
+//            case R.id.item1:
+//                Toast.makeText(this, "Bluetooth!", Toast.LENGTH_SHORT).show();
+//                return true;
+//            case R.id.itemsettings:
+//                goToNewPlantActivity();
+//                return true;
+//        }
+//        return super.onOptionsItemSelected(item);
+//    }
+
+
 
     public void goToNewPlantActivity(){
         Intent intent = new Intent(PlantActivity.this, NewPlantActivity.class);
@@ -155,7 +166,7 @@ public class PlantActivity extends AppCompatActivity {
             try {
                 allPlants = new ArrayList<>();
                 plantsNameListView = (ListView) findViewById(R.id.plantsNameListView);
-                JSONObject jasonResult = new JSONObject(result.substring(result.indexOf("{"), result.lastIndexOf("}") + 1));
+                JSONObject jasonResult = new JSONObject(result.substring(result.indexOf("{"), result.lastIndexOf("}") + 1 ));
 
                 int success = Integer.parseInt(jasonResult.getString("success"));
                 if (success == 1) {
@@ -189,6 +200,7 @@ public class PlantActivity extends AppCompatActivity {
                 Log.e("error ", e.getMessage());
             }
 
+
         }
 
         @Override
@@ -196,6 +208,7 @@ public class PlantActivity extends AppCompatActivity {
             super.onProgressUpdate(values);
         }
     }
+
 
 
 }

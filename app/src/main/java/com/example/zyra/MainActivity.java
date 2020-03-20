@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -19,6 +20,7 @@ public class MainActivity extends AppCompatActivity {
     protected Button buttonAboutUs;
     protected Button buttonCredits;
     protected Button blueToothActivityButton;
+    protected TextView textViewAppName;
 
     private static final String TAG = "MainActivity";
 
@@ -44,10 +46,11 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        }
+    }
 
     public void setupUI(){
         imageViewLogo = findViewById(R.id.imageViewLogo);
+        textViewAppName = findViewById(R.id.textViewZyra);
     }
 
     public void setButtons(){
