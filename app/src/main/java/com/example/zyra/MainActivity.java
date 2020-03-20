@@ -1,11 +1,14 @@
 package com.example.zyra;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -17,6 +20,7 @@ public class MainActivity extends AppCompatActivity {
     protected Button buttonAboutUs;
     protected Button buttonCredits;
     protected Button blueToothActivityButton;
+    protected TextView textViewAppName;
 
     private static final String TAG = "MainActivity";
 
@@ -29,16 +33,24 @@ public class MainActivity extends AppCompatActivity {
 
         setupUI();
         setButtons();
+
+        // store the value(user's id) in the SharedPreferences
+        SharedPreferences preferences = getSharedPreferences("PlantName", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        final String usersId = "1";
+        editor.putString("userID", usersId);
+        editor.apply();
     }
 
 
     @Override
     protected void onStart() {
         super.onStart();
-        }
+    }
 
     public void setupUI(){
         imageViewLogo = findViewById(R.id.imageViewLogo);
+        textViewAppName = findViewById(R.id.textViewZyra);
     }
 
     public void setButtons(){
