@@ -28,9 +28,7 @@ public class NewPlantActivity extends AppCompatActivity {
     //EditText nameEditText, nameByUserEditText, temperatureEditText, moistureEditText, imageEditText, wikiEditText;
     String userID, nameBySpecies, nameByUser, temperature, moisture, image, wiki;
 
-    // Add Plants
-    //EditText nameEditText, nameByUserEditText, temperatureEditText, moistureEditText, imageEditText, wikiEditText;
-    String userID, nameBySpecies, nameByUser, temperature, moisture, image, wiki;
+
 
     private static final String TAG = "NewPlantActivity";
     @Override
@@ -74,28 +72,6 @@ public class NewPlantActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-
-    // Save Plants Button
-    // Add plants to the database
-    public void savePlantsButton(View view) {
-        //nameBySpecies = nameEditText.getText().toString();
-        nameBySpecies = "a";
-        nameByUser = editPlantName.getText().toString();
-        //temperature = temperatureEditText.getText().toString();
-        temperature = "10";
-        //moisture = moistureEditText.getText().toString();
-        moisture = "20";
-        image = "b";
-        wiki = "c";
-
-        String type = "Add";
-
-        AddPlants addPlants = new AddPlants(this);
-        addPlants.execute(type, userID, nameBySpecies, nameByUser, temperature, moisture, image, wiki);
-
-        Intent intent = new Intent(this, PlantActivity.class);
-        startActivity(intent);
-    }
 
     // Save Plants Button
     // Add plants to the database
