@@ -16,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.zyra.Database.AddPlants;
 
 
+
 public class NewPlantActivity extends AppCompatActivity {
 
     protected EditText editPlantName;
@@ -27,6 +28,8 @@ public class NewPlantActivity extends AppCompatActivity {
     //EditText nameEditText, nameByUserEditText, temperatureEditText, moistureEditText, imageEditText, wikiEditText;
     String userID, nameBySpecies, nameByUser, temperature, moisture, image, wiki;
 
+
+
     private static final String TAG = "NewPlantActivity";
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -36,6 +39,7 @@ public class NewPlantActivity extends AppCompatActivity {
 
         // Add back button
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
 
         // get user id from SharedPreferences
         SharedPreferences sharedPreferences = getSharedPreferences("PlantName", Context.MODE_PRIVATE);

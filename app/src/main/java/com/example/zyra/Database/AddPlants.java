@@ -1,6 +1,7 @@
 package com.example.zyra.Database;
 
 import android.content.Context;
+
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.widget.Toast;
@@ -12,6 +13,7 @@ import com.example.zyra.SignupActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -113,6 +115,7 @@ public class AddPlants extends AsyncTask<String, Void, String>{
     @Override
     protected void onPostExecute(String result) {
 
+
         try {
             JSONObject jasonResult = new JSONObject(result.substring(result.indexOf("{"), result.lastIndexOf("}") + 1));
 
@@ -129,6 +132,7 @@ public class AddPlants extends AsyncTask<String, Void, String>{
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
 
     }
 

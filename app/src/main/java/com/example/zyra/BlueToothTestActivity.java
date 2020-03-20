@@ -5,6 +5,7 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.PersistableBundle;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -19,6 +20,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import org.w3c.dom.Text;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Set;
 import java.util.UUID;
 
@@ -27,11 +29,19 @@ public class BlueToothTestActivity extends AppCompatActivity {
 
     protected Button ledToggleButton;
     protected TextView blueToothTextView;
+    protected TextView bluetoothReadTextView;
+
+    private InputStream inStream = null;
+    boolean stopWorker = false;
+    int readBufferPosition = 0;
+    byte[] readBuffer = new byte[1024];
+    Handler handler = new Handler();
 
     private static final String TAG = "Bluetooth";
-
+    private StringBuilder recDataString = new StringBuilder();
     String address = null , name = null;
 
+    //initialize bluetooth
     BluetoothAdapter myBluetooth = BluetoothAdapter.getDefaultAdapter();
     BluetoothSocket btSocket = null;
     Set<BluetoothDevice> pairedDevices;
@@ -45,17 +55,17 @@ public class BlueToothTestActivity extends AppCompatActivity {
 
 //        BluetoothAdapter myBluetooth = BluetoothAdapter.getDefaultAdapter();
 
-        Log.d(TAG, "HEre1 fsjhfhsdgfhjdsgfhjgfhjdsgjfkdsjfdhfdsl");
+        Log.d(TAG, "Blueooth activity");
         try{setw();}catch(Exception e){}
 
     }
 
-    @SuppressLint("ClickableViewAccessibility")
+    @SuppressLint({"ClickableViewAccessibility"})
     private void setw() throws IOException
     {
         blueToothTextView=(TextView)findViewById(R.id.blueToothTextView);
+        bluetoothReadTextView=(TextView)findViewById(R.id.bluetoothReadTextView);
         bluetooth_connect_device();
-
 
 
         ledToggleButton=(Button)findViewById(R.id.ledToggleButton);
@@ -67,6 +77,7 @@ public class BlueToothTestActivity extends AppCompatActivity {
             if(event.getAction() == MotionEvent.ACTION_UP){led_on_off("0");}
             return true;}
         });
+        listenForData();
 
     }
 
@@ -77,7 +88,6 @@ public class BlueToothTestActivity extends AppCompatActivity {
             myBluetooth = BluetoothAdapter.getDefaultAdapter();
             address = myBluetooth.getAddress();
             pairedDevices = myBluetooth.getBondedDevices();
-            Log.d(TAG, "HEre1:");
             if (pairedDevices.size()>0)
             {
                 for(BluetoothDevice bt : pairedDevices)
@@ -130,6 +140,70 @@ public class BlueToothTestActivity extends AppCompatActivity {
 
         }
 
+    }
+
+    public void listenForData()   {
+        try {
+            inStream = btSocket.getInputStream();
+        } catch (IOException e) {
+        }
+
+        Thread workerThread = new Thread(new Runnable()
+        {
+            public void run()
+            {
+                while(!Thread.currentThread().isInterrupted() && !stopWorker)
+                {
+                    try
+                    {
+                        int bytesAvailable = inStream.available();
+                        if(bytesAvailable > 0)
+                        {
+                            byte[] packetBytes = new byte[bytesAvailable];
+                            inStream.read(packetBytes);
+                            for(int i=0;i<bytesAvailable;i++)
+                            {
+                                byte b = packetBytes[i];
+                                if(b == 10)
+                                {
+                                    byte[] encodedBytes = new byte[readBufferPosition];
+                                    System.arraycopy(readBuffer, 0, encodedBytes, 0, encodedBytes.length);
+                                    final String data = new String(encodedBytes, "US-ASCII");
+                                    readBufferPosition = 0;
+                                    handler.post(new Runnable()
+                                    {
+                                        public void run()
+                                        {
+
+                                            bluetoothReadTextView.setText(data);
+//                                            if(Result.getText().toString().equals("..")) {
+//                                                Result.setText(data);
+//                                            } else {
+//                                                Result.append("\n"+data);
+//                                            }
+
+                                            /* You also can use Result.setText(data); it won't display multilines
+                                             */
+
+                                        }
+                                    });
+                                }
+                                else
+                                {
+                                    readBuffer[readBufferPosition++] = b;
+                                }
+                            }
+                        }
+                    }
+                    catch (IOException ex)
+                    {
+                        stopWorker = true;
+                    }
+                }
+            }
+        });
+
+        workerThread.start();
     }
 
 }

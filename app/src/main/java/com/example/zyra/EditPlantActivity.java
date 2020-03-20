@@ -135,6 +135,7 @@ public class EditPlantActivity extends AppCompatActivity {
                 JSONObject jasonResult = new JSONObject(result.substring(result.indexOf("{"), result.lastIndexOf("}") + 1));
                 //JSONObject jasonResult = new JSONObject(result);
 
+
                 int success = Integer.parseInt(jasonResult.getString("success"));
                 if (success == 1) {
                     JSONArray plants = jasonResult.getJSONArray("plants");
@@ -189,6 +190,7 @@ public class EditPlantActivity extends AppCompatActivity {
 
         EditPlants editPlants = new EditPlants(this);
         editPlants.execute(id, userID, nameBySpecies, nameByUser, temperature, moisture, image, wiki);
+
 
     }
 
