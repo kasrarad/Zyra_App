@@ -8,19 +8,20 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity {
 
     protected ImageView imageViewLogo;
+    protected ImageView imageSakuraTop;
+    protected ImageView imageSakuraBtLft;
+    protected ImageView imageSakuraBtRgt;
     protected Button buttonPlantList;
     protected Button buttonSettings;
     protected Button buttonAboutUs;
     protected Button buttonCredits;
     protected Button blueToothActivityButton;
-    protected TextView textViewAppName;
 
     private static final String TAG = "MainActivity";
 
@@ -50,7 +51,9 @@ public class MainActivity extends AppCompatActivity {
 
     public void setupUI(){
         imageViewLogo = findViewById(R.id.imageViewLogo);
-        textViewAppName = findViewById(R.id.textViewZyra);
+        imageSakuraTop = findViewById(R.id.imageSakuraTop);
+        imageSakuraBtLft = findViewById(R.id.imageSakuraLeftBt);
+        imageSakuraBtRgt = findViewById(R.id.imageSakuraRightBt);
     }
 
     public void setButtons(){

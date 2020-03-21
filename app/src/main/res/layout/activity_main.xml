@@ -20,6 +20,29 @@
 <!--        android:src="@drawable/login_icon" />-->
 
 
+    <ImageView
+        android:id="@+id/imageSakuraTop"
+        android:layout_width="161dp"
+        android:layout_height="160dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="-3dp"
+        android:layout_marginTop="0dp"
+        android:background="@drawable/sakura_transparent" />
+
+    <ImageView
+        android:id="@+id/imageSakuraRightBt"
+        android:layout_width="161dp"
+        android:layout_height="160dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="268dp"
+        android:layout_marginTop="445dp"
+        android:layout_marginEnd="2dp"
+        android:layout_marginBottom="1dp"
+        android:background="@drawable/sakura_transparent" />
 
     <ImageView
         android:layout_width="364dp"
@@ -32,19 +55,17 @@
         android:layout_marginEnd="-28dp"
         android:background="@drawable/flower_icon_vector" />
 
-    <TextView
-        android:id="@+id/textViewZyra"
-        android:layout_width="137dp"
-        android:layout_height="91dp"
+    <ImageView
+        android:id="@+id/imageSakuraLeftBt"
+        android:layout_width="161dp"
+        android:layout_height="160dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginStart="2dp"
-        android:layout_marginTop="11dp"
-        android:layout_marginEnd="272dp"
-        android:text="Zyra"
-        android:textColor="@color/colorPrimaryDark"
-        android:textSize="60dp" />
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="1dp"
+        android:layout_marginTop="443dp"
+        android:layout_marginBottom="0dp"
+        android:background="@drawable/sakura_transparent" />
 
     <Button
         android:id="@+id/btnPlantList"

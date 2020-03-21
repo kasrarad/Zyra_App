@@ -29,17 +29,12 @@ public class NewPlantActivity extends AppCompatActivity {
     String userID, nameBySpecies, nameByUser, temperature, moisture, image, wiki;
 
 
-
     private static final String TAG = "NewPlantActivity";
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_newplant);
         Log.d(TAG, "onCreate: Started");
-
-        // Add back button
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
 
         // get user id from SharedPreferences
         SharedPreferences sharedPreferences = getSharedPreferences("PlantName", Context.MODE_PRIVATE);
