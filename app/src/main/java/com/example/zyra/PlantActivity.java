@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -16,6 +17,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.zyra.PlantsListView.PlantListViewAdapter;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -39,6 +41,7 @@ public class PlantActivity extends AppCompatActivity {
     protected ListView plantsNameListView;
     protected PlantListViewAdapter adapter;
     protected ArrayList<String> allPlants;
+    protected FloatingActionButton floatingPlant;
 
     protected String userID;
 
@@ -47,6 +50,7 @@ public class PlantActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_plantlist);
 
+        floatingPlant = findViewById(R.id.floatingAddPlant);
         // Add back button
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -56,6 +60,13 @@ public class PlantActivity extends AppCompatActivity {
 
         new GetPlantInfo().execute(userID);
 
+        floatingPlant.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goToNewPlantActivity();
+            }
+        });
+
     }
 
     @Override
@@ -64,7 +75,7 @@ public class PlantActivity extends AppCompatActivity {
         inflater.inflate(R.menu.menu_items, menu);
         return super.onCreateOptionsMenu(menu);
     }
-
+/*
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch(item.getItemId()) {
@@ -77,6 +88,7 @@ public class PlantActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+ */
 
     public void goToNewPlantActivity(){
         Intent intent = new Intent(PlantActivity.this, NewPlantActivity.class);

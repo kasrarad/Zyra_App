@@ -1,6 +1,7 @@
 package com.example.zyra;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
@@ -26,6 +27,11 @@ import java.util.ArrayList;
 
 public class NewPlantActivity extends AppCompatActivity {
 
+    protected EditText editPlantName;
+    protected TextView textViewPlantType;
+    protected Button btnCancelPlant;
+
+    /*
     protected Spinner myPlantSpinner;
     protected Spinner myFrequencySpinner;
     protected EditText editPlantName;
@@ -42,6 +48,8 @@ public class NewPlantActivity extends AppCompatActivity {
     private Button btnDelete;
     private EditText editTextInsert;
     private EditText editTextDelete;
+
+     */
 
     // Add Plants
     //EditText nameEditText, nameByUserEditText, temperatureEditText, moistureEditText, imageEditText, wikiEditText;
@@ -65,6 +73,14 @@ public class NewPlantActivity extends AppCompatActivity {
 
         setupUI();
 
+        btnCancelPlant.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goBackPlantList();
+            }
+        });
+
+        /*
         createItemsList();
         buildRecyclerView();
 
@@ -106,9 +122,17 @@ public class NewPlantActivity extends AppCompatActivity {
             }
         });
 
+         */
+
     }
 
     public void setupUI(){
+
+        editPlantName = findViewById(R.id.editTextNewPlant);
+        textViewPlantType = findViewById(R.id.textViewTypePlant);
+        btnCancelPlant = findViewById(R.id.btnCancelPlant);
+
+        /*
         myPlantSpinner = findViewById(R.id.spinnerPlant);
         myFrequencySpinner = findViewById(R.id.spinnerFrequency);
         editPlantName = findViewById(R.id.editTextNewPlant);
@@ -119,8 +143,15 @@ public class NewPlantActivity extends AppCompatActivity {
         btnDelete = findViewById(R.id.btnDeleteSensor);
         editTextInsert = findViewById(R.id.editTextInsertSensor);
         editTextDelete = findViewById(R.id.editTextDeleteSensor);
+
+         */
     }
 
+    public void goBackPlantList() {
+        Intent intent = new Intent(NewPlantActivity.this, PlantActivity.class);
+        startActivity(intent);
+    }
+/*
     public void createItemsList(){
         //setting up recycler view
         mItemsList = new ArrayList<>();
@@ -143,6 +174,7 @@ public class NewPlantActivity extends AppCompatActivity {
         mItemsList.remove(position);
         mItemsAdapter.notifyItemRemoved(position);
     }
+ */
 
     // Save Plants Button
     // Add plants to the database
