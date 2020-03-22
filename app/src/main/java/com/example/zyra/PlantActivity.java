@@ -8,9 +8,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -42,9 +41,11 @@ public class PlantActivity extends AppCompatActivity {
     protected PlantListViewAdapter adapter;
     protected ArrayList<String> allPlants;
     protected FloatingActionButton floatingPlant;
+
     protected Button btnPlantInfoTest;
 
     protected ArrayAdapter<String> plantAdapter;
+
 
     protected String userID;
 
@@ -56,6 +57,7 @@ public class PlantActivity extends AppCompatActivity {
         btnPlantInfoTest = findViewById(R.id.buttonTest);
         floatingPlant = findViewById(R.id.floatingAddPlant);
         plantsNameListView = findViewById(R.id.plantsNameListView);
+
         // Add back button
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -71,6 +73,7 @@ public class PlantActivity extends AppCompatActivity {
                 goToNewPlantActivity();
             }
         });
+
 
         btnPlantInfoTest.setOnClickListener(new View.OnClickListener() {
             @Override

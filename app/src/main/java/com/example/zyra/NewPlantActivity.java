@@ -22,6 +22,8 @@ public class NewPlantActivity extends AppCompatActivity {
     protected Button btnCancelPlant;
 
 
+     */
+
     // Add Plants
     //EditText nameEditText, nameByUserEditText, temperatureEditText, moistureEditText, imageEditText, wikiEditText;
     String userID, nameBySpecies, nameByUser, temperature, moisture, image, wiki;
@@ -43,11 +45,14 @@ public class NewPlantActivity extends AppCompatActivity {
         setupUI();
 
         btnCancelPlant.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View v) {
                 goBackPlantList();
             }
         });
+
+         */
 
     }
 
