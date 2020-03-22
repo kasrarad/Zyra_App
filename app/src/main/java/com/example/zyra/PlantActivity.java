@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -43,6 +44,8 @@ public class PlantActivity extends AppCompatActivity {
     protected FloatingActionButton floatingPlant;
     protected Button btnPlantInfoTest;
 
+    protected ArrayAdapter<String> plantAdapter;
+
     protected String userID;
 
     @Override
@@ -52,6 +55,7 @@ public class PlantActivity extends AppCompatActivity {
 
         btnPlantInfoTest = findViewById(R.id.buttonTest);
         floatingPlant = findViewById(R.id.floatingAddPlant);
+        plantsNameListView = findViewById(R.id.plantsNameListView);
         // Add back button
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -75,6 +79,17 @@ public class PlantActivity extends AppCompatActivity {
             }
         });
 
+//        plantsNameListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                Intent intentBundle = new Intent(PlantActivity.this, PlantInfoActivity.class);
+//                Bundle selectedPlantBundle = new Bundle();
+//                selectedPlantBundle.putLong("selectedPlant", id);
+//                intentBundle.putExtras(selectedPlantBundle);
+//                startActivity(intentBundle);
+//            }
+//        });
+
     }
 
     @Override
@@ -83,7 +98,6 @@ public class PlantActivity extends AppCompatActivity {
         inflater.inflate(R.menu.menu_items, menu);
         return super.onCreateOptionsMenu(menu);
     }
-
 
     public void goToNewPlantActivity(){
         Intent intent = new Intent(PlantActivity.this, NewPlantActivity.class);
