@@ -9,16 +9,14 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
-
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.zyra.PlantsListView.PlantListViewAdapter;
-
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -43,6 +41,7 @@ public class PlantActivity extends AppCompatActivity {
     protected PlantListViewAdapter adapter;
     protected ArrayList<String> allPlants;
     protected FloatingActionButton floatingPlant;
+    protected Button btnPlantInfoTest;
 
     protected String userID;
 
@@ -51,7 +50,7 @@ public class PlantActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_plantlist);
 
-
+        btnPlantInfoTest = findViewById(R.id.buttonTest);
         floatingPlant = findViewById(R.id.floatingAddPlant);
         // Add back button
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -69,6 +68,13 @@ public class PlantActivity extends AppCompatActivity {
             }
         });
 
+        btnPlantInfoTest.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goToPlantInfoActivity();
+            }
+        });
+
     }
 
     @Override
@@ -79,28 +85,8 @@ public class PlantActivity extends AppCompatActivity {
     }
 
 
-//    @Override
-//    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-//        switch(item.getItemId()) {
-//            case R.id.item1:
-//                Toast.makeText(this, "Bluetooth!", Toast.LENGTH_SHORT).show();
-//                return true;
-//            case R.id.itemsettings:
-//                goToNewPlantActivity();
-//                return true;
-//        }
-//        return super.onOptionsItemSelected(item);
-//    }
-
-
-
     public void goToNewPlantActivity(){
         Intent intent = new Intent(PlantActivity.this, NewPlantActivity.class);
-        startActivity(intent);
-    }
-
-    public void temp(){
-        Intent intent = new Intent(this, PlantActivity.class);
         startActivity(intent);
     }
 
@@ -209,6 +195,9 @@ public class PlantActivity extends AppCompatActivity {
         }
     }
 
-
+    protected void goToPlantInfoActivity() {
+        Intent intent = new Intent(PlantActivity.this, PlantInfoActivity.class);
+        startActivity(intent);
+    }
 
 }

@@ -8,7 +8,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,7 +19,6 @@ import com.example.zyra.Database.AddPlants;
 public class NewPlantActivity extends AppCompatActivity {
 
     protected EditText editPlantName;
-    protected TextView textViewPlantType;
     protected Button btnCancelPlant;
 
 
@@ -56,7 +54,6 @@ public class NewPlantActivity extends AppCompatActivity {
     public void setupUI(){
 
         editPlantName = findViewById(R.id.editTextNewPlant);
-        textViewPlantType = findViewById(R.id.textViewTypePlant);
         btnCancelPlant = findViewById(R.id.btnCancelPlant);
 
     }
