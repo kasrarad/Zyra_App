@@ -27,11 +27,7 @@ public class SettingsActivity extends AppCompatActivity {
 
         setupUI();
 
-        databaseHelper = new DatabaseHelper(this);
-
-        // get user id from SharedPreferences
-        SharedPreferences sharedPreferences = getSharedPreferences("PlantName", Context.MODE_PRIVATE);
-        userID = sharedPreferences.getString("userID", null);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         buttonLogOut.setOnClickListener(new View.OnClickListener() {
             @Override
