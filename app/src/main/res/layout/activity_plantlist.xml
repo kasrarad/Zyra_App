@@ -26,6 +26,7 @@
         app:backgroundTint="#E42828"
         app:srcCompat="@drawable/ic_add_box" />
 
+
     <Button
         android:id="@+id/buttonTest"
         android:layout_width="wrap_content"
@@ -35,6 +36,5 @@
         android:layout_marginStart="40dp"
         android:layout_marginBottom="19dp"
         android:text="Button" />
-
 
 </RelativeLayout>
