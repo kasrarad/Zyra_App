@@ -1,18 +1,14 @@
 package com.example.zyra.Database;
-
 import android.content.Context;
 
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.widget.Toast;
 
-import com.example.zyra.EditPlantActivity;
-import com.example.zyra.NewPlantActivity;
 import com.example.zyra.PlantActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -55,8 +51,9 @@ public class EditPlants extends AsyncTask<String, Void, String> {
             String nameByUser = params[3];
             String temperature = params[4];
             String moisture = params[5];
-            String image = params[6];
-            String wiki = params[7];
+            String previousMoisturesLevel = params[6];
+            String image = params[7];
+            String wiki = params[8];
 
             URL url = new URL(plant_url);
             HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
@@ -74,6 +71,7 @@ public class EditPlants extends AsyncTask<String, Void, String> {
                     +URLEncoder.encode("nameByUser", "UTF-8")+"="+URLEncoder.encode(nameByUser, "UTF-8")+"&"
                     +URLEncoder.encode("temperature", "UTF-8")+"="+URLEncoder.encode(temperature, "UTF-8")+"&"
                     +URLEncoder.encode("moisture", "UTF-8")+"="+URLEncoder.encode(moisture, "UTF-8")+"&"
+                    +URLEncoder.encode("previousMoisturesLevel", "UTF-8")+"="+URLEncoder.encode(previousMoisturesLevel, "UTF-8")+"&"
                     +URLEncoder.encode("image", "UTF-8")+"="+URLEncoder.encode(image, "UTF-8")+"&"
                     +URLEncoder.encode("wiki", "UTF-8")+"="+URLEncoder.encode(wiki, "UTF-8")+"&";
             // Write post data to the BufferWriter

@@ -12,6 +12,10 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.zyra.LocalDatabase.DatabaseHelper;
+
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity {
 
     protected ImageView imageViewLogo;
@@ -25,6 +29,8 @@ public class MainActivity extends AppCompatActivity {
     protected Button blueToothActivityButton;
     protected TextView textViewAppName;
 
+    protected DatabaseHelper databaseHelper;
+
     private static final String TAG = "MainActivity";
 
 
@@ -37,12 +43,18 @@ public class MainActivity extends AppCompatActivity {
         setupUI();
         setButtons();
 
+        databaseHelper = new DatabaseHelper(this);
+
+        List<UserInfoDB> userData = databaseHelper.getAllUserInfo();
+
         // store the value(user's id) in the SharedPreferences
         SharedPreferences preferences = getSharedPreferences("PlantName", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
-        final String usersId = "1";
+        String usersId = userData.get(0).getUserID();
         editor.putString("userID", usersId);
         editor.apply();
+
+        databaseHelper.close();
     }
 
 
@@ -127,6 +139,5 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(MainActivity.this, BlueToothTestActivity.class);
         startActivity(intent);
     }
-
 
 }

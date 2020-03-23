@@ -14,20 +14,16 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.zyra.Database.AddPlants;
 
-
-
 public class NewPlantActivity extends AppCompatActivity {
 
     protected EditText editPlantName;
     protected Button btnCancelPlant;
 
-
-     */
+    protected MoistureData moistureData = new MoistureData();
 
     // Add Plants
     //EditText nameEditText, nameByUserEditText, temperatureEditText, moistureEditText, imageEditText, wikiEditText;
-    String userID, nameBySpecies, nameByUser, temperature, moisture, image, wiki;
-
+    String userID, nameBySpecies, nameByUser, temperature, moisture, previousMoisturesLevel, image, wiki;
 
     private static final String TAG = "NewPlantActivity";
     @Override
@@ -52,8 +48,6 @@ public class NewPlantActivity extends AppCompatActivity {
             }
         });
 
-         */
-
     }
 
     public void setupUI(){
@@ -63,30 +57,32 @@ public class NewPlantActivity extends AppCompatActivity {
 
     }
 
-
     public void goBackPlantList() {
         Intent intent = new Intent(NewPlantActivity.this, PlantActivity.class);
         startActivity(intent);
     }
 
-
     // Save Plants Button
     // Add plants to the database
     public void savePlantsButton(View view) {
         //nameBySpecies = nameEditText.getText().toString();
-        nameBySpecies = "a";
-        nameByUser = editPlantName.getText().toString();
+        nameBySpecies = "";
+        nameByUser = editPlantName.getText().toString().trim();
         //temperature = temperatureEditText.getText().toString();
-        temperature = "10";
-        //moisture = moistureEditText.getText().toString();
-        moisture = "20";
-        image = "b";
-        wiki = "c";
+        temperature = "";
+
+        // Add dummy values to Moisture data
+        moistureData.addMoistureData();
+        moisture = moistureData.getCurrentMoistureLevel();
+        previousMoisturesLevel = moistureData.getPreviousMoistureLevels();
+
+        image = "";
+        wiki = "";
 
         String type = "Add";
 
         AddPlants addPlants = new AddPlants(this);
-        addPlants.execute(type, userID, nameBySpecies, nameByUser, temperature, moisture, image, wiki);
+        addPlants.execute(type, userID, nameBySpecies, nameByUser, temperature, moisture, previousMoisturesLevel, image, wiki);
 
         Intent intent = new Intent(this, PlantActivity.class);
         startActivity(intent);

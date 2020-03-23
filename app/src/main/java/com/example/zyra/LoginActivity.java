@@ -58,12 +58,12 @@ public class LoginActivity extends AppCompatActivity {
 
         List<UserInfoDB> checkUserDB = databaseHelper.getAllUserInfo();
 
-//         Check local database
-//         If user's info does not exist, ask user to login
-//        if(checkUserDB.size() != 0){
-//            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-//            startActivity(intent);
-//        } else{
+        //Check local database
+        //If user's info does not exist, ask user to login
+        if(checkUserDB.size() != 0){
+            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+            startActivity(intent);
+        } else{
             btnRegister.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -88,9 +88,9 @@ public class LoginActivity extends AppCompatActivity {
                 }
             });
         }
-//
-//        databaseHelper.close();
-//    }
+
+        databaseHelper.close();
+    }
 
     public void btnSignUp(){
         Intent intent = new Intent(LoginActivity.this, SignupActivity.class);
