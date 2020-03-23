@@ -53,6 +53,7 @@ public class PlantActivity extends AppCompatActivity {
 
     protected String userID;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,6 +78,7 @@ public class PlantActivity extends AppCompatActivity {
             }
         });
 
+        /*
         btnPlantInfoTest.setOnClickListener(new View.OnClickListener() {
 
             @Override
