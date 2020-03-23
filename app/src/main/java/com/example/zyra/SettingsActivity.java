@@ -1,8 +1,6 @@
 package com.example.zyra;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -25,6 +23,8 @@ public class SettingsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
 
+        DatabaseHelper db = new DatabaseHelper(this);
+
         setupUI();
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -43,9 +43,9 @@ public class SettingsActivity extends AppCompatActivity {
                 Integer deleteRow = databaseHelper.deleteUser(userID);
 
                 if(deleteRow > 0)
-                    Toast.makeText(SettingsActivity.this, "SIGHED OUT", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SettingsActivity.this, "SIGNED OUT", Toast.LENGTH_SHORT).show();
                 else
-                    Toast.makeText(SettingsActivity.this, "ERROR IN SIGH OUT", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SettingsActivity.this, "ERROR IN SIGN OUT", Toast.LENGTH_SHORT).show();
 
                 goToLoginSignOut();
             }
