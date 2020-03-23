@@ -1,22 +1,35 @@
 package com.example.zyra;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.zyra.LocalDatabase.DatabaseHelper;
+
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
     protected ImageView imageViewLogo;
+    protected ImageView imageSakuraTop;
+    protected ImageView imageSakuraBtLft;
+    protected ImageView imageSakuraBtRgt;
     protected Button buttonPlantList;
     protected Button buttonSettings;
     protected Button buttonAboutUs;
     protected Button buttonCredits;
     protected Button blueToothActivityButton;
+    protected TextView textViewAppName;
+
+    protected DatabaseHelper databaseHelper;
 
     private static final String TAG = "MainActivity";
 
@@ -29,16 +42,33 @@ public class MainActivity extends AppCompatActivity {
 
         setupUI();
         setButtons();
+
+        databaseHelper = new DatabaseHelper(this);
+
+        List<UserInfoDB> userData = databaseHelper.getAllUserInfo();
+
+        // store the value(user's id) in the SharedPreferences
+        SharedPreferences preferences = getSharedPreferences("PlantName", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        String usersId = userData.get(0).getUserID();
+        editor.putString("userID", usersId);
+        editor.apply();
+
+        databaseHelper.close();
     }
 
 
     @Override
     protected void onStart() {
         super.onStart();
-        }
+    }
 
     public void setupUI(){
         imageViewLogo = findViewById(R.id.imageViewLogo);
+        imageSakuraTop = findViewById(R.id.imageSakuraTop);
+        imageSakuraBtLft = findViewById(R.id.imageSakuraLeftBt);
+        imageSakuraBtRgt = findViewById(R.id.imageSakuraRightBt);
+
     }
 
     public void setButtons(){
@@ -109,6 +139,5 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(MainActivity.this, BlueToothTestActivity.class);
         startActivity(intent);
     }
-
 
 }

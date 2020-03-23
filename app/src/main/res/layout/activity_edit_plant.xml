@@ -3,44 +3,41 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".NewPlantActivity">
+    android:layout_height="match_parent">
 
 
     <EditText
-        android:id="@+id/editTextNewPlant"
+        android:id="@+id/editTextEditPlant"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="156dp"
+        android:layout_marginTop="172dp"
         android:ems="10"
         android:hint="Enter the plant name"
         android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.464"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-
-        android:id="@+id/btnSavePlant"
+        android:id="@+id/button3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="332dp"
-        android:onClick="savePlantsButton"
+        android:layout_marginTop="296dp"
+        android:layout_marginEnd="96dp"
+        android:onClick="editPlantButton"
         android:text="Save"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.504"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/btnCancelPlant"
+        android:id="@+id/button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="412dp"
-        android:layout_marginEnd="160dp"
-        android:text="Cancel"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="96dp"
+        android:layout_marginTop="296dp"
+        android:onClick="deletePlantButton"
+        android:text="Delete"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
 
