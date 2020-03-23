@@ -19,7 +19,7 @@ public class NewPlantActivity extends AppCompatActivity {
     protected EditText editPlantName;
     protected Button btnCancelPlant;
 
-//    protected MoistureData moistureData = new MoistureData();
+    protected MoistureData moistureData = new MoistureData();
 
 
     // Add Plants

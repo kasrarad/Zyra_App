@@ -65,6 +65,7 @@ public class PlantActivity extends AppCompatActivity implements AsyncResponse1 {
 
     protected String userID;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -93,6 +94,8 @@ public class PlantActivity extends AppCompatActivity implements AsyncResponse1 {
             }
         });
 
+
+        /*
 
         btnPlantInfoTest.setOnClickListener(new View.OnClickListener() {
 
