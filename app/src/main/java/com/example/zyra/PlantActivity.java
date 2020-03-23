@@ -9,7 +9,9 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -36,7 +38,13 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 
-public class PlantActivity extends AppCompatActivity {
+interface AsyncResponse1 {
+    void processFinish(ArrayList<String> output);
+}
+
+public class PlantActivity extends AppCompatActivity implements AsyncResponse1 {
+
+    GetPlantInfo getPlantInfo = new GetPlantInfo();
 
     protected ListView plantsNameListView;
     protected PlantListViewAdapter adapter;
@@ -54,6 +62,9 @@ public class PlantActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_plantlist);
 
+        //this to set delegate/listener back to this class
+        getPlantInfo.delegate = this;
+
         floatingPlant = findViewById(R.id.floatingAddPlant);
         plantsNameListView = findViewById(R.id.plantsNameListView);
 
@@ -64,7 +75,8 @@ public class PlantActivity extends AppCompatActivity {
         SharedPreferences sharedPreferences = getSharedPreferences("PlantName", Context.MODE_PRIVATE);
         userID = sharedPreferences.getString("userID", null);
 
-        new GetPlantInfo().execute(userID);
+        //new GetPlantInfo().execute(userID);
+        getPlantInfo.execute(userID);
 
         floatingPlant.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -73,6 +85,7 @@ public class PlantActivity extends AppCompatActivity {
             }
         });
 
+        //plantsNameListView = (ListView) findViewById(R.id.plantsNameListView);
 
         /*btnPlantInfoTest.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -107,8 +120,20 @@ public class PlantActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    @Override
+    public void processFinish(ArrayList<String> output) {
+        if (output.size() > 0) {
+            adapter = new PlantListViewAdapter(PlantActivity.this, output);
+            plantsNameListView.setAdapter(adapter);
+        } else {
+            Toast.makeText(PlantActivity.this, "No plants", Toast.LENGTH_SHORT).show();
+        }
+    }
+
     //Get Plants Info
     class GetPlantInfo extends AsyncTask<String, Void, String> {
+
+        public AsyncResponse1 delegate = null;
 
         @Override
         protected String doInBackground(String... params) {
@@ -169,7 +194,7 @@ public class PlantActivity extends AppCompatActivity {
                 //Parsing jason Data
                 try {
                     allPlants = new ArrayList<>();
-                    plantsNameListView = (ListView) findViewById(R.id.plantsNameListView);
+                    //plantsNameListView = (ListView) findViewById(R.id.plantsNameListView);
                     JSONObject jasonResult = new JSONObject(result.substring(result.indexOf("{"), result.lastIndexOf("}") + 1));
 
                     int success = Integer.parseInt(jasonResult.getString("success"));
@@ -190,12 +215,17 @@ public class PlantActivity extends AppCompatActivity {
                             allPlants.add(line);
                         }
 
+                        delegate.processFinish(allPlants);
+/*
                         if (allPlants.size() > 0) {
                             adapter = new PlantListViewAdapter(PlantActivity.this, allPlants);
                             plantsNameListView.setAdapter(adapter);
+
                         } else {
                             Toast.makeText(PlantActivity.this, "No plants", Toast.LENGTH_SHORT).show();
                         }
+
+ */
                     }
 
                 } catch (JSONException e) {

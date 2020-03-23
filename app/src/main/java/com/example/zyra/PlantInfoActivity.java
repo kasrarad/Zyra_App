@@ -39,6 +39,9 @@ public class PlantInfoActivity extends AppCompatActivity {
         setupUI();
         setGraph();
 
+        // get plant's name
+        String plantName = getIntent().getStringExtra("nameByUser");
+        System.out.println("nameByUser: " + plantName);
 
         btnImage.setOnClickListener(new View.OnClickListener() {
             @Override
