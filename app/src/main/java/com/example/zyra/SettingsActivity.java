@@ -29,6 +29,14 @@ public class SettingsActivity extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        databaseHelper = new DatabaseHelper(this);
+
+        // get user id from SharedPreferences
+        SharedPreferences sharedPreferences = getSharedPreferences("PlantName", Context.MODE_PRIVATE);
+        userID = sharedPreferences.getString("userID", null);
+
+        System.out.println("kasra" + userID);
+
         buttonLogOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

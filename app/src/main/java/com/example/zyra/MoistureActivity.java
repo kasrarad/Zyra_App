@@ -3,17 +3,18 @@ package com.example.zyra;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
-import android.widget.EditText;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.zyra.Database.DeletePlants;
-import com.example.zyra.Database.EditPlants;
+import com.example.zyra.PlantsListView.PlantListViewAdapter;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -30,29 +31,30 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.List;
 
-public class EditPlantActivity extends AppCompatActivity {
+public class MoistureActivity extends AppCompatActivity {
 
     protected String[] plantInfo = new String[9];
 
-    // Edit Plants
-    private EditText editTextEditPlant;
-    //EditText nameEditText, nameByUserEditText, temperatureEditText, moistureEditText, imageEditText, wikiEditText;
-    String id, userID, nameBySpecies, nameByUser, temperature, moisture, previousMoisturesLevel, image, wiki;
+    private TextView currentMoisturelevel;
+    private TextView previousMoistureTextView;
+    protected ListView moistureListView;
+
+    String id, userID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_edit_plant);
+        setContentView(R.layout.activity_moisture);
 
         // Add back button
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        // Edit Plants
-        editTextEditPlant = (EditText) findViewById(R.id.editTextEditPlant);
-        //nameEditText = (EditText) findViewById(R.id.nameEditText);
-        //temperatureEditText = (EditText) findViewById(R.id.temperatureEditText);
-        //moistureEditText = (EditText) findViewById(R.id.moistureEditText);
+        currentMoisturelevel = (TextView) findViewById(R.id.currentMoistureTextView);
+        previousMoistureTextView = (TextView) findViewById(R.id.previousMoistureTextView);
+        moistureListView = (ListView) findViewById(R.id.moistureListView);
 
         // get plant's name
         String plantName = getIntent().getStringExtra("nameByUser");
@@ -63,11 +65,12 @@ public class EditPlantActivity extends AppCompatActivity {
 
         //Connect to the database and get data
         new GetPlantInfo().execute(userID, plantName);
-
     }
 
     //Get Plants Info
     class GetPlantInfo extends AsyncTask<String, Void, String> {
+
+        ArrayAdapter<String> adapter;
 
         @Override
         protected String doInBackground(String... params) {
@@ -132,9 +135,10 @@ public class EditPlantActivity extends AppCompatActivity {
         protected void onPostExecute(String result) {
             //Parsing jason Data
             try {
-                JSONObject jasonResult = new JSONObject(result.substring(result.indexOf("{"), result.lastIndexOf("}") + 1));
-                //JSONObject jasonResult = new JSONObject(result);
 
+                adapter = new ArrayAdapter<>(MoistureActivity.this, android.R.layout.simple_list_item_1);
+
+                JSONObject jasonResult = new JSONObject(result.substring(result.indexOf("{"), result.lastIndexOf("}") + 1));
 
                 int success = Integer.parseInt(jasonResult.getString("success"));
                 if (success == 1) {
@@ -154,15 +158,28 @@ public class EditPlantActivity extends AppCompatActivity {
                         plantInfo[1] = userID;
                         plantInfo[2] = nameBySpecies;
                         plantInfo[3] = nameByUser;
-                        editTextEditPlant.setText(plantInfo[3]);
                         plantInfo[4] = temperature;
                         plantInfo[5] = moisture;
+                        currentMoisturelevel.setText("Current Moisture: " + plantInfo[5]);
                         plantInfo[6] = previousMoisturesLevel;
                         plantInfo[7] = image;
                         plantInfo[8] = wiki;
                     }
+
+                    if(plantInfo[6].equals("")){
+                        Toast.makeText(MoistureActivity.this, "No Moisture Data Available", Toast.LENGTH_SHORT).show();
+                    } else{
+                        Gson gson = new Gson();
+                        List<Integer> oldMoisture;
+                        oldMoisture = gson.fromJson(plantInfo[6], new TypeToken<List<Integer>>(){}.getType());
+                        for(int i=0; i<12; i++){
+                            adapter.add(oldMoisture.get(i).toString());
+                        }
+                        moistureListView.setAdapter(adapter);
+                    }
+
                 } else {
-                    Toast.makeText(EditPlantActivity.this, "No plants", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MoistureActivity.this, "Error", Toast.LENGTH_SHORT).show();
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -177,34 +194,4 @@ public class EditPlantActivity extends AppCompatActivity {
         }
 
     }
-
-    // Edit Plant in the database
-    public void editPlantButton(View view) {
-        id = plantInfo[0];
-        userID = plantInfo[1];
-        nameBySpecies = plantInfo[2];
-        //nameByUser = plantInfo[3];
-        nameByUser = editTextEditPlant.getText().toString();
-        temperature = plantInfo[4];
-        moisture = plantInfo[5];
-        previousMoisturesLevel = plantInfo[6];
-        image = plantInfo[7];
-        wiki = plantInfo[8];
-
-        EditPlants editPlants = new EditPlants(this);
-        editPlants.execute(id, userID, nameBySpecies, nameByUser, temperature, moisture, previousMoisturesLevel, image, wiki);
-
-    }
-
-    // Delete Plant from the database
-    public void deletePlantButton(View view) {
-        id = plantInfo[0];
-
-        DeletePlants deletePlants = new DeletePlants(this);
-        deletePlants.execute(id);
-
-        Intent intent = new Intent(this, PlantActivity.class);
-        startActivity(intent);
-    }
-
 }
