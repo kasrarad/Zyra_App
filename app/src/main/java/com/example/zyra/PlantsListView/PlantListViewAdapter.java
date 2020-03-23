@@ -15,6 +15,7 @@ import androidx.annotation.Nullable;
 
 
 import com.example.zyra.EditPlantActivity;
+import com.example.zyra.PlantInfoActivity;
 import com.example.zyra.R;
 
 import java.util.ArrayList;
@@ -46,7 +47,7 @@ public class PlantListViewAdapter extends ArrayAdapter<String> {
 
             convertView = inflater.inflate(R.layout.plant_list_item, parent,false);
 
-            viewHolder.moistureButton = (Button) convertView.findViewById(R.id.moistureButton);
+            viewHolder.moistureButton = (Button) convertView.findViewById(R.id.MoistureButton);
             viewHolder.EditPlantButton = (Button) convertView.findViewById(R.id.EditPlantButton);
             viewHolder.textViewPlantName = (TextView) convertView.findViewById(R.id.textViewPlantName);
 
@@ -64,6 +65,16 @@ public class PlantListViewAdapter extends ArrayAdapter<String> {
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(context, EditPlantActivity.class);
+                    // send the value(plant's name)
+                    intent.putExtra("nameByUser", plantsName.get(position));
+                    context.startActivity(intent);
+                }
+            });
+
+            viewHolder.textViewPlantName.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(context, PlantInfoActivity.class);
                     // send the value(plant's name)
                     intent.putExtra("nameByUser", plantsName.get(position));
                     context.startActivity(intent);

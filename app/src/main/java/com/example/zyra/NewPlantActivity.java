@@ -73,7 +73,7 @@ public class NewPlantActivity extends AppCompatActivity {
         temperature = "";
 
         // Add dummy values to Moisture data
-        moistureData.addMoistureData();
+        //moistureData.addMoistureData();
         moisture = moistureData.getCurrentMoistureLevel();
         previousMoisturesLevel = moistureData.getPreviousMoistureLevels();
 
