@@ -8,17 +8,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
-
-import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
-import android.widget.AdapterView;
-
-import android.view.View;
-import android.widget.Button;
-
-import android.widget.ArrayAdapter;
-
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -57,7 +47,7 @@ public class PlantActivity extends AppCompatActivity implements AsyncResponse1 {
     protected ArrayList<String> allPlants;
     protected FloatingActionButton floatingPlant;
 
-    //protected Button btnPlantInfoTest;
+//    protected Button btnPlantInfoTest;
 
 
 //    protected ArrayAdapter<String> plantAdapter;
@@ -94,15 +84,14 @@ public class PlantActivity extends AppCompatActivity implements AsyncResponse1 {
         });
 
 
-        btnPlantInfoTest.setOnClickListener(new View.OnClickListener() {
-
-
-            @Override
-            public void onClick(View v) {
-                goToPlantInfoActivity();
-            }
-        });
-         */
+//        btnPlantInfoTest.setOnClickListener(new View.OnClickListener() {
+//
+//
+//            @Override
+//            public void onClick(View v) {
+//                goToPlantInfoActivity();
+//            }
+//        });
 
 //        plantsNameListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 //            @Override
