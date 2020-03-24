@@ -17,7 +17,7 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".MoistureActivity"
-            android:parentActivityName=".PlantActivity"></activity>
+            android:parentActivityName=".PlantActivity" />
         <activity
             android:name=".EditPlantActivity"
             android:parentActivityName=".PlantActivity" />

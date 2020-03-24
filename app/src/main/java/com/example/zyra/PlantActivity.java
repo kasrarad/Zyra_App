@@ -125,11 +125,6 @@ public class PlantActivity extends AppCompatActivity implements AsyncResponse1 {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-//                randomNumber(moistureData);
-//                Iterator<Integer> iterator=moistureData.iterator();
-//                while(iterator.hasNext()){
-//                    System.out.println(iterator.next());
-//                }
 
             }
         });
@@ -271,15 +266,7 @@ public class PlantActivity extends AppCompatActivity implements AsyncResponse1 {
                             previousMoisturesLevel = plant.getString("previousMoisturesLevel");
                             image = plant.getString("image");
                             wiki = plant.getString("wiki");
-//                            plantInfo[0] = String.valueOf(id);
-//                            plantInfo[1] = userID;
-//                            plantInfo[2] = nameBySpecies;
-//                            plantInfo[3] = nameByUser;
-//                            plantInfo[4] = temperature;
-//                            plantInfo[5] = moisture;
-//                            plantInfo[6] = previousMoisturesLevel;
-//                            plantInfo[7] = image;
-//                            plantInfo[8] = wiki;
+
                             //line is what will be displayed on screen
                             String line = nameByUser + "\n" + moisture;
                             allPlants.add(line);
@@ -325,12 +312,10 @@ public class PlantActivity extends AppCompatActivity implements AsyncResponse1 {
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             time = LocalTime.now().getHour();
         }
-        System.out.println("Real time: " + time);
+ //       System.out.println("Real time: " + time);
 
         addCurrentMoisture(moistureData, time);
 
-
-//        goToRefreshActivity;
 
     }
 
@@ -433,6 +418,8 @@ public class PlantActivity extends AppCompatActivity implements AsyncResponse1 {
 
             }
         }
+
+        //Update data on the page
         if (plantListSize > 0) {
             adapter = new PlantListViewAdapter(PlantActivity.this, allPlants);
             plantsNameListView.setAdapter(adapter);
