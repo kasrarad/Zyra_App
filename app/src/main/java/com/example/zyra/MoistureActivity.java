@@ -65,6 +65,7 @@ public class MoistureActivity extends AppCompatActivity implements AsyncResponse
 
         // Add back button
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        System.out.println("hello1:");
 
         // I put 2 classes
         // GetPlantInfo : Get the data from Database and show them in the ListView
@@ -87,6 +88,7 @@ public class MoistureActivity extends AppCompatActivity implements AsyncResponse
         // Call GetPlantData class(only get the data)
         getPlantData.execute(userID, plantName);
 
+        System.out.println("hello2:");
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
@@ -224,8 +226,9 @@ public class MoistureActivity extends AppCompatActivity implements AsyncResponse
                 adapter = new ArrayAdapter<>(MoistureActivity.this, android.R.layout.simple_list_item_1);
 
                 JSONObject jasonResult = new JSONObject(result.substring(result.indexOf("{"), result.lastIndexOf("}") + 1));
-
+                System.out.println("moisture:");
                 int success = Integer.parseInt(jasonResult.getString("success"));
+
                 if (success == 1) {
                     JSONArray plants = jasonResult.getJSONArray("plants");
                     for (int i = 0; i < plants.length(); i++) {
@@ -244,6 +247,7 @@ public class MoistureActivity extends AppCompatActivity implements AsyncResponse
                         plantInfo[2] = nameBySpecies;
                         plantInfo[3] = nameByUser;
                         plantInfo[4] = temperature;
+                        System.out.println("moisture:" + moisture) ;
                         plantInfo[5] = moisture;
                         currentMoisturelevel.setText("Current Moisture: " + plantInfo[5]);
                         plantInfo[6] = previousMoisturesLevel;
