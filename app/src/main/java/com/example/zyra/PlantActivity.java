@@ -9,8 +9,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 
-import android.view.View;
 
+import android.view.View;
 import android.widget.Button;
 
 import android.widget.ListView;
@@ -73,7 +73,7 @@ public class PlantActivity extends AppCompatActivity implements AsyncResponse1 {
     String resultNew;
     protected String[] plantInfo = new String[9];
 
-    //protected Button btnPlantInfoTest;
+//    protected Button btnPlantInfoTest;
 
 
 //    protected ArrayAdapter<String> plantAdapter;
@@ -116,6 +116,7 @@ public class PlantActivity extends AppCompatActivity implements AsyncResponse1 {
         });
 
 
+
         refreshButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -140,6 +141,7 @@ public class PlantActivity extends AppCompatActivity implements AsyncResponse1 {
             }
         });
          */
+
 
 //        plantsNameListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 //            @Override
