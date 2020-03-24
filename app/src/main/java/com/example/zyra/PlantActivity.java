@@ -60,6 +60,7 @@ public class PlantActivity extends AppCompatActivity implements AsyncResponse1 {
     protected Button refreshButton;
     LinkedList<Integer> moistureData=new LinkedList<Integer>();
     int plantListSize;
+    int time = 0;
     String id;
     String userID;
     String nameBySpecies;
@@ -320,17 +321,14 @@ public class PlantActivity extends AppCompatActivity implements AsyncResponse1 {
     protected void refreshData() throws JSONException {
 
         randomNumber(moistureData);
-        int time = 0;
         //Used for previous Data (Knows where to put current reading)
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             time = LocalTime.now().getHour();
         }
         System.out.println("Real time: " + time);
 
-//        EditMoisture editMoisture = new EditMoisture(this);
+        addCurrentMoisture(moistureData, time);
 
-        addCurrentMoisture(moistureData);
-        addPreviousMoisture(moistureData, time);
 
 //        goToRefreshActivity;
 
@@ -347,21 +345,39 @@ public class PlantActivity extends AppCompatActivity implements AsyncResponse1 {
         while(iterator.hasNext()){
             System.out.println(iterator.next());
         }
+
+
     return number;
     }
 
-    protected void addCurrentMoisture(LinkedList currentMoisture) throws JSONException {
+    protected void addCurrentMoisture(LinkedList currentMoisture, int hour) throws JSONException {
+
+
+
+        if(hour >= 24){
+            hour = 0;
+        }
+
+
+        if(hour % 2 != 0){
+//            System.out.println("odd? ");
+            hour--;
+        }
 
 
         JSONObject jasonResult = new JSONObject(resultNew.substring(resultNew.indexOf("{"), resultNew.lastIndexOf("}") + 1));
+        allPlants = new ArrayList<>();
 
         int success = Integer.parseInt(jasonResult.getString("success"));
         if (success == 1) {
             JSONArray plants = jasonResult.getJSONArray("plants");
             for (int i = 0; i < plantListSize ; i++) {
+
+
                 JSONObject plant = plants.getJSONObject(i);
                 EditMoisture editMoisture = new EditMoisture(this);
 
+                String previousString = "";
                 id = String.valueOf(plant.getInt("id"));
                 userID = plant.getString("userID");
                 nameBySpecies = plant.getString("nameBySpecies");
@@ -372,30 +388,59 @@ public class PlantActivity extends AppCompatActivity implements AsyncResponse1 {
                 image = plant.getString("image");
                 wiki = plant.getString("wiki");
 
+
+                //Prevent any outliers
+                if((int) currentMoisture.get(i) >= 100){
+                    currentMoisture.set(i, 100);
+                }
+
+                //change current moisture value
                 moisture = currentMoisture.get(i).toString();
 
+                //needs to be 2 chars
+                if((int) currentMoisture.get(i) >= 100){
+
+                    currentMoisture.set(i, 99);
+                }
+                //needs to be 2 chars
+                if( (int) currentMoisture.get(i) < 10){
+                previousString = "0";
+                }
+                //is now 2 chars
+                previousString += currentMoisture.get(i);
+
+                //Change the string at value (hour) and (Hour + 1)
+                //We retrieve these values when creating the graph
+                StringBuilder replacePrev = new StringBuilder(previousMoisturesLevel);
+                replacePrev.setCharAt(hour, previousString.charAt(0));
+                replacePrev.setCharAt((hour + 1),previousString.charAt(1));
+
+
+//                System.out.println("previous String: " + previousString);
+
+
+                previousMoisturesLevel = replacePrev.toString();
+
+//                System.out.println("Previous Moisture level: "+ previousMoisturesLevel);
+
+
+               // System.out.println("Previous moisture length: " + previousMoisturesLevel.toString().length() + "\nPrevious Moisture: " + previousMoisturesLevel);
+
+
                 editMoisture.execute(id, userID, nameBySpecies, nameByUser, temperature, moisture, previousMoisturesLevel, image, wiki);
+                String line = nameByUser + "\n" + moisture + "% Moisture";
+                allPlants.add(line);
 
             }
         }
-
-
-    }
-
-    protected void addPreviousMoisture(LinkedList prevMoisture, int hour){
-
-
-        hour = hour / 2;
-
-        EditMoisture editMoisture = new EditMoisture(this);
-        for(int i = 0 ; i < plantListSize ; i++){
-
+        if (plantListSize > 0) {
+            adapter = new PlantListViewAdapter(PlantActivity.this, allPlants);
+            plantsNameListView.setAdapter(adapter);
         }
 
 
+
     }
-
-
 
 
 

@@ -65,7 +65,7 @@ public class MoistureActivity extends AppCompatActivity implements AsyncResponse
 
         // Add back button
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        System.out.println("hello1:");
+//        System.out.println("hello1:");
 
         // I put 2 classes
         // GetPlantInfo : Get the data from Database and show them in the ListView
@@ -88,7 +88,7 @@ public class MoistureActivity extends AppCompatActivity implements AsyncResponse
         // Call GetPlantData class(only get the data)
         getPlantData.execute(userID, plantName);
 
-        System.out.println("hello2:");
+//        System.out.println("hello2:");
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
