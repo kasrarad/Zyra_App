@@ -15,23 +15,33 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".EditPlantActivity"
-            android:parentActivityName=".PlantActivity" />
-        <activity android:name=".PlantInfoActivity" />
-        <activity android:name=".NewPlantActivity"
+        <activity android:name=".MoistureActivity"
             android:parentActivityName=".PlantActivity"/>
+        <activity
+            android:name=".EditPlantActivity"
+            android:parentActivityName=".PlantActivity" />
+        <activity
+            android:name=".PlantInfoActivity"
+            android:parentActivityName=".PlantActivity" />
+        <activity
+            android:name=".NewPlantActivity"
+            android:parentActivityName=".PlantActivity" />
         <activity android:name=".SignupActivity" />
-
-        <activity android:name=".BlueToothTestActivity"
+        <activity
+            android:name=".BlueToothTestActivity"
             android:parentActivityName=".MainActivity" />
-        <activity android:name=".CreditsActivity"
+        <activity
+            android:name=".CreditsActivity"
             android:parentActivityName=".MainActivity" />
-        <activity android:name=".AboutUsActivity"
+        <activity
+            android:name=".AboutUsActivity"
             android:parentActivityName=".MainActivity" />
-        <activity android:name=".SettingsActivity"
+        <activity
+            android:name=".SettingsActivity"
             android:parentActivityName=".MainActivity" />
-        <activity android:name=".PlantActivity"
-            android:parentActivityName=".MainActivity"/>
+        <activity
+            android:name=".PlantActivity"
+            android:parentActivityName=".MainActivity" />
         <activity android:name=".MainActivity" />
         <activity android:name=".LoginActivity">
             <intent-filter>

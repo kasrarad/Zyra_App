@@ -6,10 +6,8 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.widget.Toast;
 
-import com.example.zyra.LoginActivity;
 import com.example.zyra.NewPlantActivity;
 import com.example.zyra.PlantActivity;
-import com.example.zyra.SignupActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -58,8 +56,9 @@ public class AddPlants extends AsyncTask<String, Void, String>{
                 String nameByUser = params[3];
                 String temperature = params[4];
                 String moisture = params[5];
-                String image = params[6];
-                String wiki = params[7];
+                String previousMoisturesLevel = params[6];
+                String image = params[7];
+                String wiki = params[8];
 
                 URL url = new URL(plant_url);
                 HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
@@ -76,8 +75,9 @@ public class AddPlants extends AsyncTask<String, Void, String>{
                         +URLEncoder.encode("nameByUser", "UTF-8")+"="+URLEncoder.encode(nameByUser, "UTF-8")+"&"
                         +URLEncoder.encode("temperature", "UTF-8")+"="+URLEncoder.encode(temperature, "UTF-8")+"&"
                         +URLEncoder.encode("moisture", "UTF-8")+"="+URLEncoder.encode(moisture, "UTF-8")+"&"
+                        +URLEncoder.encode("previousMoisturesLevel", "UTF-8")+"="+URLEncoder.encode(previousMoisturesLevel, "UTF-8")+"&"
                         +URLEncoder.encode("image", "UTF-8")+"="+URLEncoder.encode(image, "UTF-8")+"&"
-                        +URLEncoder.encode("wiki", "UTF-8")+"="+URLEncoder.encode(wiki, "UTF-8")+"&";
+                        +URLEncoder.encode("wiki", "UTF-8")+"="+URLEncoder.encode(wiki, "UTF-8");
                 // Write post data to the BufferWriter
                 bufferedWriter.write(post_data);
                 bufferedWriter.flush();

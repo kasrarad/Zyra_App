@@ -1,14 +1,7 @@
 package com.example.zyra.Database;
 import android.content.Context;
 
-import android.content.Intent;
 import android.os.AsyncTask;
-import android.widget.Toast;
-
-import com.example.zyra.PlantActivity;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -22,12 +15,12 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 
-public class EditPlants extends AsyncTask<String, Void, String> {
+public class EditMoisture extends AsyncTask<String, Void, String> {
 
     Context context;
     String id;
 
-    public EditPlants(Context context){
+    public EditMoisture(Context context){
         this.context = context;
     }
 
@@ -43,7 +36,7 @@ public class EditPlants extends AsyncTask<String, Void, String> {
         id = params[0];
 
         // Define URL
-        plant_url = "http://zyraproject.ca/updateplant.php";
+        plant_url = "http://zyraproject.ca/updatemoisture.php";
         try {
             // Extract the values (type of operation)
             String userID = params[1];
@@ -109,25 +102,6 @@ public class EditPlants extends AsyncTask<String, Void, String> {
 
     @Override
     protected void onPostExecute(String result) {
-
-
-        try {
-            JSONObject jasonResult = new JSONObject(result.substring(result.indexOf("{"), result.lastIndexOf("}") + 1));
-
-            int success = Integer.parseInt(jasonResult.getString("success"));
-            if (success == 1) {
-                Intent intent = new Intent (context, PlantActivity.class);
-                context.startActivity(intent);
-                Toast.makeText(context, "Plant Edited", Toast.LENGTH_SHORT).show();
-            } else{
-                Intent intent = new Intent (context, PlantActivity.class);
-                context.startActivity(intent);
-                Toast.makeText(context, "PLANT'S NAME HAS ALREADY EXISTS", Toast.LENGTH_SHORT).show();
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
 
     }
 

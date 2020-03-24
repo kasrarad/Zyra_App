@@ -44,7 +44,6 @@ public class LoginActivity extends AppCompatActivity {
 
     private static final String TAG = "LoginActivity";
 
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,8 +58,8 @@ public class LoginActivity extends AppCompatActivity {
 
         List<UserInfoDB> checkUserDB = databaseHelper.getAllUserInfo();
 
-        // Check local database
-        // If user's info does not exist, ask user to login
+        //Check local database
+        //If user's info does not exist, ask user to login
         if(checkUserDB.size() != 0){
             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
             startActivity(intent);

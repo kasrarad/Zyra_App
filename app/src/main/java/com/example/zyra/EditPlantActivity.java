@@ -33,12 +33,12 @@ import java.net.URLEncoder;
 
 public class EditPlantActivity extends AppCompatActivity {
 
-    protected String[] plantInfo = new String[8];
+    protected String[] plantInfo = new String[9];
 
     // Edit Plants
     private EditText editTextEditPlant;
     //EditText nameEditText, nameByUserEditText, temperatureEditText, moistureEditText, imageEditText, wikiEditText;
-    String id, userID, nameBySpecies, nameByUser, temperature, moisture, image, wiki;
+    String id, userID, nameBySpecies, nameByUser, temperature, moisture, previousMoisturesLevel, image, wiki;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -147,6 +147,7 @@ public class EditPlantActivity extends AppCompatActivity {
                         String nameByUser = plant.getString("nameByUser");
                         String temperature = plant.getString("temperature");
                         String moisture = plant.getString("moisture");
+                        String previousMoisturesLevel = plant.getString("previousMoisturesLevel");
                         String image = plant.getString("image");
                         String wiki = plant.getString("wiki");
                         plantInfo[0] = String.valueOf(id);
@@ -156,8 +157,9 @@ public class EditPlantActivity extends AppCompatActivity {
                         editTextEditPlant.setText(plantInfo[3]);
                         plantInfo[4] = temperature;
                         plantInfo[5] = moisture;
-                        plantInfo[6] = image;
-                        plantInfo[7] = wiki;
+                        plantInfo[6] = previousMoisturesLevel;
+                        plantInfo[7] = image;
+                        plantInfo[8] = wiki;
                     }
                 } else {
                     Toast.makeText(EditPlantActivity.this, "No plants", Toast.LENGTH_SHORT).show();
@@ -185,12 +187,12 @@ public class EditPlantActivity extends AppCompatActivity {
         nameByUser = editTextEditPlant.getText().toString();
         temperature = plantInfo[4];
         moisture = plantInfo[5];
-        image = plantInfo[6];
-        wiki = plantInfo[7];
+        previousMoisturesLevel = plantInfo[6];
+        image = plantInfo[7];
+        wiki = plantInfo[8];
 
         EditPlants editPlants = new EditPlants(this);
-        editPlants.execute(id, userID, nameBySpecies, nameByUser, temperature, moisture, image, wiki);
-
+        editPlants.execute(id, userID, nameBySpecies, nameByUser, temperature, moisture, previousMoisturesLevel, image, wiki);
 
     }
 

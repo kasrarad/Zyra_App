@@ -25,9 +25,19 @@ public class SettingsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
 
+        DatabaseHelper db = new DatabaseHelper(this);
+
         setupUI();
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        databaseHelper = new DatabaseHelper(this);
+
+        // get user id from SharedPreferences
+        SharedPreferences sharedPreferences = getSharedPreferences("PlantName", Context.MODE_PRIVATE);
+        userID = sharedPreferences.getString("userID", null);
+
+        System.out.println("kasra" + userID);
 
         buttonLogOut.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -35,9 +45,9 @@ public class SettingsActivity extends AppCompatActivity {
                 Integer deleteRow = databaseHelper.deleteUser(userID);
 
                 if(deleteRow > 0)
-                    Toast.makeText(SettingsActivity.this, "SIGHED OUT", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SettingsActivity.this, "SIGNED OUT", Toast.LENGTH_SHORT).show();
                 else
-                    Toast.makeText(SettingsActivity.this, "ERROR IN SIGH OUT", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SettingsActivity.this, "ERROR IN SIGN OUT", Toast.LENGTH_SHORT).show();
 
                 goToLoginSignOut();
             }

@@ -3,7 +3,6 @@ package com.example.zyra.PlantsListView;
 import android.content.Context;
 import android.content.Intent;
 
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,9 +15,12 @@ import androidx.annotation.Nullable;
 
 
 import com.example.zyra.EditPlantActivity;
+import com.example.zyra.PlantInfoActivity;
 import com.example.zyra.R;
 
 import java.util.ArrayList;
+
+import com.example.zyra.MoistureActivity;
 
 public class PlantListViewAdapter extends ArrayAdapter<String> {
 
@@ -45,30 +47,40 @@ public class PlantListViewAdapter extends ArrayAdapter<String> {
 
             convertView = inflater.inflate(R.layout.plant_list_item, parent,false);
 
-            //viewHolder.imageDeletePlant = (ImageView) convertView.findViewById(R.id.imageDeletePlant);
+            viewHolder.moistureButton = (Button) convertView.findViewById(R.id.MoistureButton);
             viewHolder.EditPlantButton = (Button) convertView.findViewById(R.id.EditPlantButton);
             viewHolder.textViewPlantName = (TextView) convertView.findViewById(R.id.textViewPlantName);
+
+            viewHolder.moistureButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(context, MoistureActivity.class);
+                    // send the value(plant's name)
+                    intent.putExtra("nameByUser", plantsName.get(position));
+                    context.startActivity(intent);
+                }
+            });
 
             viewHolder.EditPlantButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    //((PlantActivity)context).temp();
                     Intent intent = new Intent(context, EditPlantActivity.class);
                     // send the value(plant's name)
                     intent.putExtra("nameByUser", plantsName.get(position));
                     context.startActivity(intent);
-                    //Toast.makeText(getContext(), "Button was clicked for list item" + plantsName.get(position), Toast.LENGTH_SHORT).show();
-                }
-            });
-/*
-            viewHolder.imageDeletePlant.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Toast.makeText(getContext(), "Image was clicked for list item" + position, Toast.LENGTH_SHORT).show();
                 }
             });
 
- */
+            viewHolder.textViewPlantName.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(context, PlantInfoActivity.class);
+                    // send the value(plant's name)
+                    intent.putExtra("nameByUser", plantsName.get(position));
+                    context.startActivity(intent);
+                }
+            });
+
             convertView.setTag(viewHolder);
         } else{
             viewHolder = (ViewHolder) convertView.getTag();
