@@ -1,7 +1,5 @@
 package com.example.zyra;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -11,6 +9,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.zyra.Database.DeletePlants;
 import com.example.zyra.Database.EditPlants;
@@ -34,6 +34,7 @@ import java.net.URLEncoder;
 public class EditPlantActivity extends AppCompatActivity {
 
     protected String[] plantInfo = new String[9];
+
 
     // Edit Plants
     private EditText editTextEditPlant;
