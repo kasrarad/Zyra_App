@@ -30,6 +30,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.lang.reflect.Array;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -51,6 +52,9 @@ public class PlantActivity extends AppCompatActivity implements AsyncResponse1 {
     protected ListView plantsNameListView;
     protected PlantListViewAdapter adapter;
     protected ArrayList<String> allPlants;
+    protected ArrayList<String> plantNames;
+    protected ArrayList<String> plantSpecies;
+    protected ArrayList<String> plantPrevMoi;
     protected ImageButton imgAddPlant;
     protected Button refreshButton;
     LinkedList<Integer> moistureData=new LinkedList<Integer>();
@@ -161,9 +165,11 @@ public class PlantActivity extends AppCompatActivity implements AsyncResponse1 {
 
     @Override
     public void processFinish(ArrayList<String> output) {
+        System.out.println("output: " + output);
         if (output.size() > 0) {
             adapter = new PlantListViewAdapter(PlantActivity.this, output);
             plantsNameListView.setAdapter(adapter);
+            adapter = new PlantListViewAdapter(PlantActivity.this ,plantNames, plantSpecies , plantPrevMoi);
         } else {
             Toast.makeText(PlantActivity.this, "No plants", Toast.LENGTH_SHORT).show();
         }
@@ -235,6 +241,9 @@ public class PlantActivity extends AppCompatActivity implements AsyncResponse1 {
                 //Parsing jason Data
                 try {
                     allPlants = new ArrayList<>();
+                    plantNames = new ArrayList<>();
+                    plantSpecies = new ArrayList<>();
+                    plantPrevMoi = new ArrayList<>();
                     //plantsNameListView = (ListView) findViewById(R.id.plantsNameListView);
                     JSONObject jasonResult = new JSONObject(result.substring(result.indexOf("{"), result.lastIndexOf("}") + 1));
 
@@ -257,6 +266,9 @@ public class PlantActivity extends AppCompatActivity implements AsyncResponse1 {
                             //line is what will be displayed on screen
                             String line = nameByUser + "\n" + moisture + "% Moisture";
                             allPlants.add(line);
+                            plantNames.add(nameByUser);
+                            plantSpecies.add(nameBySpecies);
+                            plantPrevMoi.add(previousMoisturesLevel);
                         }
 
                         delegate.processFinish(allPlants);
@@ -337,6 +349,10 @@ public class PlantActivity extends AppCompatActivity implements AsyncResponse1 {
 
         JSONObject jasonResult = new JSONObject(resultNew.substring(resultNew.indexOf("{"), resultNew.lastIndexOf("}") + 1));
         allPlants = new ArrayList<>();
+        plantNames = new ArrayList<>();
+        plantSpecies = new ArrayList<>();
+        plantPrevMoi = new ArrayList<>();
+
 
         int success = Integer.parseInt(jasonResult.getString("success"));
         if (success == 1) {
@@ -359,7 +375,7 @@ public class PlantActivity extends AppCompatActivity implements AsyncResponse1 {
                 wiki = plant.getString("wiki");
 
 
-                //Prevent any outliers
+                //Prevent any OOB values
                 if((int) currentMoisture.get(i) >= 100){
                     currentMoisture.set(i, 100);
                 }
@@ -392,14 +408,15 @@ public class PlantActivity extends AppCompatActivity implements AsyncResponse1 {
                 previousMoisturesLevel = replacePrev.toString();
 
 //                System.out.println("Previous Moisture level: "+ previousMoisturesLevel);
-
-
                 // System.out.println("Previous moisture length: " + previousMoisturesLevel.toString().length() + "\nPrevious Moisture: " + previousMoisturesLevel);
 
 
                 editMoisture.execute(id, userID, nameBySpecies, nameByUser, temperature, moisture, previousMoisturesLevel, image, wiki);
                 String line = nameByUser + "\n" + moisture + "% Moisture";
                 allPlants.add(line);
+                plantNames.add(nameByUser);
+                plantSpecies.add(nameBySpecies);
+                plantPrevMoi.add(previousMoisturesLevel);
 
             }
         }
@@ -408,9 +425,8 @@ public class PlantActivity extends AppCompatActivity implements AsyncResponse1 {
         if (plantListSize > 0) {
             adapter = new PlantListViewAdapter(PlantActivity.this, allPlants);
             plantsNameListView.setAdapter(adapter);
+            adapter = new PlantListViewAdapter(PlantActivity.this ,plantNames, plantSpecies, plantPrevMoi);
         }
-
-
 
     }
 

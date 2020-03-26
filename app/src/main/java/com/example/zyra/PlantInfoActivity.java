@@ -6,8 +6,10 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -36,14 +38,29 @@ import com.karumi.dexter.listener.single.PermissionListener;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLEncoder;
+import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class PlantInfoActivity extends AppCompatActivity {
+
+
 
     private LineGraphSeries<DataPoint> series1;
     protected ImageButton btnImage;
@@ -51,8 +68,12 @@ public class PlantInfoActivity extends AppCompatActivity {
     protected TextView textMyPlantType;
     protected CircleImageView circleImgPlant;
     protected Button btnConfirm;
+    String plantName;
+    String plantID;
+    String plantPrevMoisture;
 
     private ProgressDialog progressDialog;
+
 
     protected double x,y;
 
@@ -72,10 +93,13 @@ public class PlantInfoActivity extends AppCompatActivity {
         System.out.println("nameByUser: " + plantName);
         textMyPlantName.setText(plantName);
 
-        //get plant's type
-        String plantType = getIntent().getStringExtra("nameBySpecies");
-        System.out.println("nameBySpecies: " + plantType);
-        textMyPlantType.setText(plantType);
+
+
+        String plantSpecies = getIntent().getStringExtra("nameBySpecies");
+        textMyPlantType.setText(plantSpecies);
+
+        System.out.println("Plant Species:" + plantSpecies);
+
 
         btnImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -83,6 +107,120 @@ public class PlantInfoActivity extends AppCompatActivity {
                 checkPermission();
             }
         });
+    }
+
+
+
+    //Get Plants Info
+    class GetPlantInfo1 extends AsyncTask<String, Void, String> {
+
+
+
+
+        public AsyncResponse delegate = null;
+
+        @Override
+        protected String doInBackground(String... params) {
+            System.out.println("In here");
+
+            // Define URL
+            String plant_url;
+
+            String result = "";
+
+            // Define URL
+            plant_url = "http://zyraproject.ca/selectplant.php";
+
+            try {
+                System.out.println("In here1");
+
+                // Extract the values
+                String userID = params[0];
+
+                URL url = new URL(plant_url);
+                HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+                httpURLConnection.setRequestMethod("POST");
+                httpURLConnection.setDoOutput(true);
+                httpURLConnection.setDoInput(true);
+
+                OutputStream outputStream = httpURLConnection.getOutputStream();
+                BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
+
+                // Create data URL that we want to post
+                String post_data = URLEncoder.encode("userID", "UTF-8") + "=" + URLEncoder.encode(userID, "UTF-8");
+                // Write post data to the BufferWriter
+                bufferedWriter.write(post_data);
+                bufferedWriter.flush();
+                bufferedWriter.close();
+                outputStream.close();
+
+                // Read the response from post request
+                InputStream inputStream = httpURLConnection.getInputStream();
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "iso-8859-1"));
+                String line = "";
+                while ((line = bufferedReader.readLine()) != null) {
+                    result += line;
+                }
+                bufferedReader.close();
+                inputStream.close();
+                httpURLConnection.disconnect();
+                return result;
+
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            System.out.println("In here2");
+
+            if (result != null) {
+                System.out.println("In here3");
+                String resultNew = result;
+                //Parsing jason Data
+                try {
+                   ArrayList<String> plantSpecies = new ArrayList<>();
+                    ArrayList<String> plantNames = new ArrayList<>();
+                    //plantsNameListView = (ListView) findViewById(R.id.plantsNameListView);
+                    JSONObject jasonResult = new JSONObject(result.substring(result.indexOf("{"), result.lastIndexOf("}") + 1));
+
+                    System.out.println("Json resulT: " + jasonResult);
+
+                    int success = Integer.parseInt(jasonResult.getString("success"));
+                    if (success == 1) {
+                        JSONArray plants = jasonResult.getJSONArray("plants");
+
+                            JSONObject plant = plants.getJSONObject(Integer.parseInt(plantID));
+                            String nameBySpecies = plant.getString("nameBySpecies");
+                            String nameByUser = plant.getString("nameByUser");
+                            String previousMoisturesLevel = plant.getString("previousMoisturesLevel");
+
+                           // image = plant.getString("image");
+                           // wiki = plant.getString("wiki");
+
+                        textMyPlantName.setText(nameByUser);
+                        textMyPlantType.setText(nameBySpecies);
+                        plantPrevMoisture = previousMoisturesLevel;
+
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    Log.e("error ", e.getMessage());
+                }
+
+            }
+        }
+
+        @Override
+        protected void onProgressUpdate(Void... values) {
+            super.onProgressUpdate(values);
+        }
+
     }
 
     private void pickImageFromGallery() {
