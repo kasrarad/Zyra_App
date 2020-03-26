@@ -58,7 +58,7 @@ public class EditPlantActivity extends AppCompatActivity {
         // get plant's name
         String plantName = getIntent().getStringExtra("nameByUser");
 
-        // get course id from SharedPreferences
+        // get user id from SharedPreferences
         SharedPreferences sharedPreferences = getSharedPreferences("PlantName", Context.MODE_PRIVATE);
         userID = sharedPreferences.getString("userID", null);
 
