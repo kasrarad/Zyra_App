@@ -13,6 +13,8 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.zyra.Database.EditMoisture;
+import com.example.zyra.Database.EditPlants;
 import com.example.zyra.PlantsListView.PlantListViewAdapter;
 
 import org.json.JSONArray;
@@ -30,7 +32,12 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.Random;
+import java.util.Date;
 
 interface AsyncResponse1 {
     void processFinish(ArrayList<String> output);
@@ -51,7 +58,8 @@ public class PlantActivity extends AppCompatActivity implements AsyncResponse1 {
 //    protected ArrayAdapter<String> plantAdapter;
 
 
-    protected String userID;
+//    protected String userID;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +71,7 @@ public class PlantActivity extends AppCompatActivity implements AsyncResponse1 {
 
         imgBtnAdd = findViewById(R.id.imageButtonAdd);
         plantsNameListView = findViewById(R.id.plantsNameListView);
+        refreshButton = findViewById(R.id.buttonRefresh);
 
         // Add back button
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -82,14 +91,32 @@ public class PlantActivity extends AppCompatActivity implements AsyncResponse1 {
         });
 
 
-//        btnPlantInfoTest.setOnClickListener(new View.OnClickListener() {
-//
-//
-//            @Override
-//            public void onClick(View v) {
-//                goToPlantInfoActivity();
-//            }
-//        });
+
+        refreshButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                try {
+                    refreshData();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        });
+
+        /*
+
+        btnPlantInfoTest.setOnClickListener(new View.OnClickListener() {
+
+
+            @Override
+            public void onClick(View v) {
+                goToPlantInfoActivity();
+            }
+        });
+         */
+
 
 //        plantsNameListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 //            @Override
@@ -113,6 +140,10 @@ public class PlantActivity extends AppCompatActivity implements AsyncResponse1 {
 
     public void goToNewPlantActivity(){
         Intent intent = new Intent(PlantActivity.this, NewPlantActivity.class);
+        startActivity(intent);
+    }
+    public void goToRefreshActivity(){
+        Intent intent = new Intent(PlantActivity.this, PlantActivity.class);
         startActivity(intent);
     }
 
@@ -186,7 +217,9 @@ public class PlantActivity extends AppCompatActivity implements AsyncResponse1 {
 
         @Override
         protected void onPostExecute(String result) {
+
             if (result != null) {
+                resultNew = result;
                 //Parsing jason Data
                 try {
                     allPlants = new ArrayList<>();
@@ -196,18 +229,21 @@ public class PlantActivity extends AppCompatActivity implements AsyncResponse1 {
                     int success = Integer.parseInt(jasonResult.getString("success"));
                     if (success == 1) {
                         JSONArray plants = jasonResult.getJSONArray("plants");
+                        plantListSize = plants.length();
                         for (int i = 0; i < plants.length(); i++) {
                             JSONObject plant = plants.getJSONObject(i);
                             int id = plant.getInt("id");
-                            String userID = plant.getString("userID");
-                            String nameBySpecies = plant.getString("nameBySpecies");
-                            String nameByUser = plant.getString("nameByUser");
-                            String temperature = plant.getString("temperature");
-                            String moisture = plant.getString("moisture");
-                            String previousMoisturesLevel = plant.getString("previousMoisturesLevel");
-                            String image = plant.getString("image");
-                            String wiki = plant.getString("wiki");
-                            String line = nameByUser;
+                            userID = plant.getString("userID");
+                            nameBySpecies = plant.getString("nameBySpecies");
+                            nameByUser = plant.getString("nameByUser");
+                            temperature = plant.getString("temperature");
+                            moisture = plant.getString("moisture");
+                            previousMoisturesLevel = plant.getString("previousMoisturesLevel");
+                            image = plant.getString("image");
+                            wiki = plant.getString("wiki");
+
+                            //line is what will be displayed on screen
+                            String line = nameByUser + "\n" + moisture;
                             allPlants.add(line);
                         }
 
@@ -243,5 +279,132 @@ public class PlantActivity extends AppCompatActivity implements AsyncResponse1 {
         Intent intent = new Intent(PlantActivity.this, PlantInfoActivity.class);
         startActivity(intent);
     }
+
+    protected void refreshData() throws JSONException {
+
+        randomNumber(moistureData);
+        //Used for previous Data (Knows where to put current reading)
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            time = LocalTime.now().getHour();
+        }
+ //       System.out.println("Real time: " + time);
+
+        addCurrentMoisture(moistureData, time);
+
+
+    }
+
+    protected LinkedList randomNumber(LinkedList number){
+
+        Random random = new Random();
+        number.clear();
+        for(int i = 0; i < plantListSize; i++ ){
+        number.add(random.nextInt(100));
+        }
+        Iterator<Integer> iterator=number.iterator();
+        while(iterator.hasNext()){
+            System.out.println(iterator.next());
+        }
+
+
+    return number;
+    }
+
+    protected void addCurrentMoisture(LinkedList currentMoisture, int hour) throws JSONException {
+
+
+
+        if(hour >= 24){
+            hour = 0;
+        }
+
+
+        if(hour % 2 != 0){
+//            System.out.println("odd? ");
+            hour--;
+        }
+
+
+        JSONObject jasonResult = new JSONObject(resultNew.substring(resultNew.indexOf("{"), resultNew.lastIndexOf("}") + 1));
+        allPlants = new ArrayList<>();
+
+        int success = Integer.parseInt(jasonResult.getString("success"));
+        if (success == 1) {
+            JSONArray plants = jasonResult.getJSONArray("plants");
+            for (int i = 0; i < plantListSize ; i++) {
+
+
+                JSONObject plant = plants.getJSONObject(i);
+                EditMoisture editMoisture = new EditMoisture(this);
+
+                String previousString = "";
+                id = String.valueOf(plant.getInt("id"));
+                userID = plant.getString("userID");
+                nameBySpecies = plant.getString("nameBySpecies");
+                nameByUser = plant.getString("nameByUser");
+                temperature = plant.getString("temperature");
+                moisture = plant.getString("moisture");
+                previousMoisturesLevel = plant.getString("previousMoisturesLevel");
+                image = plant.getString("image");
+                wiki = plant.getString("wiki");
+
+
+                //Prevent any outliers
+                if((int) currentMoisture.get(i) >= 100){
+                    currentMoisture.set(i, 100);
+                }
+
+                //change current moisture value
+                moisture = currentMoisture.get(i).toString();
+
+                //needs to be 2 chars
+                if((int) currentMoisture.get(i) >= 100){
+
+                    currentMoisture.set(i, 99);
+                }
+                //needs to be 2 chars
+                if( (int) currentMoisture.get(i) < 10){
+                previousString = "0";
+                }
+                //is now 2 chars
+                previousString += currentMoisture.get(i);
+
+                //Change the string at value (hour) and (Hour + 1)
+                //We retrieve these values when creating the graph
+                StringBuilder replacePrev = new StringBuilder(previousMoisturesLevel);
+                replacePrev.setCharAt(hour, previousString.charAt(0));
+                replacePrev.setCharAt((hour + 1),previousString.charAt(1));
+
+
+//                System.out.println("previous String: " + previousString);
+
+
+                previousMoisturesLevel = replacePrev.toString();
+
+//                System.out.println("Previous Moisture level: "+ previousMoisturesLevel);
+
+
+               // System.out.println("Previous moisture length: " + previousMoisturesLevel.toString().length() + "\nPrevious Moisture: " + previousMoisturesLevel);
+
+
+                editMoisture.execute(id, userID, nameBySpecies, nameByUser, temperature, moisture, previousMoisturesLevel, image, wiki);
+                String line = nameByUser + "\n" + moisture + "% Moisture";
+                allPlants.add(line);
+
+            }
+        }
+
+        //Update data on the page
+        if (plantListSize > 0) {
+            adapter = new PlantListViewAdapter(PlantActivity.this, allPlants);
+            plantsNameListView.setAdapter(adapter);
+        }
+
+
+
+    }
+
+
+
 
 }
