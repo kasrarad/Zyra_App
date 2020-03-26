@@ -255,7 +255,7 @@ public class PlantActivity extends AppCompatActivity implements AsyncResponse1 {
                             wiki = plant.getString("wiki");
 
                             //line is what will be displayed on screen
-                            String line = nameByUser + "\n" + moisture;
+                            String line = nameByUser + "\n" + moisture + "% Moisture";
                             allPlants.add(line);
                         }
 
