@@ -6,16 +6,14 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.zyra.PlantsListView.PlantListViewAdapter;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -45,7 +43,7 @@ public class PlantActivity extends AppCompatActivity implements AsyncResponse1 {
     protected ListView plantsNameListView;
     protected PlantListViewAdapter adapter;
     protected ArrayList<String> allPlants;
-    protected FloatingActionButton floatingPlant;
+    protected ImageButton imgBtnAdd;
 
 //    protected Button btnPlantInfoTest;
 
@@ -63,7 +61,7 @@ public class PlantActivity extends AppCompatActivity implements AsyncResponse1 {
         //this to set delegate/listener back to this class
         getPlantInfo.delegate = this;
 
-        floatingPlant = findViewById(R.id.floatingAddPlant);
+        imgBtnAdd = findViewById(R.id.imageButtonAdd);
         plantsNameListView = findViewById(R.id.plantsNameListView);
 
         // Add back button
@@ -76,7 +74,7 @@ public class PlantActivity extends AppCompatActivity implements AsyncResponse1 {
         //new GetPlantInfo().execute(userID);
         getPlantInfo.execute(userID);
 
-        floatingPlant.setOnClickListener(new View.OnClickListener() {
+        imgBtnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 goToNewPlantActivity();
@@ -106,12 +104,12 @@ public class PlantActivity extends AppCompatActivity implements AsyncResponse1 {
 
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_items, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        MenuInflater inflater = getMenuInflater();
+//        inflater.inflate(R.menu.menu_items, menu);
+//        return super.onCreateOptionsMenu(menu);
+//    }
 
     public void goToNewPlantActivity(){
         Intent intent = new Intent(PlantActivity.this, NewPlantActivity.class);

@@ -47,7 +47,8 @@ public class PlantInfoActivity extends AppCompatActivity {
 
     private LineGraphSeries<DataPoint> series1;
     protected ImageButton btnImage;
-    protected TextView textMyPlant;
+    protected TextView textMyPlantName;
+    protected TextView textMyPlantType;
     protected CircleImageView circleImgPlant;
     protected Button btnConfirm;
 
@@ -69,6 +70,12 @@ public class PlantInfoActivity extends AppCompatActivity {
         // get plant's name
         String plantName = getIntent().getStringExtra("nameByUser");
         System.out.println("nameByUser: " + plantName);
+        textMyPlantName.setText(plantName);
+
+        //get plant's type
+        String plantType = getIntent().getStringExtra("nameBySpecies");
+        System.out.println("nameBySpecies: " + plantType);
+        textMyPlantType.setText(plantType);
 
         btnImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -163,6 +170,9 @@ public class PlantInfoActivity extends AppCompatActivity {
                         File imageFile = new File(resultUri.getPath());
                         progressDialog.show();
 
+                        //would make it "fold" and it will not only be invisible but also won't take up space in the layuout either
+                        btnConfirm.setVisibility(View.GONE);
+
                         AndroidNetworking.upload("http://zyraproject.ca/insertimage.php")
                                 .addMultipartFile("image", imageFile)
                                 .addMultipartParameter("userId", String.valueOf(11))
@@ -211,7 +221,8 @@ public class PlantInfoActivity extends AppCompatActivity {
     }
 
     public void setupUI() {
-        textMyPlant = findViewById(R.id.textViewMyPlant);
+        textMyPlantName = findViewById(R.id.textViewPlantName);
+        textMyPlantType = findViewById(R.id.textViewPlantType);
         btnConfirm = findViewById(R.id.buttonConfirm);
         btnImage = findViewById(R.id.buttonImage);
         circleImgPlant = findViewById(R.id.imagePlant);
@@ -233,7 +244,7 @@ public class PlantInfoActivity extends AppCompatActivity {
         x = 0;
         series1 = new LineGraphSeries<>();
 
-        int numDataPoint = 1000;
+        int numDataPoint = 200;
         for(int i = 0; i < numDataPoint; i++){
             x = x + 0.1;
             y = x + 2;
