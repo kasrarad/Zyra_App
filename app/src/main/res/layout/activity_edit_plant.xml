@@ -10,7 +10,7 @@
         android:id="@+id/editTextEditPlant"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="172dp"
+        android:layout_marginTop="84dp"
         android:ems="10"
         android:hint="Enter the plant name"
         android:inputType="textPersonName"
@@ -22,21 +22,44 @@
         android:id="@+id/button3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="296dp"
-        android:layout_marginEnd="96dp"
+        android:layout_marginTop="468dp"
+        android:layout_marginEnd="108dp"
         android:onClick="editPlantButton"
         android:text="Save"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/buttonDelete"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="96dp"
-        android:layout_marginTop="296dp"
+        android:layout_marginTop="468dp"
         android:onClick="deletePlantButton"
         android:text="Delete"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/imagePlant"
+        android:layout_width="143dp"
+        android:layout_height="137dp"
+        android:layout_marginTop="168dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/login_icon"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/buttonImage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="168dp"
+        android:src="@drawable/ic_camera_alt_black_24dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.763"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
