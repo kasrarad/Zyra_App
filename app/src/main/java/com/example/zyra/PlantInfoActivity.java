@@ -1,30 +1,58 @@
 package com.example.zyra;
 
 import android.Manifest;
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.os.Build;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.androidnetworking.AndroidNetworking;
+import com.androidnetworking.common.Priority;
+import com.androidnetworking.error.ANError;
+import com.androidnetworking.interfaces.StringRequestListener;
+import com.androidnetworking.interfaces.UploadProgressListener;
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
+import com.karumi.dexter.Dexter;
+import com.karumi.dexter.PermissionToken;
+import com.karumi.dexter.listener.PermissionDeniedResponse;
+import com.karumi.dexter.listener.PermissionGrantedResponse;
+import com.karumi.dexter.listener.PermissionRequest;
+import com.karumi.dexter.listener.single.PermissionListener;
+import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageView;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.File;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class PlantInfoActivity extends AppCompatActivity {
 
     private LineGraphSeries<DataPoint> series1;
-    protected Button btnImage;
-    protected ImageView imagePlant;
-    protected TextView textMyPlant;
+    protected ImageButton btnImage;
+    protected TextView textMyPlantName;
+    protected TextView textMyPlantType;
+    protected CircleImageView circleImgPlant;
+    protected Button btnConfirm;
+
+    private ProgressDialog progressDialog;
 
     protected double x,y;
 
@@ -42,27 +70,17 @@ public class PlantInfoActivity extends AppCompatActivity {
         // get plant's name
         String plantName = getIntent().getStringExtra("nameByUser");
         System.out.println("nameByUser: " + plantName);
+        textMyPlantName.setText(plantName);
+
+        //get plant's type
+        String plantType = getIntent().getStringExtra("nameBySpecies");
+        System.out.println("nameBySpecies: " + plantType);
+        textMyPlantType.setText(plantType);
 
         btnImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
-                            == PackageManager.PERMISSION_DENIED) {
-                        //permission not granted, request it.
-                        String[] permissions = {Manifest.permission.READ_EXTERNAL_STORAGE};
-                        //show popup for runtime permission
-                        requestPermissions(permissions, PERMISSION_CODE);
-                    }
-                    else {
-                        //permission already granted
-                        pickImageFromGallery();
-                    }
-                }
-                else {
-                    //system os is less than marshmellow
-                    pickImageFromGallery();
-                }
+                checkPermission();
             }
         });
     }
@@ -92,21 +110,128 @@ public class PlantInfoActivity extends AppCompatActivity {
         }
     }
 
+    public void checkPermission() {
+        Dexter.withActivity(PlantInfoActivity.this)
+                .withPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
+                .withListener(new PermissionListener() {
+                    @Override
+                    public void onPermissionGranted(PermissionGrantedResponse response) {
+                        CropImage.activity()
+                                .setGuidelines(CropImageView.Guidelines.ON)
+                                .start(PlantInfoActivity.this);
+                    }
+
+                    @Override
+                    public void onPermissionDenied(PermissionDeniedResponse response) {
+                        if(response.isPermanentlyDenied()) {
+                            AlertDialog.Builder builder = new AlertDialog.Builder(PlantInfoActivity.this);
+                            builder.setTitle("Permission Required")
+                                    .setMessage("Permission to access gallery is required to choose a plant image." +
+                                            "Please go to settings to enable storage permission. ")
+                                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            Intent intent = new Intent();
+                                            intent.setAction(Settings.ACTION_ACCESSIBILITY_SETTINGS);
+                                            intent.setData(Uri.fromParts("package", getPackageName(), null));
+                                            startActivityForResult(intent, 100);
+                                        }
+                                    })
+                                    .setNegativeButton("Cancel", null)
+                                    .show();
+                        }
+                    }
+
+                    @Override
+                    public void onPermissionRationaleShouldBeShown(PermissionRequest permission, PermissionToken token) {
+                        token.continuePermissionRequest();
+                    }
+                })
+                .check();
+    }
+
+
+
     //handle result of picked image
 
-
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        if (resultCode == RESULT_OK && requestCode == IMAGE_PICK_CODE) {
-            //set image to image view
-            imagePlant.setImageURI(data.getData());
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+            CropImage.ActivityResult result = CropImage.getActivityResult(data);
+            if (resultCode == RESULT_OK) {
+
+                final Uri resultUri = result.getUri();
+                circleImgPlant.setImageURI(resultUri);
+                btnConfirm.setVisibility(View.VISIBLE);
+
+                btnConfirm.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        File imageFile = new File(resultUri.getPath());
+                        progressDialog.show();
+
+                        //would make it "fold" and it will not only be invisible but also won't take up space in the layuout either
+                        btnConfirm.setVisibility(View.GONE);
+
+                        AndroidNetworking.upload("http://zyraproject.ca/insertimage.php")
+                                .addMultipartFile("image", imageFile)
+                                .addMultipartParameter("userId", String.valueOf(11))
+                                .setPriority(Priority.HIGH)
+                                .build()
+                                .setUploadProgressListener(new UploadProgressListener() {
+                                    @Override
+                                    public void onProgress(long bytesUploaded, long totalBytes) {
+                                        float progress = (float) bytesUploaded/totalBytes * 100;
+                                        progressDialog.setProgress((int) progress);
+                                    }
+                                })
+                                .getAsString(new StringRequestListener() {
+                                    @Override
+                                    public void onResponse(String response) {
+                                        try {
+                                            progressDialog.dismiss();
+                                            JSONObject jsonObject = new JSONObject(response);
+                                            int status = jsonObject.getInt("status");
+                                            String message = jsonObject.getString("message");
+                                            if(status == 0) {
+                                                Toast.makeText(PlantInfoActivity.this, "Unable to upload image" + message,
+                                                        Toast.LENGTH_SHORT).show();
+                                            } else {
+                                                Toast.makeText(PlantInfoActivity.this, message, Toast.LENGTH_SHORT).show();
+                                            }
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onError(ANError anError) {
+                                        progressDialog.dismiss();
+                                        anError.printStackTrace();
+                                        Toast.makeText(PlantInfoActivity.this,
+                                                "Error Uploading Image", Toast.LENGTH_SHORT);
+                                    }
+                                });
+                    }
+                });
+            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+                Exception error = result.getError();
+            }
         }
     }
 
     public void setupUI() {
+        textMyPlantName = findViewById(R.id.textViewPlantName);
+        textMyPlantType = findViewById(R.id.textViewPlantType);
+        btnConfirm = findViewById(R.id.buttonConfirm);
         btnImage = findViewById(R.id.buttonImage);
-        imagePlant = findViewById(R.id.imagePlant);
-        textMyPlant = findViewById(R.id.textViewMyPlant);
+        circleImgPlant = findViewById(R.id.imagePlant);
+
+        progressDialog = new ProgressDialog(PlantInfoActivity.this);
+        progressDialog.setMessage("Uploading Image . . .");
+        progressDialog.setCancelable(false);
+        progressDialog.setMax(100);
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
     }
 
     public void setGraph() {
@@ -119,7 +244,7 @@ public class PlantInfoActivity extends AppCompatActivity {
         x = 0;
         series1 = new LineGraphSeries<>();
 
-        int numDataPoint = 1000;
+        int numDataPoint = 200;
         for(int i = 0; i < numDataPoint; i++){
             x = x + 0.1;
             y = x + 2;

@@ -1,7 +1,5 @@
 package com.example.zyra;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -11,6 +9,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.zyra.Database.DeletePlants;
 import com.example.zyra.Database.EditPlants;
@@ -35,8 +35,10 @@ public class EditPlantActivity extends AppCompatActivity {
 
     protected String[] plantInfo = new String[9];
 
+
     // Edit Plants
-    private EditText editTextEditPlant;
+    private EditText editOldPlantName;
+    private EditText editOldPlantType;
     //EditText nameEditText, nameByUserEditText, temperatureEditText, moistureEditText, imageEditText, wikiEditText;
     String id, userID, nameBySpecies, nameByUser, temperature, moisture, previousMoisturesLevel, image, wiki;
 
@@ -49,7 +51,8 @@ public class EditPlantActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         // Edit Plants
-        editTextEditPlant = (EditText) findViewById(R.id.editTextEditPlant);
+        editOldPlantName = (EditText) findViewById(R.id.editTextOldName);
+        editOldPlantType = findViewById(R.id.editTextOldType);
         //nameEditText = (EditText) findViewById(R.id.nameEditText);
         //temperatureEditText = (EditText) findViewById(R.id.temperatureEditText);
         //moistureEditText = (EditText) findViewById(R.id.moistureEditText);
@@ -153,8 +156,9 @@ public class EditPlantActivity extends AppCompatActivity {
                         plantInfo[0] = String.valueOf(id);
                         plantInfo[1] = userID;
                         plantInfo[2] = nameBySpecies;
+                        editOldPlantType.setText(plantInfo[2]);
                         plantInfo[3] = nameByUser;
-                        editTextEditPlant.setText(plantInfo[3]);
+                        editOldPlantName.setText(plantInfo[3]);
                         plantInfo[4] = temperature;
                         plantInfo[5] = moisture;
                         plantInfo[6] = previousMoisturesLevel;
@@ -182,18 +186,22 @@ public class EditPlantActivity extends AppCompatActivity {
     public void editPlantButton(View view) {
         id = plantInfo[0];
         userID = plantInfo[1];
-        nameBySpecies = plantInfo[2];
+        nameBySpecies = editOldPlantType.getText().toString();
         //nameByUser = plantInfo[3];
-        nameByUser = editTextEditPlant.getText().toString();
+        nameByUser = editOldPlantName.getText().toString();
         temperature = plantInfo[4];
         moisture = plantInfo[5];
         previousMoisturesLevel = plantInfo[6];
         image = plantInfo[7];
         wiki = plantInfo[8];
 
-        EditPlants editPlants = new EditPlants(this);
-        editPlants.execute(id, userID, nameBySpecies, nameByUser, temperature, moisture, previousMoisturesLevel, image, wiki);
+        if(!nameByUser.trim().isEmpty() || !nameBySpecies.trim().isEmpty()) {
 
+            EditPlants editPlants = new EditPlants(this);
+            editPlants.execute(id, userID, nameBySpecies, nameByUser, temperature, moisture, previousMoisturesLevel, image, wiki);
+        }else{
+            Toast.makeText(this, "Please enter a valid name", Toast.LENGTH_SHORT).show();
+        }
     }
 
     // Delete Plant from the database
