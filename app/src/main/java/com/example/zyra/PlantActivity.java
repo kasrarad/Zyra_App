@@ -6,7 +6,10 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -14,7 +17,6 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.zyra.Database.EditMoisture;
-import com.example.zyra.Database.EditPlants;
 import com.example.zyra.PlantsListView.PlantListViewAdapter;
 
 import org.json.JSONArray;
@@ -37,7 +39,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Random;
-import java.util.Date;
 
 interface AsyncResponse1 {
     void processFinish(ArrayList<String> output);
@@ -50,7 +51,22 @@ public class PlantActivity extends AppCompatActivity implements AsyncResponse1 {
     protected ListView plantsNameListView;
     protected PlantListViewAdapter adapter;
     protected ArrayList<String> allPlants;
-    protected ImageButton imgBtnAdd;
+    protected ImageButton imgAddPlant;
+    protected Button refreshButton;
+    LinkedList<Integer> moistureData=new LinkedList<Integer>();
+    int plantListSize;
+    int time = 0;
+    String id;
+    String userID;
+    String nameBySpecies;
+    String nameByUser;
+    String temperature;
+    String moisture;
+    String previousMoisturesLevel;
+    String image;
+    String wiki;
+    String resultNew;
+    protected String[] plantInfo = new String[9];
 
 //    protected Button btnPlantInfoTest;
 
@@ -69,9 +85,9 @@ public class PlantActivity extends AppCompatActivity implements AsyncResponse1 {
         //this to set delegate/listener back to this class
         getPlantInfo.delegate = this;
 
-        imgBtnAdd = findViewById(R.id.imageButtonAdd);
         plantsNameListView = findViewById(R.id.plantsNameListView);
         refreshButton = findViewById(R.id.buttonRefresh);
+        imgAddPlant = findViewById(R.id.imageButtonAdd);
 
         // Add back button
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -83,14 +99,12 @@ public class PlantActivity extends AppCompatActivity implements AsyncResponse1 {
         //new GetPlantInfo().execute(userID);
         getPlantInfo.execute(userID);
 
-        imgBtnAdd.setOnClickListener(new View.OnClickListener() {
+        imgAddPlant.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 goToNewPlantActivity();
             }
         });
-
-
 
         refreshButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -106,10 +120,7 @@ public class PlantActivity extends AppCompatActivity implements AsyncResponse1 {
         });
 
         /*
-
         btnPlantInfoTest.setOnClickListener(new View.OnClickListener() {
-
-
             @Override
             public void onClick(View v) {
                 goToPlantInfoActivity();
@@ -131,12 +142,13 @@ public class PlantActivity extends AppCompatActivity implements AsyncResponse1 {
 
     }
 
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        MenuInflater inflater = getMenuInflater();
-//        inflater.inflate(R.menu.menu_items, menu);
-//        return super.onCreateOptionsMenu(menu);
-//    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_items, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
 
     public void goToNewPlantActivity(){
         Intent intent = new Intent(PlantActivity.this, NewPlantActivity.class);
@@ -252,11 +264,9 @@ public class PlantActivity extends AppCompatActivity implements AsyncResponse1 {
                         if (allPlants.size() > 0) {
                             adapter = new PlantListViewAdapter(PlantActivity.this, allPlants);
                             plantsNameListView.setAdapter(adapter);
-
                         } else {
                             Toast.makeText(PlantActivity.this, "No plants", Toast.LENGTH_SHORT).show();
                         }
-
  */
                     }
 
@@ -287,7 +297,7 @@ public class PlantActivity extends AppCompatActivity implements AsyncResponse1 {
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             time = LocalTime.now().getHour();
         }
- //       System.out.println("Real time: " + time);
+        //       System.out.println("Real time: " + time);
 
         addCurrentMoisture(moistureData, time);
 
@@ -299,7 +309,7 @@ public class PlantActivity extends AppCompatActivity implements AsyncResponse1 {
         Random random = new Random();
         number.clear();
         for(int i = 0; i < plantListSize; i++ ){
-        number.add(random.nextInt(100));
+            number.add(random.nextInt(100));
         }
         Iterator<Integer> iterator=number.iterator();
         while(iterator.hasNext()){
@@ -307,7 +317,7 @@ public class PlantActivity extends AppCompatActivity implements AsyncResponse1 {
         }
 
 
-    return number;
+        return number;
     }
 
     protected void addCurrentMoisture(LinkedList currentMoisture, int hour) throws JSONException {
@@ -364,7 +374,7 @@ public class PlantActivity extends AppCompatActivity implements AsyncResponse1 {
                 }
                 //needs to be 2 chars
                 if( (int) currentMoisture.get(i) < 10){
-                previousString = "0";
+                    previousString = "0";
                 }
                 //is now 2 chars
                 previousString += currentMoisture.get(i);
@@ -384,7 +394,7 @@ public class PlantActivity extends AppCompatActivity implements AsyncResponse1 {
 //                System.out.println("Previous Moisture level: "+ previousMoisturesLevel);
 
 
-               // System.out.println("Previous moisture length: " + previousMoisturesLevel.toString().length() + "\nPrevious Moisture: " + previousMoisturesLevel);
+                // System.out.println("Previous moisture length: " + previousMoisturesLevel.toString().length() + "\nPrevious Moisture: " + previousMoisturesLevel);
 
 
                 editMoisture.execute(id, userID, nameBySpecies, nameByUser, temperature, moisture, previousMoisturesLevel, image, wiki);
