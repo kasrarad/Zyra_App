@@ -7,12 +7,24 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/textViewMyPlant"
+        android:id="@+id/textViewPlantType"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="176dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="76dp"
         android:text="My Plant"
+        android:textSize="15dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textViewPlantName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="My Plant"
+        android:textSize="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -20,7 +32,7 @@
         android:id="@+id/graph"
         android:layout_width="match_parent"
         android:layout_height="200dip"
-        android:layout_marginTop="300dp"
+        android:layout_marginTop="332dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -30,7 +42,7 @@
         android:id="@+id/imagePlant"
         android:layout_width="143dp"
         android:layout_height="137dp"
-        android:layout_marginTop="84dp"
+        android:layout_marginTop="120dp"
         android:scaleType="centerCrop"
         android:src="@drawable/login_icon"
         app:layout_constraintEnd_toEndOf="parent"
@@ -41,10 +53,10 @@
         android:id="@+id/buttonImage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="236dp"
+        android:layout_marginTop="96dp"
         android:src="@drawable/ic_camera_alt_black_24dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.352"
+        app:layout_constraintHorizontal_bias="0.713"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -52,11 +64,11 @@
         android:id="@+id/buttonConfirm"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="232dp"
+        android:layout_marginTop="260dp"
         android:text="Confirm"
         android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.585"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

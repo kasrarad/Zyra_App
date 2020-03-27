@@ -22,9 +22,6 @@
             android:parentActivityName=".PlantActivity"/>
 
         <activity
-            android:name=".MoistureActivity"
-            android:parentActivityName=".PlantActivity" />
-
             android:name=".EditPlantActivity"
             android:parentActivityName=".PlantActivity" />
         <activity
