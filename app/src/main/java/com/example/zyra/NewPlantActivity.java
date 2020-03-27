@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,7 +17,8 @@ import com.example.zyra.Database.AddPlants;
 
 public class NewPlantActivity extends AppCompatActivity {
 
-    protected EditText editPlantName;
+    protected EditText editNewPlantName;
+    protected EditText editNewPlantType;
     protected Button btnCancelPlant;
 
     protected MoistureData moistureData = new MoistureData();
@@ -53,7 +55,8 @@ public class NewPlantActivity extends AppCompatActivity {
 
     public void setupUI(){
 
-        editPlantName = findViewById(R.id.editTextNewPlant);
+        editNewPlantName = findViewById(R.id.editTextNewName);
+        editNewPlantType = findViewById(R.id.editTextNewType);
         btnCancelPlant = findViewById(R.id.btnCancelPlant);
 
     }
@@ -67,8 +70,8 @@ public class NewPlantActivity extends AppCompatActivity {
     // Add plants to the database
     public void savePlantsButton(View view) {
         //nameBySpecies = nameEditText.getText().toString();
-        nameBySpecies = "";
-        nameByUser = editPlantName.getText().toString().trim();
+        nameBySpecies = editNewPlantType.getText().toString().trim();
+        nameByUser = editNewPlantName.getText().toString().trim();
         //temperature = temperatureEditText.getText().toString();
         temperature = "";
 
@@ -82,11 +85,16 @@ public class NewPlantActivity extends AppCompatActivity {
 
         String type = "Add";
 
-        AddPlants addPlants = new AddPlants(this);
-        addPlants.execute(type, userID, nameBySpecies, nameByUser, temperature, moisture, previousMoisturesLevel, image, wiki);
+        if (!nameByUser.trim().isEmpty() || !nameBySpecies.trim().isEmpty()) {
 
-        Intent intent = new Intent(this, PlantActivity.class);
-        startActivity(intent);
+            AddPlants addPlants = new AddPlants(this);
+            addPlants.execute(type, userID, nameBySpecies, nameByUser, temperature, moisture, previousMoisturesLevel, image, wiki);
+
+            Intent intent = new Intent(this, PlantActivity.class);
+            startActivity(intent);
+        }else{
+            Toast.makeText(this, "Please fill in all the information", Toast.LENGTH_SHORT).show();
+        }
     }
 }
 
