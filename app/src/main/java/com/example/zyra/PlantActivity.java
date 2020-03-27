@@ -351,11 +351,11 @@ public class PlantActivity extends AppCompatActivity implements AsyncResponse1 {
 
     protected void addCurrentMoisture(LinkedList currentMoisture, int hour) throws JSONException {
 
-        fakeTime = fakeTime + 2;
-        if (fakeTime >= 24){
-            fakeTime = 0;
-        }
-        hour = fakeTime;
+//        fakeTime = fakeTime + 2;
+//        if (fakeTime >= 24){
+//            fakeTime = 0;
+//        }
+//        hour = fakeTime;
 
         if(hour >= 24){
             hour = 0;

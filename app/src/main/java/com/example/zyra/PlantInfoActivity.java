@@ -69,8 +69,8 @@ public class PlantInfoActivity extends AppCompatActivity {
     protected CircleImageView circleImgPlant;
     protected Button btnConfirm;
     String plantName;
-    String plantID;
-    String plantPrevMoisture;
+    String plantSpecies;
+    String plantPreviousMoisture;
 
     private ProgressDialog progressDialog;
 
@@ -84,24 +84,26 @@ public class PlantInfoActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_plantinfo);
-
         setupUI();
-        setGraph();
+
 
         // get plant's name
-        String plantName = getIntent().getStringExtra("nameByUser");
+        plantName = getIntent().getStringExtra("nameByUser");
         System.out.println("nameByUser: " + plantName);
         textMyPlantName.setText(plantName);
 
 
 
-        String plantSpecies = getIntent().getStringExtra("nameBySpecies");
+        plantSpecies = getIntent().getStringExtra("nameBySpecies");
         textMyPlantType.setText(plantSpecies);
 
         System.out.println("Plant Species:" + plantSpecies);
 
-        String plantPreviousMoisture = getIntent().getStringExtra("previousMoisture");
-        System.out.println("Plant Moisture: " + plantPreviousMoisture);
+        plantPreviousMoisture = getIntent().getStringExtra("previousMoisture");
+//        System.out.println("Plant Moisture: " + plantPreviousMoisture);
+
+
+        setGraph();
 
 
         btnImage.setOnClickListener(new View.OnClickListener() {
@@ -269,15 +271,31 @@ public class PlantInfoActivity extends AppCompatActivity {
         graph.setTitle("Moisture Level");
         graph.getGridLabelRenderer();
         graph.getViewport().setMaxX(24);
+        graph.getViewport().setMinX(0);
         graph.getViewport().setMaxY(100);
+        graph.getViewport().setMinY(0);
+
+        graph.getViewport().setYAxisBoundsManual(true);
+        graph.getViewport().setXAxisBoundsManual(true);
 
         x = 0;
         series1 = new LineGraphSeries<>();
 
-        int numDataPoint = 200;
-        for(int i = 0; i < numDataPoint; i++){
-            x = x + 0.1;
-            y = x + 2;
+        int numDataPoint = 24;
+        for(int i = 0; i < numDataPoint; i = i + 2){
+
+
+            String value ="00";
+            StringBuilder number = new StringBuilder("00");
+
+//            number.setCharAt(0, plantPreviousMoisture.charAt(i));
+//            number.setCharAt(1,plantPreviousMoisture.charAt(i + 1));
+
+            value = number.toString();
+            System.out.println("Y: " + number +" Double check: " + value);
+
+            x = i;
+            y = Integer.parseInt(value);
             series1.appendData(new DataPoint(x,y),true,100);
         }
         graph.addSeries(series1);
