@@ -100,6 +100,9 @@ public class PlantInfoActivity extends AppCompatActivity {
 
         System.out.println("Plant Species:" + plantSpecies);
 
+        String plantPreviousMoisture = getIntent().getStringExtra("previousMoisture");
+        System.out.println("Plant Moisture: " + plantPreviousMoisture);
+
 
         btnImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -111,117 +114,6 @@ public class PlantInfoActivity extends AppCompatActivity {
 
 
 
-    //Get Plants Info
-    class GetPlantInfo1 extends AsyncTask<String, Void, String> {
-
-
-
-
-        public AsyncResponse delegate = null;
-
-        @Override
-        protected String doInBackground(String... params) {
-            System.out.println("In here");
-
-            // Define URL
-            String plant_url;
-
-            String result = "";
-
-            // Define URL
-            plant_url = "http://zyraproject.ca/selectplant.php";
-
-            try {
-                System.out.println("In here1");
-
-                // Extract the values
-                String userID = params[0];
-
-                URL url = new URL(plant_url);
-                HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
-                httpURLConnection.setRequestMethod("POST");
-                httpURLConnection.setDoOutput(true);
-                httpURLConnection.setDoInput(true);
-
-                OutputStream outputStream = httpURLConnection.getOutputStream();
-                BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
-
-                // Create data URL that we want to post
-                String post_data = URLEncoder.encode("userID", "UTF-8") + "=" + URLEncoder.encode(userID, "UTF-8");
-                // Write post data to the BufferWriter
-                bufferedWriter.write(post_data);
-                bufferedWriter.flush();
-                bufferedWriter.close();
-                outputStream.close();
-
-                // Read the response from post request
-                InputStream inputStream = httpURLConnection.getInputStream();
-                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "iso-8859-1"));
-                String line = "";
-                while ((line = bufferedReader.readLine()) != null) {
-                    result += line;
-                }
-                bufferedReader.close();
-                inputStream.close();
-                httpURLConnection.disconnect();
-                return result;
-
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
-            System.out.println("In here2");
-
-            if (result != null) {
-                System.out.println("In here3");
-                String resultNew = result;
-                //Parsing jason Data
-                try {
-                   ArrayList<String> plantSpecies = new ArrayList<>();
-                    ArrayList<String> plantNames = new ArrayList<>();
-                    //plantsNameListView = (ListView) findViewById(R.id.plantsNameListView);
-                    JSONObject jasonResult = new JSONObject(result.substring(result.indexOf("{"), result.lastIndexOf("}") + 1));
-
-                    System.out.println("Json resulT: " + jasonResult);
-
-                    int success = Integer.parseInt(jasonResult.getString("success"));
-                    if (success == 1) {
-                        JSONArray plants = jasonResult.getJSONArray("plants");
-
-                            JSONObject plant = plants.getJSONObject(Integer.parseInt(plantID));
-                            String nameBySpecies = plant.getString("nameBySpecies");
-                            String nameByUser = plant.getString("nameByUser");
-                            String previousMoisturesLevel = plant.getString("previousMoisturesLevel");
-
-                           // image = plant.getString("image");
-                           // wiki = plant.getString("wiki");
-
-                        textMyPlantName.setText(nameByUser);
-                        textMyPlantType.setText(nameBySpecies);
-                        plantPrevMoisture = previousMoisturesLevel;
-
-                    }
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                    Log.e("error ", e.getMessage());
-                }
-
-            }
-        }
-
-        @Override
-        protected void onProgressUpdate(Void... values) {
-            super.onProgressUpdate(values);
-        }
-
-    }
 
     private void pickImageFromGallery() {
         //intent to pick plant image

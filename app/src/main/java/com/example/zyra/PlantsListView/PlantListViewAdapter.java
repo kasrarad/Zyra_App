@@ -27,12 +27,19 @@ public class PlantListViewAdapter extends ArrayAdapter<String> {
 
     ArrayList<String> plantsName;
     static ArrayList<String> plantSpecies;
-    static ArrayList<String> plantsPreviousMoisture;
+    static public ArrayList<String> plantsPreviousMoisture;
     Context context;
 
     public PlantListViewAdapter(@NonNull Context context, ArrayList<String> plantsName) {
         super(context, R.layout.plant_list_item);
         this.plantsName = plantsName;
+        this.context = context;
+    }
+
+    public PlantListViewAdapter(@NonNull Context context, ArrayList<String> plantsName, ArrayList<String> plantSpecies) {
+        super(context, R.layout.plant_list_item);
+        this.plantsName = plantsName;
+        this.plantSpecies = plantSpecies;
         this.context = context;
     }
 
@@ -62,9 +69,9 @@ public class PlantListViewAdapter extends ArrayAdapter<String> {
 //            viewHolder.moistureButton = (Button) convertView.findViewById(R.id.MoistureButton);
             viewHolder.EditPlantButton = (Button) convertView.findViewById(R.id.EditPlantButton);
             viewHolder.textViewPlantName = (TextView) convertView.findViewById(R.id.textViewPlantName);
-
-            System.out.println("PLANT SPECIES: " + plantSpecies);
-            System.out.println(" AT POSITION: " + plantSpecies.get(position));
+//
+//            System.out.println("PLANT SPECIES: " + plantSpecies);
+//            System.out.println(" AT POSITION: " + plantSpecies.get(position));
 
 
 //            viewHolder.moistureButton.setOnClickListener(new View.OnClickListener() {
