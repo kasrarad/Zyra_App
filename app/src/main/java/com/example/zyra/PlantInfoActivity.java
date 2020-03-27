@@ -100,7 +100,13 @@ public class PlantInfoActivity extends AppCompatActivity {
         System.out.println("Plant Species:" + plantSpecies);
 
         plantPreviousMoisture = getIntent().getStringExtra("previousMoisture");
-//        System.out.println("Plant Moisture: " + plantPreviousMoisture);
+        System.out.println("Plant Moisture: " + plantPreviousMoisture);
+
+        if(plantPreviousMoisture.charAt(0) == '['){
+
+            plantPreviousMoisture = "000000000000000000000000000";
+        }
+        System.out.println("Plant Moisture: " + plantPreviousMoisture);
 
 
         setGraph();
@@ -288,11 +294,13 @@ public class PlantInfoActivity extends AppCompatActivity {
             String value ="00";
             StringBuilder number = new StringBuilder("00");
 
-//            number.setCharAt(0, plantPreviousMoisture.charAt(i));
-//            number.setCharAt(1,plantPreviousMoisture.charAt(i + 1));
+            number.setCharAt(0, plantPreviousMoisture.charAt(i));
+            number.setCharAt(1,plantPreviousMoisture.charAt(i + 1));
+
 
             value = number.toString();
-            System.out.println("Y: " + number +" Double check: " + value);
+
+//            System.out.println("Time: " +  i + "   Y: " + number +" Double check: " + value);
 
             x = i;
             y = Integer.parseInt(value);
