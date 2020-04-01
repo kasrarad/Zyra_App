@@ -58,15 +58,11 @@ public class EditPlantActivity extends AppCompatActivity {
         //moistureEditText = (EditText) findViewById(R.id.moistureEditText);
 
         // get plant's name
-        String badPlantName = getIntent().getStringExtra("nameByUser");
-        String[] plantNameSplit = badPlantName.split("\n");
-        String plantName = plantNameSplit[0];
-        System.out.println(plantName);
+        String plantName = getIntent().getStringExtra("nameByUser");
 
         // get user id from SharedPreferences
         SharedPreferences sharedPreferences = getSharedPreferences("PlantName", Context.MODE_PRIVATE);
         userID = sharedPreferences.getString("userID", null);
-        System.out.println("USer ID : " + userID);
 
         //Connect to the database and get data
         new GetPlantInfo().execute(userID, plantName);
