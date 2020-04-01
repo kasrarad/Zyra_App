@@ -369,6 +369,7 @@ public class PlantActivity extends AppCompatActivity implements AsyncResponse1 {
 
 
         JSONObject jasonResult = new JSONObject(resultNew.substring(resultNew.indexOf("{"), resultNew.lastIndexOf("}") + 1));
+
         allPlants = new ArrayList<>();
         plantNames = new ArrayList<>();
         plantSpecies = new ArrayList<>();
