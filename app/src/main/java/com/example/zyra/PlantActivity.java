@@ -70,12 +70,9 @@ public class PlantActivity extends AppCompatActivity implements AsyncResponse1 {
 
 //    protected Button btnPlantInfoTest;
 
-
 //    protected ArrayAdapter<String> plantAdapter;
 
-
 //    protected String userID;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
