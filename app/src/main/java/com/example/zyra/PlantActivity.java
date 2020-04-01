@@ -333,6 +333,7 @@ public class PlantActivity extends AppCompatActivity implements AsyncResponse1 {
 
 
         JSONObject jasonResult = new JSONObject(resultNew.substring(resultNew.indexOf("{"), resultNew.lastIndexOf("}") + 1));
+
         allPlants = new ArrayList<>();
 
         int success = Integer.parseInt(jasonResult.getString("success"));
