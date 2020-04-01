@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -55,6 +56,8 @@ public class MainActivity extends AppCompatActivity {
         editor.apply();
 
         databaseHelper.close();
+
+        Toast.makeText(this, "Making changes.", Toast.LENGTH_SHORT).show();
     }
 
 
