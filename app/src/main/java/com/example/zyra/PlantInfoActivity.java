@@ -6,10 +6,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -38,29 +36,14 @@ import com.karumi.dexter.listener.single.PermissionListener;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLEncoder;
-import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class PlantInfoActivity extends AppCompatActivity {
-
-
 
     private LineGraphSeries<DataPoint> series1;
     protected ImageButton btnImage;
@@ -68,12 +51,8 @@ public class PlantInfoActivity extends AppCompatActivity {
     protected TextView textMyPlantType;
     protected CircleImageView circleImgPlant;
     protected Button btnConfirm;
-    String plantName;
-    String plantSpecies;
-    String plantPreviousMoisture;
 
     private ProgressDialog progressDialog;
-
 
     protected double x,y;
 
@@ -84,33 +63,19 @@ public class PlantInfoActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_plantinfo);
-        setupUI();
 
+        setupUI();
+        setGraph();
 
         // get plant's name
-        plantName = getIntent().getStringExtra("nameByUser");
+        String plantName = getIntent().getStringExtra("nameByUser");
         System.out.println("nameByUser: " + plantName);
         textMyPlantName.setText(plantName);
 
-
-
-        plantSpecies = getIntent().getStringExtra("nameBySpecies");
-        textMyPlantType.setText(plantSpecies);
-
-        System.out.println("Plant Species:" + plantSpecies);
-
-        plantPreviousMoisture = getIntent().getStringExtra("previousMoisture");
-        System.out.println("Plant Moisture: " + plantPreviousMoisture);
-
-        if(plantPreviousMoisture.charAt(0) == '['){
-
-            plantPreviousMoisture = "000000000000000000000000000";
-        }
-        System.out.println("Plant Moisture: " + plantPreviousMoisture);
-
-
-        setGraph();
-
+        //get plant's type
+        String plantType = getIntent().getStringExtra("nameBySpecies");
+        System.out.println("nameBySpecies: " + plantType);
+        textMyPlantType.setText(plantType);
 
         btnImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -119,9 +84,6 @@ public class PlantInfoActivity extends AppCompatActivity {
             }
         });
     }
-
-
-
 
     private void pickImageFromGallery() {
         //intent to pick plant image
@@ -277,33 +239,15 @@ public class PlantInfoActivity extends AppCompatActivity {
         graph.setTitle("Moisture Level");
         graph.getGridLabelRenderer();
         graph.getViewport().setMaxX(24);
-        graph.getViewport().setMinX(0);
         graph.getViewport().setMaxY(100);
-        graph.getViewport().setMinY(0);
-
-        graph.getViewport().setYAxisBoundsManual(true);
-        graph.getViewport().setXAxisBoundsManual(true);
 
         x = 0;
         series1 = new LineGraphSeries<>();
 
-        int numDataPoint = 24;
-        for(int i = 0; i < numDataPoint; i = i + 2){
-
-
-            String value ="00";
-            StringBuilder number = new StringBuilder("00");
-
-            number.setCharAt(0, plantPreviousMoisture.charAt(i));
-            number.setCharAt(1,plantPreviousMoisture.charAt(i + 1));
-
-
-            value = number.toString();
-
-//            System.out.println("Time: " +  i + "   Y: " + number +" Double check: " + value);
-
-            x = i;
-            y = Integer.parseInt(value);
+        int numDataPoint = 200;
+        for(int i = 0; i < numDataPoint; i++){
+            x = x + 0.1;
+            y = x + 2;
             series1.appendData(new DataPoint(x,y),true,100);
         }
         graph.addSeries(series1);
