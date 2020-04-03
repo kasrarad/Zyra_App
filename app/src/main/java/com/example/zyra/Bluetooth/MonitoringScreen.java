@@ -23,6 +23,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.zyra.MainActivity;
+import com.example.zyra.PlantActivity;
 import com.example.zyra.PlantInfoActivity;
 import com.example.zyra.R;
 
@@ -43,6 +44,7 @@ public class MonitoringScreen extends Activity {
     private ScrollView scrollView;
     private CheckBox chkScroll;
     private CheckBox chkReceiveText;
+    private Button mBtnBack;
 
 
     private boolean mIsBluetoothConnected = false;
@@ -57,19 +59,16 @@ public class MonitoringScreen extends Activity {
         setContentView(R.layout.activity_monitoring);
         ActivityHelper.initialize(this);
 
+        setupUI();
+
         Intent intent = getIntent();
         Bundle b = intent.getExtras();
         mDevice = b.getParcelable(PlantInfoActivity.DEVICE_EXTRA);
         mDeviceUUID = UUID.fromString(b.getString(PlantInfoActivity.DEVICE_UUID));
         mMaxChars = b.getInt(PlantInfoActivity.BUFFER_SIZE);
         Log.d(TAG, "Ready");
-        mTxtReceive = (TextView) findViewById(R.id.txtReceive);
-        chkScroll = (CheckBox) findViewById(R.id.chkScroll);
-        chkReceiveText = (CheckBox) findViewById(R.id.chkReceiveText);
-        scrollView = (ScrollView) findViewById(R.id.viewScroll);
-        mBtnClearInput = (Button) findViewById(R.id.btnClearInput);
-        mTxtReceive.setMovementMethod(new ScrollingMovementMethod());
 
+        mTxtReceive.setMovementMethod(new ScrollingMovementMethod());
 
 
         mBtnClearInput.setOnClickListener(new OnClickListener() {
@@ -80,7 +79,23 @@ public class MonitoringScreen extends Activity {
             }
         });
 
+        mBtnBack.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goToPlantActivity();
+            }
+        });
 
+
+    }
+
+    public void setupUI() {
+        mTxtReceive = findViewById(R.id.txtReceive);
+        chkScroll = findViewById(R.id.chkScroll);
+        chkReceiveText = findViewById(R.id.chkReceiveText);
+        scrollView = findViewById(R.id.viewScroll);
+        mBtnClearInput = findViewById(R.id.btnClearInput);
+        mBtnBack = findViewById(R.id.btnBack);
     }
 
     private class ReadInput implements Runnable {
@@ -276,6 +291,9 @@ public class MonitoringScreen extends Activity {
 
     }
 
-
+    protected void goToPlantActivity() {
+        Intent intent = new Intent(MonitoringScreen.this, PlantActivity.class);
+        startActivity(intent);
+    }
 
 }

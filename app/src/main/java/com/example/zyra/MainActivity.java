@@ -27,8 +27,8 @@ public class MainActivity extends AppCompatActivity {
     protected Button buttonSettings;
     protected Button buttonAboutUs;
     protected Button buttonCredits;
-    protected Button blueToothActivityButton;
-    protected TextView textViewAppName;
+//    protected Button blueToothActivityButton;
+//    protected TextView textViewAppName;
 
     protected DatabaseHelper databaseHelper;
 
@@ -56,8 +56,6 @@ public class MainActivity extends AppCompatActivity {
         editor.apply();
 
         databaseHelper.close();
-
-        Toast.makeText(this, "Making changes.", Toast.LENGTH_SHORT).show();
     }
 
 
@@ -80,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
         buttonAboutUs = findViewById(R.id.btnAboutUs);
         buttonCredits = findViewById(R.id.btnCredits);
 
-        blueToothActivityButton = findViewById(R.id.bluetoothActivityButton);
+//        blueToothActivityButton = findViewById(R.id.bluetoothActivityButton);
 
         buttonPlantList.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -110,12 +108,12 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        blueToothActivityButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                goToBlueToothTest();
-            }
-        });
+//        blueToothActivityButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                goToBlueToothTest();
+//            }
+//        });
     }
 
     public void goToSettings(){
@@ -137,10 +135,10 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(MainActivity.this, AboutUsActivity.class);
         startActivity(intent);
     }
-
-    public void goToBlueToothTest(){
-        Intent intent = new Intent(MainActivity.this, BlueToothTestActivity.class);
-        startActivity(intent);
-    }
+//
+//    public void goToBlueToothTest(){
+//        Intent intent = new Intent(MainActivity.this, BlueToothTestActivity.class);
+//        startActivity(intent);
+//    }
 
 }
