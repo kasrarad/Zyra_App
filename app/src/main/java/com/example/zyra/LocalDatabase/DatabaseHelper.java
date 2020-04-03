@@ -30,7 +30,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         // Table Create Statements
         // User table create statement
-        String CREATE_TABLE_USER = "CREATE TABLE " + Config.USER_TABLE_NAME + " (" + Config.COLUMN_KEY_ID + " INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, " + Config.COLUMN_USERID + " TEXT NOT NULL," + Config.COLUMN_NAME + " TEXT NOT NULL," + Config.COLUMN_USERNAME + " TEXT NOT NULL," + Config.COLUMN_PASSWORD + " TEXT NOT NULL" + ")";
+        String CREATE_TABLE_USER = "CREATE TABLE " + Config.USER_TABLE_NAME +
+                " (" + Config.COLUMN_KEY_ID + " INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, "
+                + Config.COLUMN_USERID + " TEXT NOT NULL,"
+                + Config.COLUMN_NAME + " TEXT NOT NULL,"
+                + Config.COLUMN_USERNAME + " TEXT NOT NULL,"
+                + Config.COLUMN_PASSWORD + " TEXT NOT NULL" + ")";
 
         Log.d(TAG, CREATE_TABLE_USER);
 

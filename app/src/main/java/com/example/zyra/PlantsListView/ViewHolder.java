@@ -5,7 +5,7 @@ import android.widget.TextView;
 
 public class ViewHolder {
 
-//    Button moistureButton;
+    //    Button moistureButton;
     Button EditPlantButton;
     TextView textViewPlantName;
 

@@ -163,14 +163,6 @@ public class PlantActivity extends AppCompatActivity implements AsyncResponse1 {
 
     }
 
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_items, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-
     public void goToNewPlantActivity(){
         Intent intent = new Intent(PlantActivity.this, NewPlantActivity.class);
         startActivity(intent);
@@ -444,11 +436,11 @@ public class PlantActivity extends AppCompatActivity implements AsyncResponse1 {
 
 
 
-                    System.out.println("Time: " + hour);
-                    System.out.println("\nPlant Name: " + nameByUser);
-                    System.out.println("Plant Species: " + nameBySpecies);
-                    System.out.println("rng: " + moisture);
-                    System.out.println("Plant previous MOIStures: " + previousMoisturesLevel);
+                System.out.println("Time: " + hour);
+                System.out.println("\nPlant Name: " + nameByUser);
+                System.out.println("Plant Species: " + nameBySpecies);
+                System.out.println("rng: " + moisture);
+                System.out.println("Plant previous MOIStures: " + previousMoisturesLevel);
 
 
             }
