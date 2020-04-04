@@ -21,6 +21,8 @@
         <activity android:name=".MoistureActivity"
             android:parentActivityName=".PlantActivity"/>
 
+        <activity android:name=".Bluetooth.MonitoringScreen" />
+
         <activity
             android:name=".EditPlantActivity"
             android:parentActivityName=".PlantActivity" />

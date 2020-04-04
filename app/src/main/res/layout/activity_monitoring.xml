@@ -9,11 +9,18 @@
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal" >
+        android:orientation="vertical" >
+
+        <Button
+            android:id="@+id/btnBack"
+            android:layout_width="83dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="0dp"
+            android:text="Back"/>
 
         <Button
             android:id="@+id/btnClearInput"
-            android:layout_width="0dp"
+            android:layout_width="92dp"
             android:layout_height="fill_parent"
             android:layout_weight="5"
             android:text="Clear Input" />
@@ -28,7 +35,7 @@
 
         <CheckBox
             android:id="@+id/chkScroll"
-            android:layout_width="fill_parent"
+            android:layout_width="83dp"
             android:layout_height="wrap_content"
             android:layout_margin="0dp"
             android:checked="true"
@@ -36,7 +43,7 @@
 
         <CheckBox
             android:id="@+id/chkReceiveText"
-            android:layout_width="fill_parent"
+            android:layout_width="83dp"
             android:layout_height="wrap_content"
             android:checked="true"
             android:text="Read" />
@@ -58,6 +65,7 @@
                 android:scrollbars="vertical"
                 android:layout_marginTop="20dp"/>
         </ScrollView>
+
     </LinearLayout>
 
 
