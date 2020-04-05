@@ -58,7 +58,7 @@ public class PlantActivity extends AppCompatActivity implements AsyncResponse1 {
     protected ArrayList<String> plantPrevMoi;
     protected ImageButton imgAddPlant;
     protected Button refreshButton;
-    protected ImageButton imgBluetooth;
+    protected ImageButton imgBT;
     LinkedList<Integer> moistureData=new LinkedList<Integer>();
     int plantListSize;
     int time = 0;
@@ -95,7 +95,7 @@ public class PlantActivity extends AppCompatActivity implements AsyncResponse1 {
         plantsNameListView = findViewById(R.id.plantsNameListView);
         refreshButton = findViewById(R.id.buttonRefresh);
         imgAddPlant = findViewById(R.id.imageButtonAdd);
-        imgBluetooth = findViewById(R.id.imgBluetooth);
+        imgBT = findViewById(R.id.imageBT);
 
         refreshButton.setEnabled(false);
         // Add back button
@@ -141,12 +141,6 @@ public class PlantActivity extends AppCompatActivity implements AsyncResponse1 {
             }
         });
 
-        imgBluetooth.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                goToBluetooth();
-            }
-        });
 
         /*
         btnPlantInfoTest.setOnClickListener(new View.OnClickListener() {

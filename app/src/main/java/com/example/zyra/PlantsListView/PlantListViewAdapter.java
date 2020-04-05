@@ -8,12 +8,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 
+import com.example.zyra.Bluetooth.BluetoothActivity;
 import com.example.zyra.EditPlantActivity;
 import com.example.zyra.PlantInfoActivity;
 import com.example.zyra.Plants;
@@ -69,6 +71,7 @@ public class PlantListViewAdapter extends ArrayAdapter<String> {
 //            viewHolder.moistureButton = (Button) convertView.findViewById(R.id.MoistureButton);
             viewHolder.EditPlantButton = (Button) convertView.findViewById(R.id.EditPlantButton);
             viewHolder.textViewPlantName = (TextView) convertView.findViewById(R.id.textViewPlantName);
+            viewHolder.PlantBluetooth = (ImageButton) convertView.findViewById(R.id.imageBT);
 //
 //            System.out.println("PLANT SPECIES: " + plantSpecies);
 //            System.out.println(" AT POSITION: " + plantSpecies.get(position));
@@ -89,6 +92,15 @@ public class PlantListViewAdapter extends ArrayAdapter<String> {
                 public void onClick(View v) {
                     Intent intent = new Intent(context, EditPlantActivity.class);
                     // send the value(plant's name)
+                    intent.putExtra("nameByUser", plantsName.get(position));
+                    context.startActivity(intent);
+                }
+            });
+
+            viewHolder.PlantBluetooth.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(context, BluetoothActivity.class);
                     intent.putExtra("nameByUser", plantsName.get(position));
                     context.startActivity(intent);
                 }
