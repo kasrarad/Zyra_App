@@ -6,8 +6,6 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -17,6 +15,8 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.zyra.Bluetooth.BluetoothActivity;
+import com.example.zyra.Bluetooth.InstructionsActivity;
 import com.example.zyra.Database.EditMoisture;
 import com.example.zyra.PlantsListView.PlantListViewAdapter;
 
@@ -31,7 +31,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
-import java.lang.reflect.Array;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -59,6 +58,7 @@ public class PlantActivity extends AppCompatActivity implements AsyncResponse1 {
     protected ArrayList<String> plantPrevMoi;
     protected ImageButton imgAddPlant;
     protected Button refreshButton;
+    protected ImageButton imgBluetooth;
     LinkedList<Integer> moistureData=new LinkedList<Integer>();
     int plantListSize;
     int time = 0;
@@ -95,6 +95,7 @@ public class PlantActivity extends AppCompatActivity implements AsyncResponse1 {
         plantsNameListView = findViewById(R.id.plantsNameListView);
         refreshButton = findViewById(R.id.buttonRefresh);
         imgAddPlant = findViewById(R.id.imageButtonAdd);
+        imgBluetooth = findViewById(R.id.imgBluetooth);
 
         refreshButton.setEnabled(false);
         // Add back button
@@ -140,6 +141,13 @@ public class PlantActivity extends AppCompatActivity implements AsyncResponse1 {
             }
         });
 
+        imgBluetooth.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goToBluetooth();
+            }
+        });
+
         /*
         btnPlantInfoTest.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -163,12 +171,13 @@ public class PlantActivity extends AppCompatActivity implements AsyncResponse1 {
 
     }
 
-    public void goToNewPlantActivity(){
-        Intent intent = new Intent(PlantActivity.this, NewPlantActivity.class);
+    public void goToBluetooth() {
+        Intent intent = new Intent(PlantActivity.this, BluetoothActivity.class);
         startActivity(intent);
     }
-    public void goToRefreshActivity(){
-        Intent intent = new Intent(PlantActivity.this, PlantActivity.class);
+
+    public void goToNewPlantActivity(){
+        Intent intent = new Intent(PlantActivity.this, NewPlantActivity.class);
         startActivity(intent);
     }
 
