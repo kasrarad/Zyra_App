@@ -31,20 +31,6 @@
         android:layout_marginTop="0dp"
         android:background="@drawable/sakura_transparent" />
 
-    <ImageView
-        android:id="@+id/imageSakuraRightBt"
-        android:layout_width="161dp"
-        android:layout_height="160dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="268dp"
-        android:layout_marginTop="445dp"
-        android:layout_marginEnd="2dp"
-        android:layout_marginBottom="1dp"
-        android:background="@drawable/sakura_transparent" />
-
 
     <ImageView
         android:layout_width="364dp"
@@ -58,19 +44,6 @@
         android:background="@drawable/flower_icon_vector" />
 
 
-    <ImageView
-        android:id="@+id/imageSakuraLeftBt"
-        android:layout_width="161dp"
-        android:layout_height="160dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="1dp"
-        android:layout_marginTop="443dp"
-        android:layout_marginBottom="0dp"
-        android:background="@drawable/sakura_transparent" />
-
-
     <Button
         android:id="@+id/btnPlantList"
         android:layout_width="126dp"
@@ -78,8 +51,8 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_centerVertical="true"
-        android:layout_marginStart="58dp"
-        android:layout_marginTop="270dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="180dp"
         android:background="#F5F5DC"
         android:text="Plant List"
         tools:layout_editor_absoluteY="356dp" />
@@ -90,13 +63,13 @@
         android:layout_height="71dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginStart="58dp"
-        android:layout_marginBottom="168dp"
+        android:layout_centerInParent="true"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="267dp"
+        android:background="#F5F5DC"
         android:text="Settings"
         tools:layout_editor_absoluteX="62dp"
-        tools:layout_editor_absoluteY="539dp"
-        android:background="#F5F5DC"/>
+        tools:layout_editor_absoluteY="539dp" />
 
     <Button
         android:id="@+id/btnAboutUs"
@@ -104,28 +77,28 @@
         android:layout_height="71dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginStart="225dp"
-        android:layout_marginBottom="168dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="179dp"
         android:background="#F5F5DC"
         android:text="About us" />
 
     <Button
-        android:id="@+id/btnCredits"
-        android:layout_width="126dp"
-        android:layout_height="71dp"
+        android:id="@+id/btnInstructions"
+        android:layout_width="187dp"
+        android:layout_height="69dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginStart="141dp"
-        android:layout_marginEnd="144dp"
-        android:layout_marginBottom="80dp"
-        android:text="Credits"
+        android:layout_marginStart="112dp"
+        android:layout_marginEnd="112dp"
+        android:layout_marginBottom="36dp"
+        android:background="#F5F5DC"
+        android:text="Bluetooth Instructions"
         tools:layout_editor_absoluteX="282dp"
-        tools:layout_editor_absoluteY="537dp"
-        android:background="#F5F5DC" />
+        tools:layout_editor_absoluteY="537dp" />
 
-<!--    <Button-->
+    <!--    <Button-->
 <!--        android:id="@+id/bluetoothActivityButton"-->
 <!--        android:layout_width="126dp"-->
 <!--        android:layout_height="76dp"-->

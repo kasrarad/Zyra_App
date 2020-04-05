@@ -6,14 +6,19 @@
     <ListView
         android:id="@+id/plantsNameListView"
         android:layout_width="409dp"
-        android:layout_height="429dp"
+        android:layout_height="293dp"
         android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
-        android:layout_marginStart="2dp"
+        android:layout_marginStart="6dp"
+        android:layout_marginEnd="-5dp"
         android:layout_marginBottom="100dp"
-        android:padding="4dp"
         android:clickable="true"
+        android:padding="4dp"
         android:scrollbars="vertical" />
+
+
+
 
     <ImageButton
         android:id="@+id/imageButtonAdd"
@@ -28,6 +33,12 @@
         android:background="#009688"
         app:srcCompat="@android:drawable/ic_input_add" />
 
+    <pl.droidsonroids.gif.GifImageView
+        android:layout_width="224dp"
+        android:layout_height="180dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
+        android:src="@drawable/plantgrowth" />
 
     <Button
         android:id="@+id/buttonRefresh"
@@ -39,5 +50,15 @@
         android:layout_marginStart="160dp"
         android:layout_marginTop="25dp"
         android:text="Refresh"/>
+
+    <ImageButton
+        android:id="@+id/imgBluetooth"
+        android:layout_width="67dp"
+        android:layout_height="63dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="88dp"
+        android:layout_marginEnd="40dp"
+        app:srcCompat="@drawable/ic_icon" />
 
 </RelativeLayout>

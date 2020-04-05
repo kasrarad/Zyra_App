@@ -63,9 +63,9 @@ public class MonitoringScreen extends Activity {
 
         Intent intent = getIntent();
         Bundle b = intent.getExtras();
-        mDevice = b.getParcelable(PlantInfoActivity.DEVICE_EXTRA);
-        mDeviceUUID = UUID.fromString(b.getString(PlantInfoActivity.DEVICE_UUID));
-        mMaxChars = b.getInt(PlantInfoActivity.BUFFER_SIZE);
+        mDevice = b.getParcelable(BluetoothActivity.DEVICE_EXTRA);
+        mDeviceUUID = UUID.fromString(b.getString(BluetoothActivity.DEVICE_UUID));
+        mMaxChars = b.getInt(BluetoothActivity.BUFFER_SIZE);
         Log.d(TAG, "Ready");
 
         mTxtReceive.setMovementMethod(new ScrollingMovementMethod());

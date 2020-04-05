@@ -21,12 +21,10 @@ public class MainActivity extends AppCompatActivity {
 
     protected ImageView imageViewLogo;
     protected ImageView imageSakuraTop;
-    protected ImageView imageSakuraBtLft;
-    protected ImageView imageSakuraBtRgt;
     protected Button buttonPlantList;
     protected Button buttonSettings;
     protected Button buttonAboutUs;
-    protected Button buttonCredits;
+    protected Button buttonInstructions;
 //    protected Button blueToothActivityButton;
 //    protected TextView textViewAppName;
 
@@ -67,8 +65,6 @@ public class MainActivity extends AppCompatActivity {
     public void setupUI(){
         imageViewLogo = findViewById(R.id.imageViewLogo);
         imageSakuraTop = findViewById(R.id.imageSakuraTop);
-        imageSakuraBtLft = findViewById(R.id.imageSakuraLeftBt);
-        imageSakuraBtRgt = findViewById(R.id.imageSakuraRightBt);
 
     }
 
@@ -76,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
         buttonPlantList = findViewById(R.id.btnPlantList);
         buttonSettings = findViewById(R.id.btnSettings);
         buttonAboutUs = findViewById(R.id.btnAboutUs);
-        buttonCredits = findViewById(R.id.btnCredits);
+        buttonInstructions = findViewById(R.id.btnInstructions);
 
 //        blueToothActivityButton = findViewById(R.id.bluetoothActivityButton);
 
@@ -87,10 +83,10 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        buttonCredits.setOnClickListener(new View.OnClickListener() {
+        buttonInstructions.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                goToCredits();
+                goToInstructions();
             }
         });
 
@@ -126,7 +122,7 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void goToCredits(){
+    public void goToInstructions(){
         Intent intent = new Intent(MainActivity.this, CreditsActivity.class);
         startActivity(intent);
     }
