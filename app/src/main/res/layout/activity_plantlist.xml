@@ -19,7 +19,6 @@
 
 
 
-
     <ImageButton
         android:id="@+id/imageButtonAdd"
         android:layout_width="wrap_content"
@@ -51,14 +50,5 @@
         android:layout_marginTop="25dp"
         android:text="Refresh"/>
 
-    <ImageButton
-        android:id="@+id/imgBluetooth"
-        android:layout_width="67dp"
-        android:layout_height="63dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginTop="88dp"
-        android:layout_marginEnd="40dp"
-        app:srcCompat="@drawable/ic_icon" />
 
 </RelativeLayout>

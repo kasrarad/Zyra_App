@@ -11,6 +11,7 @@ import android.bluetooth.BluetoothSocket;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.View;
@@ -21,6 +22,8 @@ import android.widget.EditText;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.WorkerThread;
 
 import com.example.zyra.MainActivity;
 import com.example.zyra.PlantActivity;
@@ -34,17 +37,24 @@ public class MonitoringScreen extends Activity {
     private UUID mDeviceUUID;
     private BluetoothSocket mBTSocket;
     private ReadInput mReadThread = null;
+    private InputStream inStream = null;
+    boolean stopWorker = false;
+    int readBufferPosition = 0;
+    byte[] readBuffer = new byte[1024];
+    Handler handler = new Handler();
 
+    private String reading = "";
 
     private boolean mIsUserInitiatedDisconnect = false;
 
     // All controls here
     private TextView mTxtReceive;
     private Button mBtnClearInput;
-    private ScrollView scrollView;
+    //    private ScrollView scrollView;
     private CheckBox chkScroll;
     private CheckBox chkReceiveText;
     private Button mBtnBack;
+    private TextView mTxtReading;
 
 
     private boolean mIsBluetoothConnected = false;
@@ -68,7 +78,7 @@ public class MonitoringScreen extends Activity {
         mMaxChars = b.getInt(BluetoothActivity.BUFFER_SIZE);
         Log.d(TAG, "Ready");
 
-        mTxtReceive.setMovementMethod(new ScrollingMovementMethod());
+//        mTxtReceive.setMovementMethod(new ScrollingMovementMethod());
 
 
         mBtnClearInput.setOnClickListener(new OnClickListener() {
@@ -86,16 +96,16 @@ public class MonitoringScreen extends Activity {
             }
         });
 
-
     }
 
     public void setupUI() {
         mTxtReceive = findViewById(R.id.txtReceive);
         chkScroll = findViewById(R.id.chkScroll);
         chkReceiveText = findViewById(R.id.chkReceiveText);
-        scrollView = findViewById(R.id.viewScroll);
+//        scrollView = findViewById(R.id.viewScroll);
         mBtnClearInput = findViewById(R.id.btnClearInput);
         mBtnBack = findViewById(R.id.btnBack);
+        mTxtReading = findViewById(R.id.textViewRead);
     }
 
     private class ReadInput implements Runnable {
@@ -111,6 +121,7 @@ public class MonitoringScreen extends Activity {
         public boolean isRunning() {
             return t.isAlive();
         }
+
 
         @Override
         public void run() {
@@ -129,36 +140,37 @@ public class MonitoringScreen extends Activity {
                         for (i = 0; i < buffer.length && buffer[i] != 0; i++) {
                         }
                         final String strInput = new String(buffer, 0, i);
+                        reading = strInput;
 
                         /*
                          * If checked then receive text, better design would probably be to stop thread if unchecked and free resources, but this is a quick fix
                          */
+//                        if (chkReceiveText.isChecked()) {
+                            listenForData();
+//                           mTxtReceive.post(new Runnable() {
+//                               @Override
+//                               public void run() {
+//                                   mTxtReceive.append(strInput);
+//                                   int txtLength = mTxtReceive.getEditableText().length();
+//
+//                                   if(txtLength > mMaxChars){
+//                                       mTxtReceive.getEditableText().delete(0, txtLength - mMaxChars);
+//                                   }
+//
+////                                    if (chkScroll.isChecked()) { // Scroll only if this is checked
+////                                        scrollView.post(new Runnable() { // Snippet from http://stackoverflow.com/a/4612082/1287554
+////                                            @Override
+////                                            public void run() {
+//////                                                scrollView.fullScroll(View.FOCUS_DOWN);
+////                                            }
+////                                        }
+////                                    }
+//                                }
+//                            });
 
-                        if (chkReceiveText.isChecked()) {
-                            mTxtReceive.post(new Runnable() {
-                                @Override
-                                public void run() {
-                                    mTxtReceive.append(strInput);
-
-                                    int txtLength = mTxtReceive.getEditableText().length();
-                                    if(txtLength > mMaxChars){
-                                        mTxtReceive.getEditableText().delete(0, txtLength - mMaxChars);
-                                    }
-
-                                    if (chkScroll.isChecked()) { // Scroll only if this is checked
-                                        scrollView.post(new Runnable() { // Snippet from http://stackoverflow.com/a/4612082/1287554
-                                            @Override
-                                            public void run() {
-                                                scrollView.fullScroll(View.FOCUS_DOWN);
-                                            }
-                                        });
-                                    }
-                                }
-                            });
-                        }
 
                     }
-                    Thread.sleep(500);
+                    Thread.sleep(1500);
                 }
             } catch (IOException e) {
 // TODO Auto-generated catch block
@@ -296,4 +308,54 @@ public class MonitoringScreen extends Activity {
         startActivity(intent);
     }
 
+    public void listenForData() {
+
+            try {
+                inStream = mBTSocket.getInputStream();
+            } catch (IOException e) {
+            }
+
+        Thread workerThread = new Thread(new Runnable() {
+            public void run() {
+                while (!Thread.currentThread().isInterrupted() && !stopWorker) {
+                    try {
+                        int bytesAvailable = inStream.available();
+                        if (bytesAvailable > 0) {
+                            byte[] packetBytes = new byte[bytesAvailable];
+                            inStream.read(packetBytes);
+                            for (int i = 0; i < bytesAvailable; i++) {
+                                byte b = packetBytes[i];
+                                if (b == 10) {
+                                    byte[] encodedBytes = new byte[readBufferPosition];
+                                    System.arraycopy(readBuffer, 0, encodedBytes, 0, encodedBytes.length);
+                                    final String data = new String(encodedBytes, "US-ASCII");
+                                    readBufferPosition = 0;
+                                    handler.post(new Runnable() {
+                                        public void run() {
+
+                                            mTxtReading.setText(data);
+//                                            if(Result.getText().toString().equals("..")) {
+//                                                Result.setText(data);
+//                                            } else {
+//                                                Result.append("\n"+data);
+//                                            }
+
+                                            /* You also can use Result.setText(data); it won't display multilines
+                                             */
+
+                                        }
+                                    });
+                                } else {
+                                    readBuffer[readBufferPosition++] = b;
+                                }
+                            }
+                        }
+                    } catch (IOException ex) {
+                        stopWorker = true;
+                    }
+                }
+            }
+        });
+                workerThread.start();
+    }
 }

@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.zyra.Bluetooth.InstructionsActivity;
 import com.example.zyra.LocalDatabase.DatabaseHelper;
 
 import java.util.List;
@@ -123,7 +124,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void goToInstructions(){
-        Intent intent = new Intent(MainActivity.this, CreditsActivity.class);
+        Intent intent = new Intent(MainActivity.this, InstructionsActivity.class);
         startActivity(intent);
     }
 

@@ -83,13 +83,12 @@ public class BluetoothActivity extends AppCompatActivity {
             @Override
             public void onClick(View arg0) {
                 mBTAdapter = BluetoothAdapter.getDefaultAdapter();
-
+                connect.setVisibility(View.VISIBLE);
                 if (mBTAdapter == null) {
                     Toast.makeText(getApplicationContext(), "Bluetooth not found", Toast.LENGTH_SHORT).show();
                 } else if (!mBTAdapter.isEnabled()) {
                     Intent enableBT = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
                     startActivityForResult(enableBT, BT_ENABLE_REQUEST);
-                    connect.setVisibility(View.VISIBLE);
                 } else {
                     new SearchDevices().execute();
                 }

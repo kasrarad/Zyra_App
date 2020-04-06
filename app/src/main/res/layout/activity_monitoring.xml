@@ -26,6 +26,8 @@
             android:text="Clear Input" />
 
 
+
+
     </LinearLayout>
 
     <LinearLayout
@@ -48,23 +50,30 @@
             android:checked="true"
             android:text="Read" />
 
-        <ScrollView
-            android:id="@+id/viewScroll"
-            android:layout_width="fill_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1" >
+<!--        <ScrollView-->
+<!--            android:id="@+id/viewScroll"-->
+<!--            android:layout_width="fill_parent"-->
+<!--            android:layout_height="0dp"-->
+<!--            android:layout_weight="1" >-->
 
-            <TextView
-                android:id="@+id/txtReceive"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="top"
-                android:background="#eeeeee"
-                android:typeface="monospace"
-                android:hint="Message shows up here ..."
-                android:scrollbars="vertical"
-                android:layout_marginTop="20dp"/>
-        </ScrollView>
+        <TextView
+            android:id="@+id/textViewRead"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="TextView" />
+
+        <TextView
+            android:id="@+id/txtReceive"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top"
+            android:layout_marginTop="20dp"
+            android:background="#eeeeee"
+            android:hint="Message shows up here ..."
+            android:scrollbars="vertical"
+            android:typeface="monospace" />
+
+        <!--        </ScrollView>-->
 
     </LinearLayout>
 
