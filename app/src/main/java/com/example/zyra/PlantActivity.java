@@ -6,16 +6,18 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.zyra.Bluetooth.BluetoothActivity;
+import com.example.zyra.Bluetooth.InstructionsActivity;
 import com.example.zyra.Database.EditMoisture;
 import com.example.zyra.PlantsListView.PlantListViewAdapter;
 
@@ -40,19 +42,27 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Random;
 
+import pl.droidsonroids.gif.GifDrawable;
+
 interface AsyncResponse1 {
     void processFinish(ArrayList<String> output);
 }
 
 public class PlantActivity extends AppCompatActivity implements AsyncResponse1 {
 
+    protected ImageButton imgAddPlant;
+//    protected Button refreshButton;
+    protected ImageButton imgBT;
+    protected TextView textPlantList;
+
     GetPlantInfo getPlantInfo = new GetPlantInfo();
 
     protected ListView plantsNameListView;
     protected PlantListViewAdapter adapter;
     protected ArrayList<String> allPlants;
-    protected ImageButton imgAddPlant;
-    protected Button refreshButton;
+    protected ArrayList<String> plantNames;
+    protected ArrayList<String> plantSpecies;
+    protected ArrayList<String> plantPrevMoi;
     LinkedList<Integer> moistureData=new LinkedList<Integer>();
     int plantListSize;
     int time = 0;
@@ -67,12 +77,11 @@ public class PlantActivity extends AppCompatActivity implements AsyncResponse1 {
     String wiki;
     String resultNew;
     protected String[] plantInfo = new String[9];
+    static int fakeTime = 0;
 
 //    protected Button btnPlantInfoTest;
 
-
 //    protected ArrayAdapter<String> plantAdapter;
-
 
 //    protected String userID;
 
@@ -85,10 +94,12 @@ public class PlantActivity extends AppCompatActivity implements AsyncResponse1 {
         //this to set delegate/listener back to this class
         getPlantInfo.delegate = this;
 
+        textPlantList = findViewById(R.id.textViewPlantList);
         plantsNameListView = findViewById(R.id.plantsNameListView);
-        refreshButton = findViewById(R.id.buttonRefresh);
         imgAddPlant = findViewById(R.id.imageButtonAdd);
+        imgBT = findViewById(R.id.imageBT);
 
+//        refreshButton.setEnabled(false);
         // Add back button
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -99,6 +110,12 @@ public class PlantActivity extends AppCompatActivity implements AsyncResponse1 {
         //new GetPlantInfo().execute(userID);
         getPlantInfo.execute(userID);
 
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+//        refreshButton.setEnabled(true);
         imgAddPlant.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -106,18 +123,26 @@ public class PlantActivity extends AppCompatActivity implements AsyncResponse1 {
             }
         });
 
-        refreshButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+//        refreshButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                refreshButton.setEnabled(false);
+//                try {
+//                    ViewGroup layout = (ViewGroup) refreshButton.getParent();
+//                    layout.removeView(refreshButton);
+//                    refreshData();
+//                    finish();
+//                    overridePendingTransition(0, 0);
+//                    startActivity(getIntent());
+//                    overridePendingTransition(0, 0);
+//                } catch (JSONException e) {
+//                    e.printStackTrace();
+//                }
+//                refreshButton.setEnabled(true);
+//
+//            }
+//        });
 
-                try {
-                    refreshData();
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
-            }
-        });
 
         /*
         btnPlantInfoTest.setOnClickListener(new View.OnClickListener() {
@@ -142,20 +167,8 @@ public class PlantActivity extends AppCompatActivity implements AsyncResponse1 {
 
     }
 
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_items, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-
     public void goToNewPlantActivity(){
         Intent intent = new Intent(PlantActivity.this, NewPlantActivity.class);
-        startActivity(intent);
-    }
-    public void goToRefreshActivity(){
-        Intent intent = new Intent(PlantActivity.this, PlantActivity.class);
         startActivity(intent);
     }
 
@@ -164,6 +177,7 @@ public class PlantActivity extends AppCompatActivity implements AsyncResponse1 {
         if (output.size() > 0) {
             adapter = new PlantListViewAdapter(PlantActivity.this, output);
             plantsNameListView.setAdapter(adapter);
+            adapter = new PlantListViewAdapter(PlantActivity.this ,plantNames, plantSpecies , plantPrevMoi);
         } else {
             Toast.makeText(PlantActivity.this, "No plants", Toast.LENGTH_SHORT).show();
         }
@@ -235,6 +249,9 @@ public class PlantActivity extends AppCompatActivity implements AsyncResponse1 {
                 //Parsing jason Data
                 try {
                     allPlants = new ArrayList<>();
+                    plantNames = new ArrayList<>();
+                    plantSpecies = new ArrayList<>();
+                    plantPrevMoi = new ArrayList<>();
                     //plantsNameListView = (ListView) findViewById(R.id.plantsNameListView);
                     JSONObject jasonResult = new JSONObject(result.substring(result.indexOf("{"), result.lastIndexOf("}") + 1));
 
@@ -254,9 +271,14 @@ public class PlantActivity extends AppCompatActivity implements AsyncResponse1 {
                             image = plant.getString("image");
                             wiki = plant.getString("wiki");
 
+
+
                             //line is what will be displayed on screen
-                            String line = nameByUser + "\n" + moisture;
+                            String line = nameByUser + "\n" + moisture + "% Moisture";
                             allPlants.add(line);
+                            plantNames.add(nameByUser);
+                            plantSpecies.add(nameBySpecies);
+                            plantPrevMoi.add(previousMoisturesLevel);
                         }
 
                         delegate.processFinish(allPlants);
@@ -297,7 +319,6 @@ public class PlantActivity extends AppCompatActivity implements AsyncResponse1 {
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             time = LocalTime.now().getHour();
         }
-        //       System.out.println("Real time: " + time);
 
         addCurrentMoisture(moistureData, time);
 
@@ -313,7 +334,7 @@ public class PlantActivity extends AppCompatActivity implements AsyncResponse1 {
         }
         Iterator<Integer> iterator=number.iterator();
         while(iterator.hasNext()){
-            System.out.println(iterator.next());
+            System.out.println("Random Number: "+ iterator.next());
         }
 
 
@@ -322,7 +343,11 @@ public class PlantActivity extends AppCompatActivity implements AsyncResponse1 {
 
     protected void addCurrentMoisture(LinkedList currentMoisture, int hour) throws JSONException {
 
-
+//        fakeTime = fakeTime + 2;
+//        if (fakeTime >= 24){
+//            fakeTime = 0;
+//        }
+//        hour = fakeTime;
 
         if(hour >= 24){
             hour = 0;
@@ -337,6 +362,10 @@ public class PlantActivity extends AppCompatActivity implements AsyncResponse1 {
 
         JSONObject jasonResult = new JSONObject(resultNew.substring(resultNew.indexOf("{"), resultNew.lastIndexOf("}") + 1));
         allPlants = new ArrayList<>();
+        plantNames = new ArrayList<>();
+        plantSpecies = new ArrayList<>();
+        plantPrevMoi = new ArrayList<>();
+
 
         int success = Integer.parseInt(jasonResult.getString("success"));
         if (success == 1) {
@@ -359,7 +388,7 @@ public class PlantActivity extends AppCompatActivity implements AsyncResponse1 {
                 wiki = plant.getString("wiki");
 
 
-                //Prevent any outliers
+                //Prevent any OOB values
                 if((int) currentMoisture.get(i) >= 100){
                     currentMoisture.set(i, 100);
                 }
@@ -376,6 +405,17 @@ public class PlantActivity extends AppCompatActivity implements AsyncResponse1 {
                 if( (int) currentMoisture.get(i) < 10){
                     previousString = "0";
                 }
+
+                //fix it if the default value is still wrong
+                System.out.println("Char at index 0: " + previousMoisturesLevel.charAt(i));
+                if(previousMoisturesLevel.charAt(0) == '['){
+
+                    System.out.println("replace this char");
+                    for(int j = 0 ; j < previousMoisturesLevel.length() ; j++){
+
+                        previousMoisturesLevel ="000000000000000000000000";
+                    }
+                }
                 //is now 2 chars
                 previousString += currentMoisture.get(i);
 
@@ -385,35 +425,37 @@ public class PlantActivity extends AppCompatActivity implements AsyncResponse1 {
                 replacePrev.setCharAt(hour, previousString.charAt(0));
                 replacePrev.setCharAt((hour + 1),previousString.charAt(1));
 
-
-//                System.out.println("previous String: " + previousString);
-
-
                 previousMoisturesLevel = replacePrev.toString();
-
-//                System.out.println("Previous Moisture level: "+ previousMoisturesLevel);
-
-
-                // System.out.println("Previous moisture length: " + previousMoisturesLevel.toString().length() + "\nPrevious Moisture: " + previousMoisturesLevel);
-
 
                 editMoisture.execute(id, userID, nameBySpecies, nameByUser, temperature, moisture, previousMoisturesLevel, image, wiki);
                 String line = nameByUser + "\n" + moisture + "% Moisture";
                 allPlants.add(line);
+                plantNames.add(nameByUser);
+                plantSpecies.add(nameBySpecies);
+                plantPrevMoi.add(previousMoisturesLevel);
+
+
+
+                System.out.println("Time: " + hour);
+                System.out.println("\nPlant Name: " + nameByUser);
+                System.out.println("Plant Species: " + nameBySpecies);
+                System.out.println("rng: " + moisture);
+                System.out.println("Plant previous MOIStures: " + previousMoisturesLevel);
+
 
             }
         }
 
+
+
         //Update data on the page
-        if (plantListSize > 0) {
-            adapter = new PlantListViewAdapter(PlantActivity.this, allPlants);
-            plantsNameListView.setAdapter(adapter);
-        }
-
-
+//        if (plantListSize > 0) {
+//            adapter = new PlantListViewAdapter(PlantActivity.this, allPlants);
+//            plantsNameListView.setAdapter(adapter);
+//            adapter = new PlantListViewAdapter(PlantActivity.this ,plantNames, plantSpecies, plantPrevMoi);
+//        }
 
     }
-
 
 
 
