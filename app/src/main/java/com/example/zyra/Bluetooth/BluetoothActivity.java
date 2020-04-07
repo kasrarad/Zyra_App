@@ -69,7 +69,6 @@ public class BluetoothActivity extends AppCompatActivity {
                 int selectedIndex = savedInstanceState.getInt(DEVICE_LIST_SELECTED);
                 if (selectedIndex != -1) {
                     adapter.setSelectedIndex(selectedIndex);
-                    connect.setEnabled(true);
                 }
             } else {
                 initList(new ArrayList<BluetoothDevice>());
@@ -78,14 +77,15 @@ public class BluetoothActivity extends AppCompatActivity {
         } else {
             initList(new ArrayList<BluetoothDevice>());
         }
+
         search.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View arg0) {
                 mBTAdapter = BluetoothAdapter.getDefaultAdapter();
-                connect.setVisibility(View.VISIBLE);
                 if (mBTAdapter == null) {
-                    Toast.makeText(getApplicationContext(), "Bluetooth not found", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Bluetooth not found.\nPlease unable your bluetooth by following the instructions.",
+                            Toast.LENGTH_LONG).show();
                 } else if (!mBTAdapter.isEnabled()) {
                     Intent enableBT = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
                     startActivityForResult(enableBT, BT_ENABLE_REQUEST);
@@ -107,9 +107,6 @@ public class BluetoothActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
-
-
     }
 
     protected void onPause() {
@@ -131,6 +128,7 @@ public class BluetoothActivity extends AppCompatActivity {
                 if (resultCode == RESULT_OK) {
                     msg("Bluetooth Enabled successfully");
                     new SearchDevices().execute();
+                    connect.setEnabled(true);
                 } else {
                     msg("Bluetooth couldn't be enabled");
                 }
@@ -181,16 +179,16 @@ public class BluetoothActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 adapter.setSelectedIndex(position);
                 connect.setEnabled(true);
+                connect.setVisibility(View.VISIBLE);
             }
         });
     }
 
-    /**
-     * Searches for paired devices. Doesn't do a scan! Only devices which are paired through Settings->Bluetooth
-     * will show up with this. I didn't see any need to re-build the wheel over here
-     * @author ryder
-     *
-     */
+
+//     Searches for paired devices. Doesn't do a scan!
+//     Only devices which are paired through Settings->Bluetooth
+//     will show up with this.
+
     private class SearchDevices extends AsyncTask<Void, Void, List<BluetoothDevice>> {
 
         @Override
@@ -217,13 +215,9 @@ public class BluetoothActivity extends AppCompatActivity {
 
     }
 
-    /**
-     * Custom adapter to show the current devices in the list. This is a bit of an overkill for this
-     * project, but I figured it would be good learning
-     * Most of the code is lifted from somewhere but I can't find the link anymore
-     * @author ryder
-     *
-     */
+
+    // Custom adapter to show the current devices in the list.
+
     private class MyAdapter extends ArrayAdapter<BluetoothDevice> {
         private int selectedIndex;
         private Context context;
@@ -319,4 +313,5 @@ public class BluetoothActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
 }
