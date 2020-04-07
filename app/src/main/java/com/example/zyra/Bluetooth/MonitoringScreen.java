@@ -49,7 +49,7 @@ public class MonitoringScreen extends Activity {
 
     // All controls here
     private TextView mTxtReceive;
-    private Button mBtnClearInput;
+//    private Button mBtnClearInput;
     //    private ScrollView scrollView;
     private CheckBox chkScroll;
     private CheckBox chkReceiveText;
@@ -81,13 +81,13 @@ public class MonitoringScreen extends Activity {
 //        mTxtReceive.setMovementMethod(new ScrollingMovementMethod());
 
 
-        mBtnClearInput.setOnClickListener(new OnClickListener() {
-
-            @Override
-            public void onClick(View arg0) {
-                mTxtReceive.setText("");
-            }
-        });
+//        mBtnClearInput.setOnClickListener(new OnClickListener() {
+//
+//            @Override
+//            public void onClick(View arg0) {
+//                mTxtReceive.setText("");
+//            }
+//        });
 
         mBtnBack.setOnClickListener(new OnClickListener() {
             @Override
