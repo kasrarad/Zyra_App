@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -41,12 +42,18 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Random;
 
+import pl.droidsonroids.gif.GifDrawable;
+
 interface AsyncResponse1 {
     void processFinish(ArrayList<String> output);
 }
 
 public class PlantActivity extends AppCompatActivity implements AsyncResponse1 {
 
+    protected ImageButton imgAddPlant;
+//    protected Button refreshButton;
+    protected ImageButton imgBT;
+    protected TextView textPlantList;
 
     GetPlantInfo getPlantInfo = new GetPlantInfo();
 
@@ -56,9 +63,6 @@ public class PlantActivity extends AppCompatActivity implements AsyncResponse1 {
     protected ArrayList<String> plantNames;
     protected ArrayList<String> plantSpecies;
     protected ArrayList<String> plantPrevMoi;
-    protected ImageButton imgAddPlant;
-    protected Button refreshButton;
-    protected ImageButton imgBT;
     LinkedList<Integer> moistureData=new LinkedList<Integer>();
     int plantListSize;
     int time = 0;
@@ -77,9 +81,7 @@ public class PlantActivity extends AppCompatActivity implements AsyncResponse1 {
 
 //    protected Button btnPlantInfoTest;
 
-
 //    protected ArrayAdapter<String> plantAdapter;
-
 
 //    protected String userID;
 
@@ -92,12 +94,12 @@ public class PlantActivity extends AppCompatActivity implements AsyncResponse1 {
         //this to set delegate/listener back to this class
         getPlantInfo.delegate = this;
 
+        textPlantList = findViewById(R.id.textViewPlantList);
         plantsNameListView = findViewById(R.id.plantsNameListView);
-        refreshButton = findViewById(R.id.buttonRefresh);
         imgAddPlant = findViewById(R.id.imageButtonAdd);
         imgBT = findViewById(R.id.imageBT);
 
-        refreshButton.setEnabled(false);
+//        refreshButton.setEnabled(false);
         // Add back button
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -113,7 +115,7 @@ public class PlantActivity extends AppCompatActivity implements AsyncResponse1 {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        refreshButton.setEnabled(true);
+//        refreshButton.setEnabled(true);
         imgAddPlant.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -121,25 +123,25 @@ public class PlantActivity extends AppCompatActivity implements AsyncResponse1 {
             }
         });
 
-        refreshButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                refreshButton.setEnabled(false);
-                try {
-                    ViewGroup layout = (ViewGroup) refreshButton.getParent();
-                    layout.removeView(refreshButton);
-                    refreshData();
-                    finish();
-                    overridePendingTransition(0, 0);
-                    startActivity(getIntent());
-                    overridePendingTransition(0, 0);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                refreshButton.setEnabled(true);
-
-            }
-        });
+//        refreshButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                refreshButton.setEnabled(false);
+//                try {
+//                    ViewGroup layout = (ViewGroup) refreshButton.getParent();
+//                    layout.removeView(refreshButton);
+//                    refreshData();
+//                    finish();
+//                    overridePendingTransition(0, 0);
+//                    startActivity(getIntent());
+//                    overridePendingTransition(0, 0);
+//                } catch (JSONException e) {
+//                    e.printStackTrace();
+//                }
+//                refreshButton.setEnabled(true);
+//
+//            }
+//        });
 
 
         /*
@@ -163,11 +165,6 @@ public class PlantActivity extends AppCompatActivity implements AsyncResponse1 {
 //            }
 //        });
 
-    }
-
-    public void goToBluetooth() {
-        Intent intent = new Intent(PlantActivity.this, BluetoothActivity.class);
-        startActivity(intent);
     }
 
     public void goToNewPlantActivity(){

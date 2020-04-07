@@ -99,11 +99,11 @@ public class MonitoringScreen extends Activity {
     }
 
     public void setupUI() {
-        mTxtReceive = findViewById(R.id.txtReceive);
-        chkScroll = findViewById(R.id.chkScroll);
-        chkReceiveText = findViewById(R.id.chkReceiveText);
+//        mTxtReceive = findViewById(R.id.txtReceive);
+//        chkScroll = findViewById(R.id.chkScroll);
+//        chkReceiveText = findViewById(R.id.chkReceiveText);
 //        scrollView = findViewById(R.id.viewScroll);
-        mBtnClearInput = findViewById(R.id.btnClearInput);
+//        mBtnClearInput = findViewById(R.id.btnClearInput);
         mBtnBack = findViewById(R.id.btnBack);
         mTxtReading = findViewById(R.id.textViewRead);
     }
