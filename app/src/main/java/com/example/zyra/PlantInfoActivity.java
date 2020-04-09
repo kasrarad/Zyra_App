@@ -88,6 +88,7 @@ public class PlantInfoActivity extends AppCompatActivity {
     String plantName;
     String plantSpecies;
     String plantPreviousMoisture;
+    String plantImage;
 
     private ProgressDialog progressDialog;
 
@@ -123,25 +124,29 @@ public class PlantInfoActivity extends AppCompatActivity {
         System.out.println("nameByUser: " + plantName);
         textMyPlantName.setText(plantName);
 
-
         plantSpecies = getIntent().getStringExtra("nameBySpecies");
         textMyPlantType.setText(plantSpecies);
-
         System.out.println("Plant Species:" + plantSpecies);
 
         plantPreviousMoisture = getIntent().getStringExtra("previousMoisture");
         System.out.println("Plant Moisture: " + plantPreviousMoisture);
 
-        if(plantPreviousMoisture.charAt(0) == '['){
+        if (plantPreviousMoisture.charAt(0) == '[') {
 
             plantPreviousMoisture = "000000000000000000000000000";
         }
         System.out.println("Plant Moisture: " + plantPreviousMoisture);
 
+        plantImage = getIntent().getStringExtra("image");
+        if(!plantImage.equals("")){
+            Uri uri = Uri.parse(plantImage);
+            circleImgPlant.setImageURI(uri);
+        }
 
         setGraph();
+    }
 
-
+/*
         btnImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -356,15 +361,15 @@ public class PlantInfoActivity extends AppCompatActivity {
 //        }
 //        super.onActivityResult(requestCode, resultCode, data);
     }
-
+*/
     public void setupUI() {
         textMyPlantName = findViewById(R.id.textViewPlantName);
         textMyPlantType = findViewById(R.id.textViewPlantType);
-        btnConfirm = findViewById(R.id.buttonConfirm);
-        btnImage = findViewById(R.id.buttonImage);
+       // btnConfirm = findViewById(R.id.buttonConfirm);
+       // btnImage = findViewById(R.id.buttonImage);
 //        btnSearch = findViewById(R.id.search);
 //        btnConnect = findViewById(R.id.connect);
-        circleImgPlant = findViewById(R.id.imagePlant);
+        circleImgPlant = findViewById(R.id.plantImage);
 
         progressDialog = new ProgressDialog(PlantInfoActivity.this);
         progressDialog.setMessage("Uploading Image . . .");
