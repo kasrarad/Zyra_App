@@ -30,6 +30,7 @@ public class PlantListViewAdapter extends ArrayAdapter<String> {
     ArrayList<String> plantsName;
     static ArrayList<String> plantSpecies;
     static public ArrayList<String> plantsPreviousMoisture;
+    static ArrayList<String> plantsImage;
     Context context;
 
     public PlantListViewAdapter(@NonNull Context context, ArrayList<String> plantsName) {
@@ -45,11 +46,12 @@ public class PlantListViewAdapter extends ArrayAdapter<String> {
         this.context = context;
     }
 
-    public PlantListViewAdapter(@NonNull Context context, ArrayList<String> plantsName, ArrayList<String> plantSpecies, ArrayList<String> plantsPreviousMoisture) {
+    public PlantListViewAdapter(@NonNull Context context, ArrayList<String> plantsName, ArrayList<String> plantSpecies, ArrayList<String> plantsPreviousMoisture, ArrayList<String> plantsImage) {
         super(context, R.layout.plant_list_item);
         this.plantsName = plantsName;
         this.plantSpecies = plantSpecies;
         this.plantsPreviousMoisture = plantsPreviousMoisture;
+        this.plantsImage = plantsImage;
         this.context = context;
     }
 
@@ -117,6 +119,7 @@ public class PlantListViewAdapter extends ArrayAdapter<String> {
                     intent.putExtra("nameByUser", plantsName.get(position));
                     intent.putExtra("nameBySpecies", plantSpecies.get(position));
                     intent.putExtra("previousMoisture", plantsPreviousMoisture.get(position));
+                    intent.putExtra("image", plantsImage.get(position));
                     context.startActivity(intent);
                 }
             });

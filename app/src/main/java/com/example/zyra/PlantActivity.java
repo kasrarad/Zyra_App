@@ -63,6 +63,7 @@ public class PlantActivity extends AppCompatActivity implements AsyncResponse1 {
     protected ArrayList<String> plantNames;
     protected ArrayList<String> plantSpecies;
     protected ArrayList<String> plantPrevMoi;
+    protected ArrayList<String> plantImage;
     LinkedList<Integer> moistureData=new LinkedList<Integer>();
     int plantListSize;
     int time = 0;
@@ -177,7 +178,7 @@ public class PlantActivity extends AppCompatActivity implements AsyncResponse1 {
         if (output.size() > 0) {
             adapter = new PlantListViewAdapter(PlantActivity.this, output);
             plantsNameListView.setAdapter(adapter);
-            adapter = new PlantListViewAdapter(PlantActivity.this ,plantNames, plantSpecies , plantPrevMoi);
+            adapter = new PlantListViewAdapter(PlantActivity.this ,plantNames, plantSpecies , plantPrevMoi, plantImage);
         } else {
             Toast.makeText(PlantActivity.this, "No plants", Toast.LENGTH_SHORT).show();
         }
@@ -252,6 +253,7 @@ public class PlantActivity extends AppCompatActivity implements AsyncResponse1 {
                     plantNames = new ArrayList<>();
                     plantSpecies = new ArrayList<>();
                     plantPrevMoi = new ArrayList<>();
+                    plantImage = new ArrayList<>();
                     //plantsNameListView = (ListView) findViewById(R.id.plantsNameListView);
                     JSONObject jasonResult = new JSONObject(result.substring(result.indexOf("{"), result.lastIndexOf("}") + 1));
 
@@ -271,14 +273,13 @@ public class PlantActivity extends AppCompatActivity implements AsyncResponse1 {
                             image = plant.getString("image");
                             wiki = plant.getString("wiki");
 
-
-
                             //line is what will be displayed on screen
                             String line = nameByUser + "\n" + moisture + "% Moisture";
                             allPlants.add(line);
                             plantNames.add(nameByUser);
                             plantSpecies.add(nameBySpecies);
                             plantPrevMoi.add(previousMoisturesLevel);
+                            plantImage.add(image);
                         }
 
                         delegate.processFinish(allPlants);
