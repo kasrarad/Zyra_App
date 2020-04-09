@@ -354,11 +354,7 @@ public class PlantActivity extends AppCompatActivity implements AsyncResponse1 {
             hour = 0;
         }
 
-
-        if(hour % 2 != 0){
-//            System.out.println("odd? ");
-            hour--;
-        }
+        hour = hour * 2;
 
 
         JSONObject jasonResult = new JSONObject(resultNew.substring(resultNew.indexOf("{"), resultNew.lastIndexOf("}") + 1));
@@ -411,14 +407,17 @@ public class PlantActivity extends AppCompatActivity implements AsyncResponse1 {
                 System.out.println("Char at index 0: " + previousMoisturesLevel.charAt(i));
                 if(previousMoisturesLevel.charAt(0) == '['){
 
-                    System.out.println("replace this char");
                     for(int j = 0 ; j < previousMoisturesLevel.length() ; j++){
 
-                        previousMoisturesLevel ="000000000000000000000000";
+                        previousMoisturesLevel ="000000000000000000000000000000000000000000000000";
                     }
                 }
                 //is now 2 chars
                 previousString += currentMoisture.get(i);
+
+                if (previousString == "00"){
+                    previousString = "01";
+                }
 
                 //Change the string at value (hour) and (Hour + 1)
                 //We retrieve these values when creating the graph
