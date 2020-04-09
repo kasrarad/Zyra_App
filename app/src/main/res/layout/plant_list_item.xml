@@ -9,35 +9,43 @@
     <RelativeLayout
 
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="73dp"
         android:layout_margin="4dp">
 
+        <ImageView
+            android:id="@+id/plantImg"
+            android:layout_width="103dp"
+            android:layout_height="match_parent"
+            android:src="@drawable/login_icon" />
+
         <TextView
+            android:id="@+id/textViewPlantName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
-            android:layout_marginTop="-3dp"
+            android:layout_marginStart="3dp"
+            android:layout_marginTop="5dp"
+            android:layout_toEndOf="@+id/plantImg"
             android:text="Plant X"
             android:textColor="@android:color/black"
             android:textSize="20sp"
-            android:textStyle="bold"
-            android:id="@+id/textViewPlantName"/>
+            android:textStyle="bold" />
 
         <Button
             android:id="@+id/EditPlantButton"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_alignParentEnd="true"
             android:layout_marginEnd="0dp"
             android:text="Edit" />
 
         <ImageButton
             android:id="@+id/imageBT"
-            android:layout_width="41dp"
-            android:layout_height="47dp"
+            android:layout_width="61dp"
+            android:layout_height="70dp"
             android:layout_alignStart="@+id/EditPlantButton"
             android:layout_alignParentTop="true"
-            android:layout_marginStart="-56dp"
+            android:layout_marginStart="-68dp"
             android:layout_marginTop="3dp"
             android:layout_marginEnd="10dp"
             app:srcCompat="@drawable/ic_icon" />
