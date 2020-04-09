@@ -118,7 +118,7 @@ public class EditPlants extends AsyncTask<String, Void, String> {
             if (success == 1) {
                 Intent intent = new Intent (context, PlantActivity.class);
                 context.startActivity(intent);
-                Toast.makeText(context, "Plant Edited", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "Plant Saved!", Toast.LENGTH_SHORT).show();
             } else{
                 Intent intent = new Intent (context, PlantActivity.class);
                 context.startActivity(intent);

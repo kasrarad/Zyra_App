@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+<!--    <LinearLayout-->
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <Button
+            android:id="@+id/btnBack"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="0dp"
+            android:text="Back"/>
+
+<!--        <Button-->
+<!--            android:id="@+id/btnClearInput"-->
+<!--            android:layout_width="92dp"-->
+<!--            android:layout_height="fill_parent"-->
+<!--            android:layout_weight="5"-->
+<!--            android:text="Clear Input" />-->
+
+
+
+
+<!--    </LinearLayout>-->
+
+<!--    <LinearLayout-->
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+<!--        <CheckBox-->
+<!--            android:id="@+id/chkScroll"-->
+<!--            android:layout_width="83dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_margin="0dp"-->
+<!--            android:checked="true"-->
+<!--            android:text="Scroll" />-->
+
+<!--        <CheckBox-->
+<!--            android:id="@+id/chkReceiveText"-->
+<!--            android:layout_width="83dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:checked="true"-->
+<!--            android:text="Read" />-->
+
+<!--        <ScrollView-->
+<!--            android:id="@+id/viewScroll"-->
+<!--            android:layout_width="fill_parent"-->
+<!--            android:layout_height="0dp"-->
+<!--            android:layout_weight="1" >-->
+
+    <TextView
+        android:id="@+id/textViewRead"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="167dp"
+        android:layout_marginTop="138dp"
+        android:text="TextView"
+        android:textSize="20dp"
+        android:gravity="center"/>
+
+    <!--        </ScrollView>-->
+
+<!--    </LinearLayout>-->
+
+
+
+
+</RelativeLayout>
