@@ -41,9 +41,6 @@
             android:name=".BlueToothTestActivity"
             android:parentActivityName=".MainActivity" />
         <activity
-            android:name=".CreditsActivity"
-            android:parentActivityName=".MainActivity" />
-        <activity
             android:name=".AboutUsActivity"
             android:parentActivityName=".MainActivity" />
         <activity

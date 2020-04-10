@@ -3,12 +3,15 @@ package com.example.zyra.PlantsListView;
 import android.content.Context;
 import android.content.Intent;
 
+import android.media.Image;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -123,6 +126,7 @@ public class PlantListViewAdapter extends ArrayAdapter<String> {
                     context.startActivity(intent);
                 }
             });
+
 
             convertView.setTag(viewHolder);
         } else{

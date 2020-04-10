@@ -13,7 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.zyra.LocalDatabase.DatabaseHelper;
 
-public class SettingsActivity extends AppCompatActivity {
+public class SettingsActivity extends AppCompatActivity implements DialogLogout.DialogLogoutListener {
 
     protected Button buttonLogOut;
 
@@ -42,14 +42,8 @@ public class SettingsActivity extends AppCompatActivity {
         buttonLogOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Integer deleteRow = databaseHelper.deleteUser(userID);
+                openDialog();
 
-                if(deleteRow > 0)
-                    Toast.makeText(SettingsActivity.this, "SIGNED OUT", Toast.LENGTH_SHORT).show();
-                else
-                    Toast.makeText(SettingsActivity.this, "ERROR IN SIGN OUT", Toast.LENGTH_SHORT).show();
-
-                goToLoginSignOut();
             }
         });
 
@@ -62,5 +56,23 @@ public class SettingsActivity extends AppCompatActivity {
     public void goToLoginSignOut(){
         Intent intent = new Intent(SettingsActivity.this, LoginActivity.class);
         startActivity(intent);
+    }
+
+    public void openDialog() {
+        DialogLogout dialogLogout = new DialogLogout();
+        dialogLogout.show(getSupportFragmentManager(), "Dialog");
+    }
+
+    @Override
+    public void onConfirmClicked() {
+
+        Integer deleteRow = databaseHelper.deleteUser(userID);
+
+        if(deleteRow > 0)
+            Toast.makeText(SettingsActivity.this, "SIGNED OUT", Toast.LENGTH_SHORT).show();
+        else
+            Toast.makeText(SettingsActivity.this, "ERROR IN SIGN OUT", Toast.LENGTH_SHORT).show();
+
+        goToLoginSignOut();
     }
 }
