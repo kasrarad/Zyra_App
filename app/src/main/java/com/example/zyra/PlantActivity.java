@@ -7,8 +7,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -16,8 +14,6 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.zyra.Bluetooth.BluetoothActivity;
-import com.example.zyra.Bluetooth.InstructionsActivity;
 import com.example.zyra.Database.EditMoisture;
 import com.example.zyra.PlantsListView.PlantListViewAdapter;
 
@@ -41,8 +37,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Random;
-
-import pl.droidsonroids.gif.GifDrawable;
 
 interface AsyncResponse1 {
     void processFinish(ArrayList<String> output);
