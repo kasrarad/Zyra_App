@@ -17,9 +17,15 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
+        <activity android:name=".Bluetooth.BluetoothActivity"
+            android:parentActivityName=".PlantActivity"/>
+        <activity android:name=".Bluetooth.InstructionsActivity"
+            android:parentActivityName=".MainActivity"/>
         <activity android:name=".Networking"/>
         <activity android:name=".MoistureActivity"
             android:parentActivityName=".PlantActivity"/>
+
+        <activity android:name=".Bluetooth.MonitoringScreen" />
 
         <activity
             android:name=".EditPlantActivity"

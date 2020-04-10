@@ -9,9 +9,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.zyra.Bluetooth.InstructionsActivity;
 import com.example.zyra.LocalDatabase.DatabaseHelper;
 
 import java.util.List;
@@ -20,14 +22,12 @@ public class MainActivity extends AppCompatActivity {
 
     protected ImageView imageViewLogo;
     protected ImageView imageSakuraTop;
-    protected ImageView imageSakuraBtLft;
-    protected ImageView imageSakuraBtRgt;
     protected Button buttonPlantList;
     protected Button buttonSettings;
     protected Button buttonAboutUs;
-    protected Button buttonCredits;
-    protected Button blueToothActivityButton;
-    protected TextView textViewAppName;
+    protected Button buttonInstructions;
+//    protected Button blueToothActivityButton;
+//    protected TextView textViewAppName;
 
     protected DatabaseHelper databaseHelper;
 
@@ -66,8 +66,6 @@ public class MainActivity extends AppCompatActivity {
     public void setupUI(){
         imageViewLogo = findViewById(R.id.imageViewLogo);
         imageSakuraTop = findViewById(R.id.imageSakuraTop);
-        imageSakuraBtLft = findViewById(R.id.imageSakuraLeftBt);
-        imageSakuraBtRgt = findViewById(R.id.imageSakuraRightBt);
 
     }
 
@@ -75,9 +73,9 @@ public class MainActivity extends AppCompatActivity {
         buttonPlantList = findViewById(R.id.btnPlantList);
         buttonSettings = findViewById(R.id.btnSettings);
         buttonAboutUs = findViewById(R.id.btnAboutUs);
-        buttonCredits = findViewById(R.id.btnCredits);
+        buttonInstructions = findViewById(R.id.btnInstructions);
 
-        blueToothActivityButton = findViewById(R.id.bluetoothActivityButton);
+//        blueToothActivityButton = findViewById(R.id.bluetoothActivityButton);
 
         buttonPlantList.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -86,10 +84,10 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        buttonCredits.setOnClickListener(new View.OnClickListener() {
+        buttonInstructions.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                goToCredits();
+                goToInstructions();
             }
         });
 
@@ -107,12 +105,12 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        blueToothActivityButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                goToBlueToothTest();
-            }
-        });
+//        blueToothActivityButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                goToBlueToothTest();
+//            }
+//        });
     }
 
     public void goToSettings(){
@@ -125,8 +123,8 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void goToCredits(){
-        Intent intent = new Intent(MainActivity.this, CreditsActivity.class);
+    public void goToInstructions(){
+        Intent intent = new Intent(MainActivity.this, InstructionsActivity.class);
         startActivity(intent);
     }
 
@@ -134,10 +132,10 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(MainActivity.this, AboutUsActivity.class);
         startActivity(intent);
     }
-
-    public void goToBlueToothTest(){
-        Intent intent = new Intent(MainActivity.this, BlueToothTestActivity.class);
-        startActivity(intent);
-    }
+//
+//    public void goToBlueToothTest(){
+//        Intent intent = new Intent(MainActivity.this, BlueToothTestActivity.class);
+//        startActivity(intent);
+//    }
 
 }

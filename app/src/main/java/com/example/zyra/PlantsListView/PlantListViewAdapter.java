@@ -8,12 +8,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 
+import com.example.zyra.Bluetooth.BluetoothActivity;
 import com.example.zyra.EditPlantActivity;
 import com.example.zyra.PlantInfoActivity;
 import com.example.zyra.Plants;
@@ -28,6 +30,7 @@ public class PlantListViewAdapter extends ArrayAdapter<String> {
     ArrayList<String> plantsName;
     static ArrayList<String> plantSpecies;
     static public ArrayList<String> plantsPreviousMoisture;
+    static ArrayList<String> plantsImage;
     Context context;
 
     public PlantListViewAdapter(@NonNull Context context, ArrayList<String> plantsName) {
@@ -43,11 +46,12 @@ public class PlantListViewAdapter extends ArrayAdapter<String> {
         this.context = context;
     }
 
-    public PlantListViewAdapter(@NonNull Context context, ArrayList<String> plantsName, ArrayList<String> plantSpecies, ArrayList<String> plantsPreviousMoisture) {
+    public PlantListViewAdapter(@NonNull Context context, ArrayList<String> plantsName, ArrayList<String> plantSpecies, ArrayList<String> plantsPreviousMoisture, ArrayList<String> plantsImage) {
         super(context, R.layout.plant_list_item);
         this.plantsName = plantsName;
         this.plantSpecies = plantSpecies;
         this.plantsPreviousMoisture = plantsPreviousMoisture;
+        this.plantsImage = plantsImage;
         this.context = context;
     }
 
@@ -69,6 +73,7 @@ public class PlantListViewAdapter extends ArrayAdapter<String> {
 //            viewHolder.moistureButton = (Button) convertView.findViewById(R.id.MoistureButton);
             viewHolder.EditPlantButton = (Button) convertView.findViewById(R.id.EditPlantButton);
             viewHolder.textViewPlantName = (TextView) convertView.findViewById(R.id.textViewPlantName);
+            viewHolder.PlantBluetooth = (ImageButton) convertView.findViewById(R.id.imageBT);
 //
 //            System.out.println("PLANT SPECIES: " + plantSpecies);
 //            System.out.println(" AT POSITION: " + plantSpecies.get(position));
@@ -94,6 +99,15 @@ public class PlantListViewAdapter extends ArrayAdapter<String> {
                 }
             });
 
+            viewHolder.PlantBluetooth.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(context, BluetoothActivity.class);
+                    intent.putExtra("nameByUser", plantsName.get(position));
+                    context.startActivity(intent);
+                }
+            });
+
             viewHolder.textViewPlantName.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -105,6 +119,7 @@ public class PlantListViewAdapter extends ArrayAdapter<String> {
                     intent.putExtra("nameByUser", plantsName.get(position));
                     intent.putExtra("nameBySpecies", plantSpecies.get(position));
                     intent.putExtra("previousMoisture", plantsPreviousMoisture.get(position));
+                    intent.putExtra("image", plantsImage.get(position));
                     context.startActivity(intent);
                 }
             });
