@@ -24,7 +24,9 @@
         android:id="@+id/textViewAboutText"
         android:layout_width="292dp"
         android:layout_height="195dp"
-        android:text="At Zyra, we believe that there is a way for home gardener to look after their plants without having to constantly worry about their plants. We're obsessively passionate about .."
+        android:text="With Zyra, we believe that this app is the solution to every plant enthusiasts' main issue: Keeping their plants alive.\nWe're obsessively passionate on satisfying customers' needs for their plants."
+
+
         android:textColor="@color/design_default_color_primary_dark"
         android:textSize="20dp"
         app:layout_constraintBottom_toBottomOf="parent"

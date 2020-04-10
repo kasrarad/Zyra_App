@@ -2,11 +2,14 @@ package com.example.zyra;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -38,9 +41,13 @@ public class LoginActivity extends AppCompatActivity {
     protected EditText editPw;
     protected Button btnRegister;
     protected Button btnLogin;
+    private CheckBox checkBoxRememberMe;
 
     protected String[] userData = new String[4];
     protected DatabaseHelper databaseHelper;
+
+    private SharedPreferences sharedPreferences;
+    private static final String PREFS_NAME = "PrefsFile";
 
     private static final String TAG = "LoginActivity";
 
@@ -53,6 +60,9 @@ public class LoginActivity extends AppCompatActivity {
         getSupportActionBar().setTitle("Login");
 
         setupUI();
+
+        sharedPreferences = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+        getPreferencesData();
 
         databaseHelper = new DatabaseHelper(this);
 
@@ -79,12 +89,36 @@ public class LoginActivity extends AppCompatActivity {
                     String usernameValue = editUsername.getText().toString();
                     String passwordValue = editPw.getText().toString();
 
-                    if(usernameValue.isEmpty() || passwordValue.isEmpty())
-                        Toast.makeText(LoginActivity.this, "Please enter your information", Toast.LENGTH_SHORT).show();
-                    else{
-                        Login login = new Login(LoginActivity.this);
-                        login.execute(usernameValue, passwordValue);
+                    if (!checkBoxRememberMe.isChecked()) {
+
+                        if(usernameValue.isEmpty() || passwordValue.isEmpty() ) {
+                            Toast.makeText(LoginActivity.this, "Please enter your information", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Login login = new Login(LoginActivity.this);
+                            login.execute(usernameValue, passwordValue);
+                        }
+
+                    } else {
+                        if(usernameValue.isEmpty() || passwordValue.isEmpty() ) {
+                            Toast.makeText(LoginActivity.this, "Please enter your information", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Boolean boolIsChecked = checkBoxRememberMe.isChecked();
+                            SharedPreferences.Editor editor = sharedPreferences.edit();
+                            editor.putString("pref_name", editUsername.getText().toString());
+                            editor.putBoolean("pref_check", boolIsChecked);
+                            editor.apply();
+                            Toast.makeText(LoginActivity.this, "Checked!", Toast.LENGTH_SHORT).show();
+                            Login login = new Login(LoginActivity.this);
+                            login.execute(usernameValue, passwordValue);
+                        }
                     }
+
+//                    if(usernameValue.isEmpty() || passwordValue.isEmpty())
+//                        Toast.makeText(LoginActivity.this, "Please enter your information", Toast.LENGTH_SHORT).show();
+//                    else{
+//                        Login login = new Login(LoginActivity.this);
+//                        login.execute(usernameValue, passwordValue);
+//                    }
                 }
             });
         }
@@ -102,6 +136,7 @@ public class LoginActivity extends AppCompatActivity {
         editPw = findViewById(R.id.editTextPassword);
         btnLogin = findViewById(R.id.btnLogin);
         btnRegister = findViewById(R.id.btnRegister);
+        checkBoxRememberMe = findViewById(R.id.checkBoxRemember);
     }
 
     //Login and user's info
@@ -205,5 +240,16 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
+    private void getPreferencesData() {
+        SharedPreferences sp = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+        if (sp.contains("pref_name")) {
+            String u = sp.getString("pref_name", "not found.");
+            editUsername.setText(u);
+        }
+        if (sp.contains("pref_name")) {
+            Boolean bool = sp.getBoolean("pref_check", false);
+            checkBoxRememberMe.setChecked(bool);
+        }
+    }
 
 }
