@@ -141,7 +141,8 @@ public class PlantInfoActivity extends AppCompatActivity {
         plantPreviousMoisture = getIntent().getStringExtra("previousMoisture");
         System.out.println("Plant Moisture: " + plantPreviousMoisture);
 
-        if ( plantPreviousMoisture.charAt(0) == '[' || (plantPreviousMoisture.length() < 47) ) {
+        //prevent bugs for the graph
+        if ( plantPreviousMoisture.charAt(0) == '[' || (plantPreviousMoisture.length() < 48) ) {
 
             plantPreviousMoisture = "";
             for(int i = 0; i < 48 ;i ++){
