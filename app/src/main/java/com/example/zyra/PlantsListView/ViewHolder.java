@@ -6,11 +6,15 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class ViewHolder {
 
     //    Button moistureButton;
     Button EditPlantButton;
     ImageButton PlantBluetooth;
     TextView textViewPlantName;
+    ImageView plantSyncImg;
+    CircleImageView plantImg;
 
 }
