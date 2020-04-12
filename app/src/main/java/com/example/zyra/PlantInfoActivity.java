@@ -127,7 +127,7 @@ public class PlantInfoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_plantinfo);
         setupUI();
-        getActionBar().setTitle("To My Plant List");
+        getSupportActionBar().setTitle("My Plant List");
 
         // get plant's name
         plantName = getIntent().getStringExtra("nameByUser");

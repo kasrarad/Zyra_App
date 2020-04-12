@@ -61,8 +61,6 @@ public class BluetoothActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bluetooth);
 
-        getActionBar().setTitle("To My Plant List");
-
         textInstructions = findViewById(R.id.textViewInstructions);
         search = findViewById(R.id.search);
         connect = findViewById(R.id.connect);
