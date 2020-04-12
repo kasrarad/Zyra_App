@@ -48,6 +48,7 @@ public class PlantActivity extends AppCompatActivity implements AsyncResponse1 {
 //    protected Button refreshButton;
     protected ImageButton imgBT;
     protected TextView textPlantList;
+    protected TextView textAddPlant;
 
     GetPlantInfo getPlantInfo = new GetPlantInfo();
 
@@ -95,6 +96,7 @@ public class PlantActivity extends AppCompatActivity implements AsyncResponse1 {
         plantsNameListView = findViewById(R.id.plantsNameListView);
         imgAddPlant = findViewById(R.id.imageButtonAdd);
         imgBT = findViewById(R.id.imageBT);
+        textAddPlant = findViewById(R.id.textViewAddPlant);
 
 //        refreshButton.setEnabled(false);
         // Add back button

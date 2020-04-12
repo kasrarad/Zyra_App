@@ -21,10 +21,10 @@
         android:id="@+id/buttonImage"
         android:layout_width="47dp"
         android:layout_height="41dp"
-        android:layout_marginTop="136dp"
+        android:layout_marginTop="168dp"
         android:src="@drawable/ic_camera_alt_black_24dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.634"
+        app:layout_constraintHorizontal_bias="0.631"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
