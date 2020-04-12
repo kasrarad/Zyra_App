@@ -60,8 +60,6 @@ public class MainActivity extends AppCompatActivity {
 
     public void setupUI(){
         imageViewLogo = findViewById(R.id.imageViewLogo);
-        imageSakuraTop = findViewById(R.id.imageSakuraTop);
-
     }
 
     public void setButtons(){
