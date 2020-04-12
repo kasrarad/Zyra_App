@@ -2,6 +2,8 @@ package com.example.zyra.Bluetooth;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.time.LocalTime;
+import java.util.Date;
 import java.util.UUID;
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -10,6 +12,7 @@ import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.method.ScrollingMovementMethod;
@@ -23,6 +26,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.RequiresApi;
 import androidx.annotation.WorkerThread;
 
 import com.example.zyra.MainActivity;
@@ -62,6 +66,8 @@ public class MonitoringScreen extends Activity {
     private BluetoothDevice mDevice;
 
     private ProgressDialog progressDialog;
+
+    protected int time = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -142,31 +148,7 @@ public class MonitoringScreen extends Activity {
                         final String strInput = new String(buffer, 0, i);
                         reading = strInput;
 
-                        /*
-                         * If checked then receive text, better design would probably be to stop thread if unchecked and free resources, but this is a quick fix
-                         */
-//                        if (chkReceiveText.isChecked()) {
                             listenForData();
-//                           mTxtReceive.post(new Runnable() {
-//                               @Override
-//                               public void run() {
-//                                   mTxtReceive.append(strInput);
-//                                   int txtLength = mTxtReceive.getEditableText().length();
-//
-//                                   if(txtLength > mMaxChars){
-//                                       mTxtReceive.getEditableText().delete(0, txtLength - mMaxChars);
-//                                   }
-//
-////                                    if (chkScroll.isChecked()) { // Scroll only if this is checked
-////                                        scrollView.post(new Runnable() { // Snippet from http://stackoverflow.com/a/4612082/1287554
-////                                            @Override
-////                                            public void run() {
-//////                                                scrollView.fullScroll(View.FOCUS_DOWN);
-////                                            }
-////                                        }
-////                                    }
-//                                }
-//                            });
 
 
                     }
@@ -316,6 +298,7 @@ public class MonitoringScreen extends Activity {
             }
 
         Thread workerThread = new Thread(new Runnable() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
             public void run() {
                 while (!Thread.currentThread().isInterrupted() && !stopWorker) {
                     try {
@@ -329,19 +312,74 @@ public class MonitoringScreen extends Activity {
                                     byte[] encodedBytes = new byte[readBufferPosition];
                                     System.arraycopy(readBuffer, 0, encodedBytes, 0, encodedBytes.length);
                                     final String data = new String(encodedBytes, "US-ASCII");
+                                    time = LocalTime.now().getHour();
+                                    time = time * 2;
                                     readBufferPosition = 0;
                                     handler.post(new Runnable() {
                                         public void run() {
 
-                                            mTxtReading.setText(data);
-//                                            if(Result.getText().toString().equals("..")) {
-//                                                Result.setText(data);
-//                                            } else {
-//                                                Result.append("\n"+data);
-//                                            }
+                                            String moistureNumberOnly= data.replaceAll("[^0-9]", "");
+                                            if(Integer.parseInt(moistureNumberOnly) >= 100){
+                                                String data2  = "Moisture: 100%";
+                                                mTxtReading.setText(data2);
+                                                moistureNumberOnly = "100";
 
-                                            /* You also can use Result.setText(data); it won't display multilines
-                                             */
+                                            }
+                                            else{
+                                                mTxtReading.setText(data);
+                                            }
+
+                                            //**********************************
+                                            //**SEND THIS PART TO THE DATABASE**
+                                            //**********************************
+
+                                            //Send moistureNumberOnly to the database at current moisture level
+                                           //THIS STRING -> moistureNumberOnly;
+
+
+
+                                            //This is for previous moisture levels
+                                            String previousMoisture = moistureNumberOnly;
+                                            if(Integer.parseInt(moistureNumberOnly) > 99){
+                                                previousMoisture = "99"; //get it to 2 chars in length
+                                            }
+
+                                            if( Integer.parseInt(moistureNumberOnly) < 10){
+                                                //get it to 2 chars in length
+                                                previousMoisture = "0";
+                                                previousMoisture += moistureNumberOnly;
+                                            }
+
+                                            if (Integer.parseInt(previousMoisture) < 1){
+                                                previousMoisture = "01";
+                                            }
+
+                                            //***************************************************************
+                                            //**UNCOMMENT BELOW, ITS IMPORTANT FOR KASRA TO SEND INFO TO DB**
+                                            //***************************************************************
+
+//                                           // Here it needs to pull the previousMoistureLevel string already in the database to the string previousMoistureLevel
+//                                          //  String previousMoistureLevel = previous moisture level String from database
+//
+//                                            //this is just to prevent bugs/errors
+//                                            if ( previousMoistureLevel.charAt(0) == '[' || (previousMoistureLevel.length() < 48) ) {
+//
+//                                                previousMoistureLevel = "";
+//                                                for(int i = 0; i < 48 ;i ++){
+//                                                    previousMoistureLevel +="0";
+//                                                }
+//
+//                                            }
+//
+//                                            //replace part of the string based on current time
+//                                            StringBuilder replacePrev = new StringBuilder(previousMoistureLevel);
+//                                            replacePrev.setCharAt(time, previousMoisture.charAt(0));
+//                                            replacePrev.setCharAt((time + 1),previousMoisture.charAt(1));
+//
+//                                            //Now send replacePrev string to the database in the part of the previous moisture readings
+//                                            //Database Previous moisture readings  = replacePrev
+
+
 
                                         }
                                     });
