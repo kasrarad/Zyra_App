@@ -130,12 +130,9 @@ public class PlantInfoActivity extends AppCompatActivity {
         getSupportActionBar().setTitle("My Plant List");
 
         // get plant's name
-        String badPlantName = getIntent().getStringExtra("nameByUser");
-        String[] plantNameSplit = badPlantName.split("\n");
-        plantName = plantNameSplit[0];
-        System.out.println(plantName);
+        plantName = getIntent().getStringExtra("nameByUser");
+        System.out.println("nameByUser: " + plantName);
         textMyPlantName.setText(plantName);
-
 
         plantSpecies = getIntent().getStringExtra("nameBySpecies");
         textMyPlantType.setText(plantSpecies);
