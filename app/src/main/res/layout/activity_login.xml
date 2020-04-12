@@ -81,14 +81,5 @@
         android:textSize="22sp"
         android:layout_below="@id/btnLogin"/>
 
-    <CheckBox
-        android:id="@+id/checkBoxRemember"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="165dp"
-        android:text="Remember Username" />
-
 
 </RelativeLayout>

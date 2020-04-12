@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -21,6 +22,7 @@ public class SignupActivity extends AppCompatActivity {
     protected EditText editConfirmPw;
     protected Button btnRegister;
     protected Button btnCancel;
+    protected TextView textSignUp;
 
     private static final String TAG = "SignupActivity";
 
@@ -31,10 +33,7 @@ public class SignupActivity extends AppCompatActivity {
         setContentView(R.layout.activity_signup);
         Log.d(TAG, "onCreate: Started");
 
-        getSupportActionBar().setTitle("Sign Up");
-
         setupUI();
-
 
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -73,6 +72,7 @@ public class SignupActivity extends AppCompatActivity {
         editConfirmPw = findViewById(R.id.editTextConfirmPassword);
         btnRegister = findViewById(R.id.btnRegister);
         btnCancel = findViewById(R.id.btnCancel);
+        textSignUp = findViewById(R.id.textViewSignUp);
     }
 
     protected void goToLogin(){

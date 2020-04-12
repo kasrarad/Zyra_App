@@ -6,16 +6,20 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.zyra.Bluetooth.InstructionsActivity;
 import com.example.zyra.LocalDatabase.DatabaseHelper;
 
 public class SettingsActivity extends AppCompatActivity implements DialogLogout.DialogLogoutListener {
 
     protected Button buttonLogOut;
+    protected Button buttonInstructions;
+    protected Button buttonAboutUs;
 
     protected DatabaseHelper databaseHelper;
     protected String userID;
@@ -30,6 +34,7 @@ public class SettingsActivity extends AppCompatActivity implements DialogLogout.
         setupUI();
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle("To Home");
 
         databaseHelper = new DatabaseHelper(this);
 
@@ -47,14 +52,40 @@ public class SettingsActivity extends AppCompatActivity implements DialogLogout.
             }
         });
 
+        buttonInstructions.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goToInstructions();
+            }
+        });
+
+        buttonAboutUs.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goToAboutUs();
+            }
+        });
+
     }
 
     public void setupUI(){
         buttonLogOut = findViewById(R.id.btnSignOut);
+        buttonInstructions = findViewById(R.id.btnInstructions);
+        buttonAboutUs = findViewById(R.id.btnAboutUs);
     }
 
     public void goToLoginSignOut(){
         Intent intent = new Intent(SettingsActivity.this, LoginActivity.class);
+        startActivity(intent);
+    }
+
+    public void goToInstructions(){
+        Intent intent = new Intent(SettingsActivity.this, InstructionsActivity.class);
+        startActivity(intent);
+    }
+
+    public void goToAboutUs(){
+        Intent intent = new Intent(SettingsActivity.this, AboutUsActivity.class);
         startActivity(intent);
     }
 

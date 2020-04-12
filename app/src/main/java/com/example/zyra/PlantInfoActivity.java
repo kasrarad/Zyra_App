@@ -127,7 +127,7 @@ public class PlantInfoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_plantinfo);
         setupUI();
-
+        getSupportActionBar().setTitle("My Plant List");
 
         // get plant's name
         plantName = getIntent().getStringExtra("nameByUser");
@@ -141,8 +141,7 @@ public class PlantInfoActivity extends AppCompatActivity {
         plantPreviousMoisture = getIntent().getStringExtra("previousMoisture");
         System.out.println("Plant Moisture: " + plantPreviousMoisture);
 
-        //prevent bugs for the graph
-        if ( plantPreviousMoisture.charAt(0) == '[' || (plantPreviousMoisture.length() < 48) ) {
+        if ( plantPreviousMoisture.charAt(0) == '[' || (plantPreviousMoisture.length() < 47) ) {
 
             plantPreviousMoisture = "";
             for(int i = 0; i < 48 ;i ++){
