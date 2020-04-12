@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -11,9 +13,14 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_centerVertical="true"
-        android:layout_marginStart="0dp"
-        android:layout_marginTop="350dp"
-        android:text="Step 5. Press on the search button to locate the bluetooth device and connect to it. This will redirect you to the moisture monitoring page." />
+        android:layout_marginTop="416dp"
+        android:gravity="center"
+        android:text="Step 5. Press on the search button to locate the bluetooth device and connect to it. This will redirect you to the moisture reading page."
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textInstructions"
@@ -22,12 +29,15 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginStart="0dp"
         android:layout_marginTop="4dp"
+        android:gravity="center"
         android:text="To connect the bluetooth sensor to the phone, please follow the steps below."
         android:textSize="20dp"
-        tools:layout_editor_absoluteX="34dp"
-        tools:layout_editor_absoluteY="34dp" />
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textStep1"
@@ -35,9 +45,14 @@
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginStart="0dp"
-        android:layout_marginTop="93dp"
-        android:text="Step 1. Enable bluetooth on your device and go to the settings by clicking the button Settings below to locate the bluetooth device" />
+        android:layout_marginTop="92dp"
+        android:gravity="center"
+        android:text="Step 1. Enable bluetooth on your device and go to the settings by clicking the button Settings below to locate the bluetooth device"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textStep2"
@@ -45,9 +60,14 @@
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginStart="0dp"
-        android:layout_marginTop="175dp"
-        android:text="Step 2. Pair the bluetooth device to the phone." />
+        android:layout_marginTop="200dp"
+        android:gravity="center"
+        android:text="Step 2. Pair the bluetooth sensor 'HC-05' to the phone with the password: 1234"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textStep3"
@@ -55,9 +75,16 @@
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginStart="0dp"
-        android:layout_marginTop="216dp"
-        android:text="Step 3. Press the plant button below to go to the plant list page" />
+        android:layout_alignParentEnd="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="260dp"
+        android:gravity="center"
+        android:text="Step 3. Press the plant button below to go to the plant list page"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.466"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textStep4"
@@ -66,9 +93,14 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_centerVertical="true"
-        android:layout_marginStart="0dp"
-        android:layout_marginTop="299dp"
-        android:text="Step 4. Press on the bluetooth icon located next to the edit button." />
+        android:layout_marginTop="360dp"
+        android:gravity="center"
+        android:text="Step 4. Press on the bluetooth icon located next to the edit button."
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/btnSettings"
@@ -76,9 +108,13 @@
         android:layout_height="33dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="138dp"
-        android:text="Settings"
-        android:textSize="10dp" />
+        android:layout_marginTop="148dp"
+        android:gravity="center"
+        android:text="Bluetooth Settings"
+        android:textSize="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/btnPlant"
@@ -86,8 +122,13 @@
         android:layout_height="33dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="248dp"
-        android:text="Plant"
-        android:textSize="10dp" />
+        android:layout_marginTop="300dp"
+        android:gravity="center"
+        android:text="My Plants"
+        android:textSize="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-</RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

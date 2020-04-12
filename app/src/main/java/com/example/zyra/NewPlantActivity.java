@@ -67,8 +67,6 @@ public class NewPlantActivity extends AppCompatActivity {
         SharedPreferences sharedPreferences = getSharedPreferences("PlantName", Context.MODE_PRIVATE);
         userID = sharedPreferences.getString("userID", null);
 
-        getSupportActionBar().setTitle("Add a new plant");
-
         setupUI();
 
         btnCancelPlant.setOnClickListener(new View.OnClickListener() {

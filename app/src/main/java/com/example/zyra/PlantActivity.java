@@ -86,6 +86,8 @@ public class PlantActivity extends AppCompatActivity implements AsyncResponse1 {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_plantlist);
 
+        getSupportActionBar().setTitle("To Home");
+
         //this to set delegate/listener back to this class
         getPlantInfo.delegate = this;
 

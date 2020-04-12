@@ -11,6 +11,11 @@ import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.TextPaint;
+import android.text.method.LinkMovementMethod;
+import android.text.style.ClickableSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -24,6 +29,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.zyra.R;
@@ -37,6 +43,7 @@ public class BluetoothActivity extends AppCompatActivity {
     private Button search;
     private Button connect;
     private ListView listView;
+    private TextView textInstructions;
     private BluetoothAdapter mBTAdapter;
     private static final int BT_ENABLE_REQUEST = 10; // This is the code we use for BT Enable
     private static final int SETTINGS = 20;
@@ -54,12 +61,15 @@ public class BluetoothActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bluetooth);
 
-        search = (Button) findViewById(R.id.search);
-        connect = (Button) findViewById(R.id.connect);
+        getActionBar().setTitle("To My Plant List");
+
+        textInstructions = findViewById(R.id.textViewInstructions);
+        search = findViewById(R.id.search);
+        connect = findViewById(R.id.connect);
 
         connect.setVisibility(View.INVISIBLE);
 
-        listView = (ListView) findViewById(R.id.listview);
+        listView = findViewById(R.id.listview);
 
         if (savedInstanceState != null) {
             ArrayList<BluetoothDevice> list = savedInstanceState.getParcelableArrayList(DEVICE_LIST);
@@ -107,7 +117,28 @@ public class BluetoothActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        String text = "Before searching for your device, \nPlease follow the instructions written on this page";
+        SpannableString ss = new SpannableString(text);
+
+        ClickableSpan clickableSpan = new ClickableSpan() {
+            @Override
+            public void onClick(@NonNull View widget) {
+                goToInstructions();
+            }
+        };
+
+        ss.setSpan(clickableSpan, 81, 86, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        textInstructions.setText(ss);
+        textInstructions.setMovementMethod(LinkMovementMethod.getInstance());
+
     }
+
+
+
+
+
 
     protected void onPause() {
 // TODO Auto-generated method stub
@@ -314,4 +345,9 @@ public class BluetoothActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    public void goToInstructions() {
+        Intent intent = new Intent(BluetoothActivity.this, InstructionsActivity.class);
+        startActivity(intent);
+
+    }
 }
