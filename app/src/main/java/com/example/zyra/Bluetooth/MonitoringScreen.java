@@ -148,7 +148,7 @@ public class MonitoringScreen extends Activity {
                         final String strInput = new String(buffer, 0, i);
                         reading = strInput;
 
-                            listenForData();
+                        listenForData();
 
 
                     }
@@ -292,10 +292,10 @@ public class MonitoringScreen extends Activity {
 
     public void listenForData() {
 
-            try {
-                inStream = mBTSocket.getInputStream();
-            } catch (IOException e) {
-            }
+        try {
+            inStream = mBTSocket.getInputStream();
+        } catch (IOException e) {
+        }
 
         Thread workerThread = new Thread(new Runnable() {
             @RequiresApi(api = Build.VERSION_CODES.O)
@@ -334,7 +334,7 @@ public class MonitoringScreen extends Activity {
                                             //**********************************
 
                                             //Send moistureNumberOnly to the database at current moisture level
-                                           //THIS STRING -> moistureNumberOnly;
+                                            //THIS STRING -> moistureNumberOnly;
 
 
 
@@ -394,6 +394,6 @@ public class MonitoringScreen extends Activity {
                 }
             }
         });
-                workerThread.start();
+        workerThread.start();
     }
 }

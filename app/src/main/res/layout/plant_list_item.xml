@@ -42,7 +42,7 @@
         <ImageButton
             android:id="@+id/imageBT"
             android:layout_width="61dp"
-            android:layout_height="70dp"
+            android:layout_height="match_parent"
             android:layout_alignStart="@+id/EditPlantButton"
             android:layout_alignParentTop="true"
             android:layout_marginStart="-68dp"
