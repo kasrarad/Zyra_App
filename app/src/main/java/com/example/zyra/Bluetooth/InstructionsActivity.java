@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -24,6 +25,7 @@ public class InstructionsActivity extends AppCompatActivity {
     protected Button buttonSettings;
     protected Button buttonPlant;
 
+    protected ImageView imageBluetooth;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -59,6 +61,8 @@ public class InstructionsActivity extends AppCompatActivity {
 
         buttonSettings = findViewById(R.id.btnSettings);
         buttonPlant = findViewById(R.id.btnPlant);
+
+        imageBluetooth = findViewById(R.id.imageViewBluetooth);
     }
 
     public void goToBluetoothSettings() {

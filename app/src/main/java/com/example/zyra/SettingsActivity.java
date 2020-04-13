@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,6 +21,8 @@ public class SettingsActivity extends AppCompatActivity implements DialogLogout.
     protected Button buttonLogOut;
     protected Button buttonInstructions;
     protected Button buttonAboutUs;
+
+    protected ImageView imageBorder;
 
     protected DatabaseHelper databaseHelper;
     protected String userID;
@@ -72,6 +75,8 @@ public class SettingsActivity extends AppCompatActivity implements DialogLogout.
         buttonLogOut = findViewById(R.id.btnSignOut);
         buttonInstructions = findViewById(R.id.btnInstructions);
         buttonAboutUs = findViewById(R.id.btnAboutUs);
+
+        imageBorder = findViewById(R.id.imageViewBorder);
     }
 
     public void goToLoginSignOut(){

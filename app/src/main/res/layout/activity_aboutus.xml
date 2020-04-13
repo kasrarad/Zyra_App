@@ -5,6 +5,36 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <TextView
+        android:id="@+id/textViewContactTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="Contact Us"
+        android:textSize="25dp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewAboutText" />
+
+    <TextView
+        android:id="@+id/textViewContactText"
+        android:layout_width="388dp"
+        android:layout_height="126dp"
+
+
+        android:layout_marginTop="10dp"
+        android:text="We're obsessively passionate on satisfying customers' needs for their plants. If you have any comments or inquiries, we would love to hear from you. Please do not hesitate to contact us!"
+        android:textColor="@color/design_default_color_primary_dark"
+        android:textSize="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.478"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewContactTitle"
+        app:layout_constraintVertical_bias="0.0" />
+
     <ImageView
         android:id="@+id/imageViewGarden"
         android:layout_width="388dp"
@@ -22,17 +52,30 @@
 
     <TextView
         android:id="@+id/textViewAboutText"
-        android:layout_width="292dp"
-        android:layout_height="195dp"
-        android:text="With Zyra, we believe that this app is the solution to every plant enthusiasts' main issue: Keeping their plants alive.\nWe're obsessively passionate on satisfying customers' needs for their plants."
+        android:layout_width="382dp"
+        android:layout_height="146dp"
 
-
+        android:layout_marginTop="10dp"
+        android:text="With Zyra, we believe that this application is the solution to every plant enthusiasts' main issue: Keeping their plants alive. Our mission is to offer a product that is easy to use, yet efficient for any customer's personal use."
         android:textColor="@color/design_default_color_primary_dark"
         android:textSize="20dp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintHorizontal_bias="0.478"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.659" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewAboutTitle" />
+
+    <TextView
+        android:id="@+id/textViewAboutTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:text="About Us"
+        android:textSize="25dp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/textViewAboutText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageViewGarden" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

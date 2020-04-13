@@ -11,6 +11,9 @@ public class AboutUsActivity extends AppCompatActivity {
 
     protected ImageView imageGarden;
     protected TextView textAboutText;
+    protected TextView textAboutTitle;
+    protected TextView textContactText;
+    protected TextView textContactTitle;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -25,5 +28,8 @@ public class AboutUsActivity extends AppCompatActivity {
     public void setupUI() {
         imageGarden = findViewById(R.id.imageViewGarden);
         textAboutText = findViewById(R.id.textViewAboutText);
+        textAboutTitle = findViewById(R.id.textViewAboutTitle);
+        textContactText = findViewById(R.id.textViewContactText);
+        textContactTitle = findViewById(R.id.textViewAboutTitle);
     }
 }
