@@ -17,6 +17,7 @@ import java.util.List;
 
 public class NetworkMonitor extends BroadcastReceiver {
 
+    protected ArrayList<String> plantId;
     protected ArrayList<String> userID;
     protected ArrayList<String> nameBySpecies;
     protected ArrayList<String> nameByUser;
@@ -35,6 +36,7 @@ public class NetworkMonitor extends BroadcastReceiver {
             PlantDbHelper plantDbHelper = new PlantDbHelper(context);
             List<PlantInfoDB> plants = plantDbHelper.readFromLocalDatabase();
 
+            plantId = new ArrayList<>();
             userID = new ArrayList<>();
             nameBySpecies = new ArrayList<>();
             nameByUser = new ArrayList<>();
@@ -47,6 +49,7 @@ public class NetworkMonitor extends BroadcastReceiver {
 
             for (int i=0; i<plants.size(); i++){
                 if(plants.get(i).getSyncstatus() == PlantConfig.SYNC_STATUS_FAILED){
+                    Integer plantId = plants.get(i).getID();
                     String userId = plants.get(i).getUserID();
                     String nameBySpecies = plants.get(i).getNameBySpecies();
                     String nameByUser = plants.get(i).getNameByUser();
@@ -60,7 +63,7 @@ public class NetworkMonitor extends BroadcastReceiver {
                     //context.sendBroadcast(new Intent(PlantConfig.UI_UPDATE_BROADCAST));
                     Intent intent1 = new Intent(context, PlantActivity.class);
                     context.startActivity(intent1);
-                    PlantInfoDB plantInfoDB = new PlantInfoDB(userId, nameBySpecies, nameByUser, temperature, moisture, previousMoisturesLevel, image, wiki, PlantConfig.SYNC_STATUS_OK);
+                    PlantInfoDB plantInfoDB = new PlantInfoDB(plantId, userId, nameBySpecies, nameByUser, temperature, moisture, previousMoisturesLevel, image, wiki, PlantConfig.SYNC_STATUS_OK);
                     plantDbHelper.updateLocalDatabase(plantInfoDB);
                 }
             }

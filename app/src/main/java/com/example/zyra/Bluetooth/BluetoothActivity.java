@@ -37,6 +37,8 @@ public class BluetoothActivity extends AppCompatActivity {
     private Button search;
     private Button connect;
     private ListView listView;
+    protected String plantName;
+    protected String plantID;
     private BluetoothAdapter mBTAdapter;
     private static final int BT_ENABLE_REQUEST = 10; // This is the code we use for BT Enable
     private static final int SETTINGS = 20;
@@ -53,6 +55,10 @@ public class BluetoothActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bluetooth);
+
+        // get plant's name and ID
+        plantName = getIntent().getStringExtra("nameByUser");
+        plantID = getIntent().getStringExtra("plantID");
 
         search = (Button) findViewById(R.id.search);
         connect = (Button) findViewById(R.id.connect);
@@ -104,6 +110,8 @@ public class BluetoothActivity extends AppCompatActivity {
                 intent.putExtra(DEVICE_EXTRA, device);
                 intent.putExtra(DEVICE_UUID, mDeviceUUID.toString());
                 intent.putExtra(BUFFER_SIZE, mBufferSize);
+                intent.putExtra("plantID", plantID);
+                intent.putExtra("nameByUser", plantName);
                 startActivity(intent);
             }
         });

@@ -37,6 +37,8 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class PlantListViewAdapter extends ArrayAdapter<String> {
 
+    ArrayList<String> plantsText;
+    ArrayList<Integer> plantsID;
     ArrayList<String> plantsName;
     static ArrayList<String> plantSpecies;
     static public ArrayList<String> plantsPreviousMoisture;
@@ -66,8 +68,10 @@ public class PlantListViewAdapter extends ArrayAdapter<String> {
         this.context = context;
     }
 
-    public PlantListViewAdapter(@NonNull Context context, ArrayList<String> plantsName, ArrayList<String> plantSpecies, ArrayList<String> plantsPreviousMoisture, ArrayList<String> plantsImage, ArrayList<Integer> plantSyncStatus) {
+    public PlantListViewAdapter(@NonNull Context context, ArrayList<String> plantsText, ArrayList<Integer> plantsID, ArrayList<String> plantsName, ArrayList<String> plantSpecies, ArrayList<String> plantsPreviousMoisture, ArrayList<String> plantsImage, ArrayList<Integer> plantSyncStatus) {
         super(context, R.layout.plant_list_item);
+        this.plantsText = plantsText;
+        this.plantsID = plantsID;
         this.plantsName = plantsName;
         this.plantSpecies = plantSpecies;
         this.plantsPreviousMoisture = plantsPreviousMoisture;
@@ -121,16 +125,17 @@ public class PlantListViewAdapter extends ArrayAdapter<String> {
                         Intent intent = new Intent(context, EditPlantActivity.class);
                         // send the value(plant's name)
                         intent.putExtra("nameByUser", plantsName.get(position));
+                        intent.putExtra("plantsID", plantsID.get(position).toString());
                         context.startActivity(intent);
                     }
                 }
             });
 
-
             viewHolder.PlantBluetooth.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(context, BluetoothActivity.class);
+                    intent.putExtra("plantID", Integer.toString(position));
                     intent.putExtra("nameByUser", plantsName.get(position));
                     context.startActivity(intent);
                 }
@@ -157,8 +162,8 @@ public class PlantListViewAdapter extends ArrayAdapter<String> {
             viewHolder = (ViewHolder) convertView.getTag();
         }
 
-        viewHolder.textViewPlantName.setText(plantsName.get(position));
-        if(!plantsImage.get(position).equals("")){
+        viewHolder.textViewPlantName.setText(plantsText.get(position));
+        if(!plantsImage.get(position).equals(null)){
             Uri uri = Uri.parse(plantsImage.get(position));
             viewHolder.plantImg.setImageURI(uri);
         }

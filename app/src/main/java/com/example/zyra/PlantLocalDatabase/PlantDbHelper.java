@@ -155,11 +155,12 @@ public class PlantDbHelper extends SQLiteOpenHelper {
 
     }
 
-    public int updateLocalDatabase(PlantInfoDB plantInfoDB){
+    public void updateLocalDatabase(PlantInfoDB plantInfoDB){
 
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues contentValues = new ContentValues();
+        //contentValues.put(PlantConfig.COLUMN_KEY_ID, plantInfoDB.getUserID());
         contentValues.put(PlantConfig.COLUMN_USERID, plantInfoDB.getUserID());
         contentValues.put(PlantConfig.COLUMN_NAMEBYSPECIES, plantInfoDB.getNameBySpecies());
         contentValues.put(PlantConfig.COLUMN_NAMEBYUSER, plantInfoDB.getNameByUser());
@@ -171,8 +172,25 @@ public class PlantDbHelper extends SQLiteOpenHelper {
         contentValues.put(PlantConfig.SYNC_STATUS, plantInfoDB.getSyncstatus());
 
         // updating row
-        return db.update(PlantConfig.PLANT_TABLE_NAME, contentValues, PlantConfig.COLUMN_NAMEBYUSER + " = ?",
-                new String[] { plantInfoDB.getNameByUser() });
+        db.update(PlantConfig.PLANT_TABLE_NAME, contentValues,  PlantConfig.COLUMN_KEY_ID + " = ?",new String[] { plantInfoDB.getID().toString() });
+
+    }
+
+    // delete user
+    public Integer deletePlant(String nameByUser) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        Integer temp = 0;
+
+        try {
+
+            temp = db.delete(PlantConfig.PLANT_TABLE_NAME, PlantConfig.COLUMN_NAMEBYUSER + " = ?", new String[] { nameByUser });
+
+        } catch (SQLiteException e){
+            Log.d(TAG, "EXCEPTION: " + e);
+            Toast.makeText(context, "Operation Failed!: " + e, Toast.LENGTH_LONG).show();
+        }
+
+        return temp;
 
     }
 

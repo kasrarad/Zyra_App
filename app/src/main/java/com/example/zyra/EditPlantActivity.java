@@ -24,6 +24,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.zyra.Database.DeletePlants;
 import com.example.zyra.Database.EditPlants;
+import com.example.zyra.PlantLocalDatabase.PlantConfig;
+import com.example.zyra.PlantLocalDatabase.PlantDbHelper;
 import com.example.zyra.PlantsListView.PlantListViewAdapter;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.PermissionToken;
@@ -71,6 +73,7 @@ public class EditPlantActivity extends AppCompatActivity {
     String id, userID, nameBySpecies, nameByUser, temperature, moisture, previousMoisturesLevel, wiki;
 
     String image = "";
+    String plantID, plantName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,15 +91,18 @@ public class EditPlantActivity extends AppCompatActivity {
         editOldPlantType = findViewById(R.id.editTextOldType);
 
         // get plant's name
+        /*
         String badPlantName = getIntent().getStringExtra("nameByUser");
         String[] plantNameSplit = badPlantName.split("\n");
         String plantName = plantNameSplit[0];
         System.out.println(plantName);
+         */
+        plantName = getIntent().getStringExtra("nameByUser");
+        plantID = getIntent().getStringExtra("plantsID");
 
         // get user id from SharedPreferences
         SharedPreferences sharedPreferences = getSharedPreferences("PlantName", Context.MODE_PRIVATE);
         userID = sharedPreferences.getString("userID", null);
-        System.out.println("USer ID : " + userID);
 
         //Connect to the database and get data
         new GetPlantInfo().execute(userID, plantName);
@@ -329,6 +335,11 @@ public class EditPlantActivity extends AppCompatActivity {
             wiki = plantInfo[8];
 
             if(!nameByUser.trim().isEmpty()) {
+                PlantDbHelper plantDbHelper = new PlantDbHelper(this);
+                PlantInfoDB plantInfoDB = new PlantInfoDB(Integer.parseInt(plantID), userID, nameBySpecies, nameByUser, temperature, moisture, previousMoisturesLevel, image, wiki, PlantConfig.SYNC_STATUS_OK);
+                plantDbHelper.updateLocalDatabase(plantInfoDB);
+                //plantDbHelper.updateLocalDatabase(new PlantInfoDB(userID, nameBySpecies, nameByUser, temperature, moisture, previousMoisturesLevel, image, wiki, PlantConfig.SYNC_STATUS_OK));
+                plantDbHelper.close();
 
                 EditPlants editPlants = new EditPlants(this);
                 editPlants.execute(id, userID, nameBySpecies, nameByUser, temperature, moisture, previousMoisturesLevel, image, wiki);
@@ -344,6 +355,9 @@ public class EditPlantActivity extends AppCompatActivity {
             Toast.makeText(this, "No internet Connection", Toast.LENGTH_SHORT).show();
         } else{
             id = plantInfo[0];
+            PlantDbHelper plantDbHelper = new PlantDbHelper(this);
+            plantDbHelper.deletePlant(plantInfo[3]);
+            plantDbHelper.close();
 
             DeletePlants deletePlants = new DeletePlants(this);
             deletePlants.execute(id);

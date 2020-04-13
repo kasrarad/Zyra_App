@@ -50,7 +50,8 @@ interface AsyncResponse1 {
     void processFinish(ArrayList<String> output);
 }
 
-public class PlantActivity extends AppCompatActivity implements AsyncResponse1 {
+//public class PlantActivity extends AppCompatActivity implements AsyncResponse1 {
+public class PlantActivity extends AppCompatActivity{
 
     private final NetworkMonitor mybroadcast = new NetworkMonitor();
     /*
@@ -68,12 +69,13 @@ public class PlantActivity extends AppCompatActivity implements AsyncResponse1 {
     protected ImageButton imgBT;
     protected TextView textPlantList;
 
-    GetPlantInfo getPlantInfo = new GetPlantInfo();
+    //GetPlantInfo getPlantInfo = new GetPlantInfo();
     protected PlantDbHelper plantDbHelper;
 
     protected ListView plantsNameListView;
     protected PlantListViewAdapter adapter;
     protected ArrayList<String> allPlants;
+    protected ArrayList<Integer> plantsID;
     protected ArrayList<String> plantNames;
     protected ArrayList<String> plantSpecies;
     protected ArrayList<String> plantPrevMoi;
@@ -110,7 +112,7 @@ public class PlantActivity extends AppCompatActivity implements AsyncResponse1 {
         plantDbHelper = new PlantDbHelper(this);
 
         //this to set delegate/listener back to this class
-        getPlantInfo.delegate = this;
+        //getPlantInfo.delegate = this;
 
         textPlantList = findViewById(R.id.textViewPlantList);
         plantsNameListView = findViewById(R.id.plantsNameListView);
@@ -201,11 +203,13 @@ public class PlantActivity extends AppCompatActivity implements AsyncResponse1 {
         registerReceiver(broadcastReceiver, intentFilter);
 
  */
+        //plantDbHelper = new PlantDbHelper(this);
 
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
         registerReceiver(mybroadcast, intentFilter);
 
+        //readFromLocalDatabase();
 
 /*
         IntentFilter filter = new IntentFilter();
@@ -225,7 +229,7 @@ public class PlantActivity extends AppCompatActivity implements AsyncResponse1 {
         Intent intent = new Intent(PlantActivity.this, NewPlantActivity.class);
         startActivity(intent);
     }
-
+/*
     @Override
     public void processFinish(ArrayList<String> output) {
         if (output.size() > 0) {
@@ -236,12 +240,14 @@ public class PlantActivity extends AppCompatActivity implements AsyncResponse1 {
             Toast.makeText(PlantActivity.this, "No plants", Toast.LENGTH_SHORT).show();
         }
     }
+ */
 
     private void readFromLocalDatabase(){
 
         List<PlantInfoDB> plants = plantDbHelper.readFromLocalDatabase();
 
         allPlants = new ArrayList<>();
+        plantsID = new ArrayList<>();
         plantNames = new ArrayList<>();
         plantSpecies = new ArrayList<>();
         plantPrevMoi = new ArrayList<>();
@@ -252,6 +258,7 @@ public class PlantActivity extends AppCompatActivity implements AsyncResponse1 {
             //line is what will be displayed on screen
             String line = plants.get(i).getNameByUser() + "\n" + plants.get(i).getMoisture() + "% Moisture";
             allPlants.add(line);
+            plantsID.add(plants.get(i).getID());
             plantNames.add(plants.get(i).getNameByUser());
             plantSpecies.add(plants.get(i).getNameBySpecies());
             plantPrevMoi.add(plants.get(i).getPreviousMoisturesLevel());
@@ -261,9 +268,10 @@ public class PlantActivity extends AppCompatActivity implements AsyncResponse1 {
 
         // Display information on the List View
         if (allPlants.size() > 0) {
-            adapter = new PlantListViewAdapter(PlantActivity.this, allPlants);
+           // adapter = new PlantListViewAdapter(PlantActivity.this, allPlants);
+            //plantsNameListView.setAdapter(adapter);
+            adapter = new PlantListViewAdapter(PlantActivity.this ,allPlants, plantsID, plantNames, plantSpecies , plantPrevMoi, plantImage, plantSyncStatus);
             plantsNameListView.setAdapter(adapter);
-            adapter = new PlantListViewAdapter(PlantActivity.this ,plantNames, plantSpecies , plantPrevMoi, plantImage, plantSyncStatus);
         } else {
             Toast.makeText(PlantActivity.this, "No plants", Toast.LENGTH_SHORT).show();
         }
@@ -271,7 +279,7 @@ public class PlantActivity extends AppCompatActivity implements AsyncResponse1 {
         plantDbHelper.close();
 
     }
-
+/*
     public boolean checkNetworkConnection(){
 
         ConnectivityManager connectivityManager = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -280,6 +288,8 @@ public class PlantActivity extends AppCompatActivity implements AsyncResponse1 {
 
     }
 
+ */
+/*
     //Get Plants Info
     class GetPlantInfo extends AsyncTask<String, Void, String> {
 
@@ -379,14 +389,7 @@ public class PlantActivity extends AppCompatActivity implements AsyncResponse1 {
                         }
 
                         delegate.processFinish(allPlants);
-/*
-                        if (allPlants.size() > 0) {
-                            adapter = new PlantListViewAdapter(PlantActivity.this, allPlants);
-                            plantsNameListView.setAdapter(adapter);
-                        } else {
-                            Toast.makeText(PlantActivity.this, "No plants", Toast.LENGTH_SHORT).show();
-                        }
- */
+
                     }
 
                 } catch (JSONException e) {
@@ -404,11 +407,14 @@ public class PlantActivity extends AppCompatActivity implements AsyncResponse1 {
 
     }
 
+ */
+/*
     protected void goToPlantInfoActivity() {
         Intent intent = new Intent(PlantActivity.this, PlantInfoActivity.class);
         startActivity(intent);
     }
-
+ */
+/*
     protected void refreshData() throws JSONException {
 
         randomNumber(moistureData);
@@ -421,7 +427,8 @@ public class PlantActivity extends AppCompatActivity implements AsyncResponse1 {
 
 
     }
-
+ */
+/*
     protected LinkedList randomNumber(LinkedList number){
 
         Random random = new Random();
@@ -437,7 +444,8 @@ public class PlantActivity extends AppCompatActivity implements AsyncResponse1 {
 
         return number;
     }
-
+ */
+/*
     protected void addCurrentMoisture(LinkedList currentMoisture, int hour) throws JSONException {
 
 //        fakeTime = fakeTime + 2;
@@ -553,7 +561,6 @@ public class PlantActivity extends AppCompatActivity implements AsyncResponse1 {
 //        }
 
     }
-
-
+*/
 
 }
