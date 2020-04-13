@@ -6,14 +6,35 @@
     android:layout_height="match_parent"
     tools:context=".NewPlantActivity">
 
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/imagePlant"
+        android:layout_width="143dp"
+        android:layout_height="137dp"
+        android:layout_marginTop="72dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/login_icon"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/buttonImage"
+        android:layout_width="47dp"
+        android:layout_height="41dp"
+        android:layout_marginTop="168dp"
+        android:src="@drawable/ic_camera_alt_black_24dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.631"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/editTextNewType"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="228dp"
+        android:layout_width="293dp"
+        android:layout_height="41dp"
+        android:layout_marginTop="320dp"
         android:ems="10"
-        android:hint="Enter the plant type"
+        android:hint="(Optional) Enter the plant's species"
         android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.464"
@@ -22,11 +43,11 @@
 
     <EditText
         android:id="@+id/editTextNewName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="156dp"
+        android:layout_width="293dp"
+        android:layout_height="41dp"
+        android:layout_marginTop="248dp"
         android:ems="10"
-        android:hint="Enter the plant name"
+        android:hint="Enter the plant's name"
         android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.464"
@@ -38,11 +59,11 @@
         android:id="@+id/btnSavePlant"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="332dp"
+        android:layout_marginTop="404dp"
         android:onClick="savePlantsButton"
         android:text="Save"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.504"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -50,7 +71,7 @@
         android:id="@+id/btnCancelPlant"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="412dp"
+        android:layout_marginTop="472dp"
         android:layout_marginEnd="160dp"
         android:text="Cancel"
         app:layout_constraintEnd_toEndOf="parent"

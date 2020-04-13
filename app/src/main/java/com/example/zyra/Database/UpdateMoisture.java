@@ -1,14 +1,7 @@
 package com.example.zyra.Database;
+
 import android.content.Context;
-
-import android.content.Intent;
 import android.os.AsyncTask;
-import android.widget.Toast;
-
-import com.example.zyra.PlantActivity;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -22,12 +15,13 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 
-public class EditPlants extends AsyncTask<String, Void, String> {
+public class UpdateMoisture extends AsyncTask<String, Void, String> {
 
     Context context;
-    String id;
+    String userID;
+    String nameByUser;
 
-    public EditPlants(Context context){
+    public UpdateMoisture(Context context){
         this.context = context;
     }
 
@@ -39,21 +33,18 @@ public class EditPlants extends AsyncTask<String, Void, String> {
 
         String result = "";
 
-        // Extract the id of the plant
-        id = params[0];
-
         // Define URL
-        plant_url = "http://zyraproject.ca/updateplant.php";
+        plant_url = "http://zyraproject.ca/editmoisture.php";
         try {
             // Extract the values (type of operation)
-            String userID = params[1];
-            String nameBySpecies = params[2];
-            String nameByUser = params[3];
-            String temperature = params[4];
-            String moisture = params[5];
-            String previousMoisturesLevel = params[6];
-            String image = params[7];
-            String wiki = params[8];
+            userID = params[0];
+            String nameBySpecies = params[1];
+            nameByUser = params[2];
+            String temperature = params[3];
+            String moisture = params[4];
+            String previousMoisturesLevel = params[5];
+            String image = params[6];
+            String wiki = params[7];
 
             URL url = new URL(plant_url);
             HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
@@ -65,8 +56,7 @@ public class EditPlants extends AsyncTask<String, Void, String> {
             BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
 
             // Create data URL that we want to post
-            String post_data = URLEncoder.encode("id", "UTF-8")+"="+URLEncoder.encode(id, "UTF-8")+"&"
-                    +URLEncoder.encode("userID", "UTF-8")+"="+URLEncoder.encode(userID, "UTF-8")+"&"
+            String post_data = URLEncoder.encode("userID", "UTF-8")+"="+URLEncoder.encode(userID, "UTF-8")+"&"
                     +URLEncoder.encode("nameBySpecies", "UTF-8")+"="+URLEncoder.encode(nameBySpecies, "UTF-8")+"&"
                     +URLEncoder.encode("nameByUser", "UTF-8")+"="+URLEncoder.encode(nameByUser, "UTF-8")+"&"
                     +URLEncoder.encode("temperature", "UTF-8")+"="+URLEncoder.encode(temperature, "UTF-8")+"&"
@@ -109,25 +99,6 @@ public class EditPlants extends AsyncTask<String, Void, String> {
 
     @Override
     protected void onPostExecute(String result) {
-
-
-        try {
-            JSONObject jasonResult = new JSONObject(result.substring(result.indexOf("{"), result.lastIndexOf("}") + 1));
-
-            int success = Integer.parseInt(jasonResult.getString("success"));
-            if (success == 1) {
-                Intent intent = new Intent (context, PlantActivity.class);
-                context.startActivity(intent);
-                Toast.makeText(context, "Plant Saved!", Toast.LENGTH_SHORT).show();
-            } else{
-                Intent intent = new Intent (context, PlantActivity.class);
-                context.startActivity(intent);
-                Toast.makeText(context, "PLANT'S NAME HAS ALREADY EXISTS", Toast.LENGTH_SHORT).show();
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
 
     }
 

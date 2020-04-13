@@ -6,6 +6,9 @@
     <string name="profilepassword">profilepassword</string>
     <string name="hello_world">Bluetooth Address</string>
 
+    <string name="underlinedPlantList"> <u>My Plant List</u></string>
+
+
     <string-array name="plants">
         <item>Spider Plant</item>
         <item>Aloe Vera</item>

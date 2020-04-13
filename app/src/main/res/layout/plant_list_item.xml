@@ -1,47 +1,106 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
 
     app:cardCornerRadius="10dp">
 
-    <RelativeLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
 
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="73dp"
         android:layout_margin="4dp">
 
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/plantImg"
+            android:layout_width="89dp"
+            android:layout_height="73dp"
+            android:src="@drawable/login_icon"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0" />
+
         <TextView
+            android:id="@+id/textViewPlantName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
-            android:layout_marginTop="-3dp"
+            android:layout_marginStart="92dp"
+            android:layout_toEndOf="@+id/plantImg"
             android:text="Plant X"
             android:textColor="@android:color/black"
             android:textSize="20sp"
             android:textStyle="bold"
-            android:id="@+id/textViewPlantName"/>
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0" />
 
         <Button
             android:id="@+id/EditPlantButton"
-            android:layout_width="wrap_content"
+            android:layout_width="63dp"
             android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
-            android:layout_marginEnd="0dp"
-            android:text="Edit" />
+            android:layout_marginEnd="16dp"
+            android:text="Edit"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ImageButton
             android:id="@+id/imageBT"
-            android:layout_width="41dp"
-            android:layout_height="47dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_alignStart="@+id/EditPlantButton"
             android:layout_alignParentTop="true"
-            android:layout_marginStart="-56dp"
-            android:layout_marginTop="3dp"
-            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="12dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.729"
+            app:layout_constraintStart_toStartOf="parent"
             app:srcCompat="@drawable/ic_icon" />
 
+        <ImageView
+            android:id="@+id/plantSyncImg"
+            android:layout_width="27dp"
+            android:layout_height="22dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    </RelativeLayout>
+        <!--
+            </RelativeLayout>
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="60dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentBottom="true"
+                    android:text="Edit"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.948"
+                    app:layout_constraintStart_toStartOf="@+id/plantImg"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.461" />
+
+                <ImageButton
+                    android:id="@+id/imageBT"
+                    android:layout_width="61dp"
+                    android:layout_height="60dp"
+                    android:layout_alignStart="@+id/EditPlantButton"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginStart="224dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="@+id/plantImg"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.461"
+                    app:srcCompat="@drawable/ic_icon" /> -->
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 </androidx.cardview.widget.CardView>

@@ -1,19 +1,40 @@
 package com.example.zyra;
 
+import android.Manifest;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.zyra.Database.DeletePlants;
 import com.example.zyra.Database.EditPlants;
+import com.example.zyra.PlantLocalDatabase.PlantConfig;
+import com.example.zyra.PlantLocalDatabase.PlantDbHelper;
+import com.example.zyra.PlantsListView.PlantListViewAdapter;
+import com.karumi.dexter.Dexter;
+import com.karumi.dexter.PermissionToken;
+import com.karumi.dexter.listener.PermissionDeniedResponse;
+import com.karumi.dexter.listener.PermissionGrantedResponse;
+import com.karumi.dexter.listener.PermissionRequest;
+import com.karumi.dexter.listener.single.PermissionListener;
+import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -30,17 +51,29 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.List;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class EditPlantActivity extends AppCompatActivity {
 
     protected String[] plantInfo = new String[9];
 
+    protected ImageButton addButtonImage;
+    protected CircleImageView imagePlant;
+
+    private static final int IMAGE_PICK_CODE = 1000;
+    private static final int PERMISSION_CODE = 1001;
 
     // Edit Plants
     private EditText editOldPlantName;
     private EditText editOldPlantType;
     //EditText nameEditText, nameByUserEditText, temperatureEditText, moistureEditText, imageEditText, wikiEditText;
-    String id, userID, nameBySpecies, nameByUser, temperature, moisture, previousMoisturesLevel, image, wiki;
+    String id, userID, nameBySpecies, nameByUser, temperature, moisture, previousMoisturesLevel, wiki;
+
+    String image = "";
+    String plantID, plantName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,29 +81,123 @@ public class EditPlantActivity extends AppCompatActivity {
         setContentView(R.layout.activity_edit_plant);
 
         // Add back button
+        getSupportActionBar().setTitle("To My Plant List");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        addButtonImage = findViewById(R.id.addButtonImage);
+        imagePlant = findViewById(R.id.imagePlant);
 
         // Edit Plants
         editOldPlantName = (EditText) findViewById(R.id.editTextOldName);
         editOldPlantType = findViewById(R.id.editTextOldType);
-        //nameEditText = (EditText) findViewById(R.id.nameEditText);
-        //temperatureEditText = (EditText) findViewById(R.id.temperatureEditText);
-        //moistureEditText = (EditText) findViewById(R.id.moistureEditText);
 
         // get plant's name
+        /*
         String badPlantName = getIntent().getStringExtra("nameByUser");
         String[] plantNameSplit = badPlantName.split("\n");
         String plantName = plantNameSplit[0];
         System.out.println(plantName);
+         */
+        plantName = getIntent().getStringExtra("nameByUser");
+        plantID = getIntent().getStringExtra("plantsID");
 
         // get user id from SharedPreferences
         SharedPreferences sharedPreferences = getSharedPreferences("PlantName", Context.MODE_PRIVATE);
         userID = sharedPreferences.getString("userID", null);
-        System.out.println("USer ID : " + userID);
 
         //Connect to the database and get data
         new GetPlantInfo().execute(userID, plantName);
 
+        addButtonImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                checkPermission();
+            }
+        });
+
+    }
+
+    private void pickImageFromGallery() {
+        //intent to pick plant image
+        Intent intent = new Intent(Intent.ACTION_PICK);
+        intent.setType("image/*");
+        startActivityForResult(intent, IMAGE_PICK_CODE);
+    }
+
+    //handle result of runtime permission
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case PERMISSION_CODE:{
+                if (grantResults.length >0 && grantResults[0] ==
+                        PackageManager.PERMISSION_GRANTED) {
+                    //permission was granted
+                    pickImageFromGallery();
+                }
+                else {
+                    //permission was denied
+                    Toast.makeText(this, "Permission denied.", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }
+    }
+
+    public void checkPermission() {
+        Dexter.withActivity(EditPlantActivity.this)
+                .withPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
+                .withListener(new PermissionListener() {
+                    @Override
+                    public void onPermissionGranted(PermissionGrantedResponse response) {
+                        CropImage.activity()
+                                .setGuidelines(CropImageView.Guidelines.ON)
+                                .start(EditPlantActivity.this);
+                    }
+
+                    @Override
+                    public void onPermissionDenied(PermissionDeniedResponse response) {
+                        if(response.isPermanentlyDenied()) {
+                            AlertDialog.Builder builder = new AlertDialog.Builder(EditPlantActivity.this);
+                            builder.setTitle("Permission Required")
+                                    .setMessage("Permission to access gallery is required to choose a plant image." +
+                                            "Please go to settings to enable storage permission. ")
+                                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            Intent intent = new Intent();
+                                            intent.setAction(Settings.ACTION_ACCESSIBILITY_SETTINGS);
+                                            intent.setData(Uri.fromParts("package", getPackageName(), null));
+                                            startActivityForResult(intent, 100);
+                                        }
+                                    })
+                                    .setNegativeButton("Cancel", null)
+                                    .show();
+                        }
+                    }
+
+                    @Override
+                    public void onPermissionRationaleShouldBeShown(PermissionRequest permission, PermissionToken token) {
+                        token.continuePermissionRequest();
+                    }
+                })
+                .check();
+    }
+
+    //handle result of picked image
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+            CropImage.ActivityResult result = CropImage.getActivityResult(data);
+            if (resultCode == RESULT_OK) {
+
+                final Uri resultUri = result.getUri();
+                imagePlant.setImageURI(resultUri);
+
+                plantInfo[7] = resultUri.toString();
+
+            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+                Exception error = result.getError();
+            }
+        }
     }
 
     //Get Plants Info
@@ -142,7 +269,6 @@ public class EditPlantActivity extends AppCompatActivity {
                 JSONObject jasonResult = new JSONObject(result.substring(result.indexOf("{"), result.lastIndexOf("}") + 1));
                 //JSONObject jasonResult = new JSONObject(result);
 
-
                 int success = Integer.parseInt(jasonResult.getString("success"));
                 if (success == 1) {
                     JSONArray plants = jasonResult.getJSONArray("plants");
@@ -155,7 +281,7 @@ public class EditPlantActivity extends AppCompatActivity {
                         String temperature = plant.getString("temperature");
                         String moisture = plant.getString("moisture");
                         String previousMoisturesLevel = plant.getString("previousMoisturesLevel");
-                        String image = plant.getString("image");
+                        String image1 = plant.getString("image");
                         String wiki = plant.getString("wiki");
                         plantInfo[0] = String.valueOf(id);
                         plantInfo[1] = userID;
@@ -166,8 +292,15 @@ public class EditPlantActivity extends AppCompatActivity {
                         plantInfo[4] = temperature;
                         plantInfo[5] = moisture;
                         plantInfo[6] = previousMoisturesLevel;
-                        plantInfo[7] = image;
+                        plantInfo[7] = image1;
+                        image = image1;
                         plantInfo[8] = wiki;
+
+                        if(!image.equals("")){
+                            Uri uri = Uri.parse(image);
+                            imagePlant.setImageURI(uri);
+                        }
+
                     }
                 } else {
                     Toast.makeText(EditPlantActivity.this, "No plants", Toast.LENGTH_SHORT).show();
@@ -188,35 +321,57 @@ public class EditPlantActivity extends AppCompatActivity {
 
     // Edit Plant in the database
     public void editPlantButton(View view) {
-        id = plantInfo[0];
-        userID = plantInfo[1];
-        nameBySpecies = editOldPlantType.getText().toString();
-        //nameByUser = plantInfo[3];
-        nameByUser = editOldPlantName.getText().toString();
-        temperature = plantInfo[4];
-        moisture = plantInfo[5];
-        previousMoisturesLevel = plantInfo[6];
-        image = plantInfo[7];
-        wiki = plantInfo[8];
+        if(!checkNetworkConnection()){
+            Toast.makeText(this, "No internet Connection", Toast.LENGTH_SHORT).show();
+        } else{
+            id = plantInfo[0];
+            userID = plantInfo[1];
+            nameBySpecies = editOldPlantType.getText().toString();
+            //nameByUser = plantInfo[3];
+            nameByUser = editOldPlantName.getText().toString();
+            temperature = plantInfo[4];
+            moisture = plantInfo[5];
+            previousMoisturesLevel = plantInfo[6];
+            image = plantInfo[7];
+            wiki = plantInfo[8];
 
-        if(!nameByUser.trim().isEmpty() || !nameBySpecies.trim().isEmpty()) {
+            if(!nameByUser.trim().isEmpty()) {
+                PlantDbHelper plantDbHelper = new PlantDbHelper(this);
+                PlantInfoDB plantInfoDB = new PlantInfoDB(Integer.parseInt(plantID), userID, nameBySpecies, nameByUser, temperature, moisture, previousMoisturesLevel, image, wiki, PlantConfig.SYNC_STATUS_OK);
+                plantDbHelper.updateLocalDatabase(plantInfoDB);
+                //plantDbHelper.updateLocalDatabase(new PlantInfoDB(userID, nameBySpecies, nameByUser, temperature, moisture, previousMoisturesLevel, image, wiki, PlantConfig.SYNC_STATUS_OK));
+                plantDbHelper.close();
 
-            EditPlants editPlants = new EditPlants(this);
-            editPlants.execute(id, userID, nameBySpecies, nameByUser, temperature, moisture, previousMoisturesLevel, image, wiki);
-        }else{
-            Toast.makeText(this, "Please enter a valid name", Toast.LENGTH_SHORT).show();
+                EditPlants editPlants = new EditPlants(this);
+                editPlants.execute(id, userID, nameBySpecies, nameByUser, temperature, moisture, previousMoisturesLevel, image, wiki);
+            }else{
+                Toast.makeText(this, "Please enter a valid name", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
     // Delete Plant from the database
     public void deletePlantButton(View view) {
-        id = plantInfo[0];
+        if(!checkNetworkConnection()){
+            Toast.makeText(this, "No internet Connection", Toast.LENGTH_SHORT).show();
+        } else{
+            id = plantInfo[0];
+            PlantDbHelper plantDbHelper = new PlantDbHelper(this);
+            plantDbHelper.deletePlant(plantInfo[3]);
+            plantDbHelper.close();
 
-        DeletePlants deletePlants = new DeletePlants(this);
-        deletePlants.execute(id);
+            DeletePlants deletePlants = new DeletePlants(this);
+            deletePlants.execute(id);
 
-        Intent intent = new Intent(this, PlantActivity.class);
-        startActivity(intent);
+            Intent intent = new Intent(this, PlantActivity.class);
+            startActivity(intent);
+        }
+    }
+
+    public boolean checkNetworkConnection(){
+        ConnectivityManager connectivityManager = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+        return (networkInfo!= null && networkInfo.isConnected());
     }
 
 }

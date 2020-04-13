@@ -27,7 +27,6 @@
 
 
 
-
 <!--    </LinearLayout>-->
 
 <!--    <LinearLayout-->
@@ -56,20 +55,20 @@
 <!--            android:layout_height="0dp"-->
 <!--            android:layout_weight="1" >-->
 
-    <TextView
-        android:id="@+id/textViewRead"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginStart="167dp"
-        android:layout_marginTop="138dp"
-        android:text="TextView"
-        android:textSize="20dp"
-        android:gravity="center"/>
+        <TextView
+            android:id="@+id/textViewRead"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginStart="142dp"
+            android:layout_marginTop="140dp"
+            android:gravity="center"
+            android:text="Moisture: 60%"
+            android:textSize="20dp" />
 
-    <!--        </ScrollView>-->
+        <!--        </ScrollView>-->
 
 <!--    </LinearLayout>-->
 
