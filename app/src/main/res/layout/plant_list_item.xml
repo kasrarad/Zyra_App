@@ -17,7 +17,6 @@
             android:id="@+id/plantImg"
             android:layout_width="89dp"
             android:layout_height="73dp"
-            android:layout_marginStart="4dp"
             android:src="@drawable/login_icon"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -67,12 +66,10 @@
 
         <ImageView
             android:id="@+id/plantSyncImg"
-            android:layout_width="42dp"
-            android:layout_height="37dp"
+            android:layout_width="27dp"
+            android:layout_height="22dp"
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
-            android:layout_marginStart="92dp"
-            android:layout_marginTop="36dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
