@@ -3,9 +3,13 @@ package com.example.zyra.Bluetooth;
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.LocalTime;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import java.util.Date;
+
 import java.util.UUID;
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -79,6 +83,7 @@ public class MonitoringScreen extends Activity {
     private ProgressDialog progressDialog;
 
     protected int time = 0;
+
 
     protected PlantDbHelper plantDbHelper;
     protected String plantName;
@@ -355,7 +360,9 @@ public class MonitoringScreen extends Activity {
 
                                             //Send moistureNumberOnly to the database at current moisture level
                                             //THIS STRING -> moistureNumberOnly;
+
                                             String currentMoisture = moistureNumberOnly;
+
 
                                             //This is for previous moisture levels
                                             String previousMoisture = moistureNumberOnly;

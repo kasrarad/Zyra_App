@@ -44,14 +44,10 @@ public class LoginActivity extends AppCompatActivity {
     protected EditText editPw;
     protected Button btnRegister;
     protected Button btnLogin;
-    private CheckBox checkBoxRememberMe;
 
     protected String[] userData = new String[4];
     protected DatabaseHelper databaseHelper;
     protected PlantDbHelper plantDbHelper;
-
-    private SharedPreferences sharedPreferences;
-    private static final String PREFS_NAME = "PrefsFile";
 
     private static final String TAG = "LoginActivity";
 
@@ -76,9 +72,6 @@ public class LoginActivity extends AppCompatActivity {
 
         setupUI();
 
-        sharedPreferences = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
-        getPreferencesData();
-
         databaseHelper = new DatabaseHelper(this);
 
         List<UserInfoDB> checkUserDB = databaseHelper.getAllUserInfo();
@@ -97,6 +90,8 @@ public class LoginActivity extends AppCompatActivity {
                 }
             });
 
+
+
             btnLogin.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -104,8 +99,6 @@ public class LoginActivity extends AppCompatActivity {
                     String usernameValue = editUsername.getText().toString();
                     String passwordValue = editPw.getText().toString();
 
-                    if (!checkBoxRememberMe.isChecked()) {
-
                         if(usernameValue.isEmpty() || passwordValue.isEmpty() ) {
                             Toast.makeText(LoginActivity.this, "Please enter your information", Toast.LENGTH_SHORT).show();
                         } else {
@@ -113,19 +106,6 @@ public class LoginActivity extends AppCompatActivity {
                             login.execute(usernameValue, passwordValue);
                         }
 
-                    } else {
-                        if(usernameValue.isEmpty() || passwordValue.isEmpty() ) {
-                            Toast.makeText(LoginActivity.this, "Please enter your information", Toast.LENGTH_SHORT).show();
-                        } else {
-                            Boolean boolIsChecked = checkBoxRememberMe.isChecked();
-                            SharedPreferences.Editor editor = sharedPreferences.edit();
-                            editor.putString("pref_name", editUsername.getText().toString());
-                            editor.putBoolean("pref_check", boolIsChecked);
-                            editor.apply();
-                            Toast.makeText(LoginActivity.this, "Checked!", Toast.LENGTH_SHORT).show();
-                            Login login = new Login(LoginActivity.this);
-                            login.execute(usernameValue, passwordValue);
-                        }
                     }
 
 //                    if(usernameValue.isEmpty() || passwordValue.isEmpty())
@@ -134,7 +114,7 @@ public class LoginActivity extends AppCompatActivity {
 //                        Login login = new Login(LoginActivity.this);
 //                        login.execute(usernameValue, passwordValue);
 //                    }
-                }
+
             });
         }
 
@@ -151,7 +131,6 @@ public class LoginActivity extends AppCompatActivity {
         editPw = findViewById(R.id.editTextPassword);
         btnLogin = findViewById(R.id.btnLogin);
         btnRegister = findViewById(R.id.btnRegister);
-        checkBoxRememberMe = findViewById(R.id.checkBoxRemember);
     }
 
     //Login and user's info
@@ -243,7 +222,7 @@ public class LoginActivity extends AppCompatActivity {
                         startActivity(intent);
 
                     } else {
-                        Toast.makeText(LoginActivity.this, "Some of your information isn't correct. Please try again", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(LoginActivity.this, "Your login credentials don't match an account in our system. Please try again. ", Toast.LENGTH_SHORT).show();
                     }
 
                 } catch (JSONException e) {
@@ -264,17 +243,6 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    private void getPreferencesData() {
-        SharedPreferences sp = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
-        if (sp.contains("pref_name")) {
-            String u = sp.getString("pref_name", "not found.");
-            editUsername.setText(u);
-        }
-        if (sp.contains("pref_name")) {
-            Boolean bool = sp.getBoolean("pref_check", false);
-            checkBoxRememberMe.setChecked(bool);
-        }
-    }
 
     //Get Plants Info
     class GetPlantInfo extends AsyncTask<String, Void, String> {

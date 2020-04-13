@@ -68,6 +68,7 @@ public class PlantActivity extends AppCompatActivity{
 //    protected Button refreshButton;
     protected ImageButton imgBT;
     protected TextView textPlantList;
+    protected TextView textAddPlant;
 
     //GetPlantInfo getPlantInfo = new GetPlantInfo();
     protected PlantDbHelper plantDbHelper;
@@ -109,7 +110,11 @@ public class PlantActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_plantlist);
 
+
         plantDbHelper = new PlantDbHelper(this);
+      
+        getSupportActionBar().setTitle("To Home");
+
 
         //this to set delegate/listener back to this class
         //getPlantInfo.delegate = this;
@@ -118,6 +123,7 @@ public class PlantActivity extends AppCompatActivity{
         plantsNameListView = findViewById(R.id.plantsNameListView);
         imgAddPlant = findViewById(R.id.imageButtonAdd);
         imgBT = findViewById(R.id.imageBT);
+        textAddPlant = findViewById(R.id.textViewAddPlant);
 
 //        refreshButton.setEnabled(false);
         // Add back button
@@ -458,11 +464,7 @@ public class PlantActivity extends AppCompatActivity{
             hour = 0;
         }
 
-
-        if(hour % 2 != 0){
-//            System.out.println("odd? ");
-            hour--;
-        }
+        hour = hour * 2;
 
 
         JSONObject jasonResult = new JSONObject(resultNew.substring(resultNew.indexOf("{"), resultNew.lastIndexOf("}") + 1));
@@ -515,14 +517,17 @@ public class PlantActivity extends AppCompatActivity{
                 System.out.println("Char at index 0: " + previousMoisturesLevel.charAt(i));
                 if(previousMoisturesLevel.charAt(0) == '['){
 
-                    System.out.println("replace this char");
                     for(int j = 0 ; j < previousMoisturesLevel.length() ; j++){
 
-                        previousMoisturesLevel ="000000000000000000000000";
+                        previousMoisturesLevel ="000000000000000000000000000000000000000000000000";
                     }
                 }
                 //is now 2 chars
                 previousString += currentMoisture.get(i);
+
+                if (previousString == "00"){
+                    previousString = "01";
+                }
 
                 //Change the string at value (hour) and (Hour + 1)
                 //We retrieve these values when creating the graph

@@ -81,6 +81,7 @@ public class EditPlantActivity extends AppCompatActivity {
         setContentView(R.layout.activity_edit_plant);
 
         // Add back button
+        getSupportActionBar().setTitle("To My Plant List");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         addButtonImage = findViewById(R.id.addButtonImage);

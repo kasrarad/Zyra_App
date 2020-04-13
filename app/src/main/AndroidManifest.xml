@@ -21,7 +21,7 @@
         <activity android:name=".Bluetooth.BluetoothActivity"
             android:parentActivityName=".PlantActivity"/>
         <activity android:name=".Bluetooth.InstructionsActivity"
-            android:parentActivityName=".MainActivity"/>
+            android:parentActivityName=".SettingsActivity"/>
         <activity android:name=".Networking"/>
         <activity android:name=".MoistureActivity"
             android:parentActivityName=".PlantActivity"/>
@@ -35,15 +35,14 @@
             android:name=".PlantInfoActivity"
             android:parentActivityName=".PlantActivity" />
         <activity
-            android:name=".NewPlantActivity"
-            android:parentActivityName=".PlantActivity" />
+            android:name=".NewPlantActivity" />
         <activity android:name=".SignupActivity" />
         <activity
             android:name=".BlueToothTestActivity"
             android:parentActivityName=".MainActivity" />
         <activity
             android:name=".AboutUsActivity"
-            android:parentActivityName=".MainActivity" />
+            android:parentActivityName=".SettingsActivity" />
         <activity
             android:name=".SettingsActivity"
             android:parentActivityName=".MainActivity" />

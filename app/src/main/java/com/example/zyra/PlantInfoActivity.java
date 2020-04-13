@@ -13,6 +13,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
@@ -32,6 +33,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -42,6 +44,7 @@ import com.androidnetworking.interfaces.StringRequestListener;
 import com.androidnetworking.interfaces.UploadProgressListener;
 import com.example.zyra.Bluetooth.MonitoringScreen;
 import com.example.zyra.Bluetooth.PreferencesActivity;
+import com.jjoe64.graphview.DefaultLabelFormatter;
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
@@ -70,7 +73,10 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.text.SimpleDateFormat;
+import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -80,9 +86,12 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class PlantInfoActivity extends AppCompatActivity {
 
     private LineGraphSeries<DataPoint> series1;
+    protected SimpleDateFormat sdf = new SimpleDateFormat("kk");
+    protected SimpleDateFormat sdf2 = new SimpleDateFormat("E");
     protected ImageButton btnImage;
     protected TextView textMyPlantName;
     protected TextView textMyPlantType;
+    protected TextView graphXLabel;
     protected CircleImageView circleImgPlant;
     protected Button btnConfirm;
     String plantName;
@@ -112,12 +121,13 @@ public class PlantInfoActivity extends AppCompatActivity {
     private static final int IMAGE_PICK_CODE = 1000;
     private static final int PERMISSION_CODE = 1001;
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_plantinfo);
         setupUI();
-
+        getSupportActionBar().setTitle("My Plant List");
 
         // get plant's name
         plantName = getIntent().getStringExtra("nameByUser");
@@ -131,11 +141,20 @@ public class PlantInfoActivity extends AppCompatActivity {
         plantPreviousMoisture = getIntent().getStringExtra("previousMoisture");
         System.out.println("Plant Moisture: " + plantPreviousMoisture);
 
-        if (plantPreviousMoisture.charAt(0) == '[') {
+        if ( plantPreviousMoisture.charAt(0) == '[' || (plantPreviousMoisture.length() < 47) ) {
 
-            plantPreviousMoisture = "000000000000000000000000000";
+            plantPreviousMoisture = "";
+            for(int i = 0; i < 48 ;i ++){
+                plantPreviousMoisture +="0";
+            }
+
         }
         System.out.println("Plant Moisture: " + plantPreviousMoisture);
+
+
+        //test numbers
+//        plantPreviousMoisture = "998070605040302010009985756545352515059980503000";
+
 
         plantImage = getIntent().getStringExtra("image");
         if(!plantImage.equals("")){
@@ -365,6 +384,9 @@ public class PlantInfoActivity extends AppCompatActivity {
     public void setupUI() {
         textMyPlantName = findViewById(R.id.textViewPlantName);
         textMyPlantType = findViewById(R.id.textViewPlantType);
+        graphXLabel = findViewById(R.id.graphXLabel);
+
+        graphXLabel.setText("Number of hours ago");
        // btnConfirm = findViewById(R.id.buttonConfirm);
        // btnImage = findViewById(R.id.buttonImage);
 //        btnSearch = findViewById(R.id.search);
@@ -380,41 +402,128 @@ public class PlantInfoActivity extends AppCompatActivity {
 //        listView = findViewById(R.id.listview);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     public void setGraph() {
+
         GraphView graph = findViewById(R.id.graph);
-        graph.setTitle("Moisture Level");
+        graph.setTitle("Past 24 Hour Moisture Level");
         graph.getGridLabelRenderer();
-        graph.getViewport().setMaxX(24);
+        graph.getViewport().setMaxX(25);
         graph.getViewport().setMinX(0);
         graph.getViewport().setMaxY(100);
         graph.getViewport().setMinY(0);
 
+        graph.getGridLabelRenderer().setHorizontalAxisTitle("              24                  18                  12                   6               Now");
+        graph.getGridLabelRenderer().setVerticalAxisTitle("% Moisture Level");
+        graph.getGridLabelRenderer().setHorizontalLabelsVisible(false);
+
         graph.getViewport().setYAxisBoundsManual(true);
         graph.getViewport().setXAxisBoundsManual(true);
 
-        x = 0;
-        series1 = new LineGraphSeries<>();
 
-        int numDataPoint = 24;
-        for(int i = 0; i < numDataPoint; i = i + 2){
-
-
-            String value ="00";
-            StringBuilder number = new StringBuilder("00");
-
-            number.setCharAt(0, plantPreviousMoisture.charAt(i));
-            number.setCharAt(1,plantPreviousMoisture.charAt(i + 1));
-
-
-            value = number.toString();
-
-//            System.out.println("Time: " +  i + "   Y: " + number +" Double check: " + value);
-
-            x = i;
-            y = Integer.parseInt(value);
-            series1.appendData(new DataPoint(x,y),true,100);
-        }
+        series1 = new LineGraphSeries<>(getDataPoint());
         graph.addSeries(series1);
+
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    protected DataPoint[] getDataPoint() {
+
+        int time = LocalTime.now().getHour();
+
+        Integer[] prev = getPrevMoistArray();
+//        Integer[] hour= getHourDisplay();
+
+        DataPoint[] dp = new DataPoint[]{
+
+                new DataPoint( 0, prev[0]),
+                new DataPoint( 1, prev[1]),
+                new DataPoint( 2, prev[2]),
+                new DataPoint( 3, prev[3]),
+                new DataPoint( 4, prev[4]),
+                new DataPoint( 5, prev[5]),
+                new DataPoint( 6, prev[6]),
+                new DataPoint( 7, prev[7]),
+                new DataPoint( 8, prev[8]),
+                new DataPoint( 9, prev[9]),
+                new DataPoint( 10 , prev[10]),
+                new DataPoint( 11 , prev[11]),
+                new DataPoint( 12 , prev[12]),
+                new DataPoint( 13 , prev[13]),
+                new DataPoint( 14 , prev[14]),
+                new DataPoint( 15 , prev[15]),
+                new DataPoint( 16 , prev[16]),
+                new DataPoint( 17 , prev[17]),
+                new DataPoint( 18 , prev[18]),
+                new DataPoint( 19 , prev[19]),
+                new DataPoint( 20 , prev[20]),
+                new DataPoint( 21 , prev[21]),
+                new DataPoint( 22 , prev[22]),
+                new DataPoint( 23 , prev[23])
+
+        };
+        return dp;
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    protected Integer[] getPrevMoistArray(){
+
+        int time = LocalTime.now().getHour();
+        Integer[] prev = new Integer[24];
+        System.out.println("time: " + time);
+        int testing = time * 2;
+        int newIndex = time;
+
+        for (int i = 0; i < prev.length; i++) {
+
+            newIndex++;
+            System.out.println();
+            if(newIndex > 24){
+                newIndex = 0;
+                testing = 0;
+            }
+
+            String value = "00";
+            StringBuilder number = new StringBuilder("00");
+            number.setCharAt(0, plantPreviousMoisture.charAt(testing));
+            number.setCharAt(1, plantPreviousMoisture.charAt(testing + 1));
+            testing = testing + 2;
+            value = number.toString();
+//            System.out.println("Time + i = " + (newIndex) +"  Value: " + value);
+
+            prev[i] = Integer.parseInt(value);
+
+        }
+
+//        for (int i = 0 ; i < prev.length ; i++){
+//            System.out.println(i + ": "+ prev[i]);
+//        }
+        return prev;
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    protected Integer[] getHourDisplay(){
+        Integer[] hour = new Integer[24];
+
+        int time = LocalTime.now().getHour();
+
+        int testing = 0;
+        int numDataPoint = 24;
+        for (int i = 0; i < numDataPoint; i++) {
+            time++;
+            hour[i] = time;
+            if(time > 23){
+                time = 0;
+            }
+        }
+
+        for (int i = 0 ; i < hour.length ; i++){
+            System.out.println(i + ": "+ hour[i]);
+        }
+
+
+
+        return hour;
     }
 
 //    protected void onPause() {

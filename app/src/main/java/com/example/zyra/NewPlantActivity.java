@@ -67,11 +67,11 @@ public class NewPlantActivity extends AppCompatActivity {
         setContentView(R.layout.activity_newplant);
         Log.d(TAG, "onCreate: Started");
 
+        getSupportActionBar().setTitle("Add New Plant");
+
         // get user id from SharedPreferences
         SharedPreferences sharedPreferences = getSharedPreferences("PlantName", Context.MODE_PRIVATE);
         userID = sharedPreferences.getString("userID", null);
-
-        getSupportActionBar().setTitle("Add a new plant");
 
         setupUI();
 
