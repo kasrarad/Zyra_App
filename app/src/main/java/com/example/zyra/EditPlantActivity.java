@@ -7,6 +7,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -22,6 +24,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.zyra.Database.DeletePlants;
 import com.example.zyra.Database.EditPlants;
+import com.example.zyra.PlantLocalDatabase.PlantConfig;
+import com.example.zyra.PlantLocalDatabase.PlantDbHelper;
+import com.example.zyra.PlantsListView.PlantListViewAdapter;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.PermissionToken;
 import com.karumi.dexter.listener.PermissionDeniedResponse;
@@ -46,6 +51,8 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -66,6 +73,7 @@ public class EditPlantActivity extends AppCompatActivity {
     String id, userID, nameBySpecies, nameByUser, temperature, moisture, previousMoisturesLevel, wiki;
 
     String image = "";
+    String plantID, plantName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,15 +92,18 @@ public class EditPlantActivity extends AppCompatActivity {
         editOldPlantType = findViewById(R.id.editTextOldType);
 
         // get plant's name
+        /*
         String badPlantName = getIntent().getStringExtra("nameByUser");
         String[] plantNameSplit = badPlantName.split("\n");
         String plantName = plantNameSplit[0];
         System.out.println(plantName);
+         */
+        plantName = getIntent().getStringExtra("nameByUser");
+        plantID = getIntent().getStringExtra("plantsID");
 
         // get user id from SharedPreferences
         SharedPreferences sharedPreferences = getSharedPreferences("PlantName", Context.MODE_PRIVATE);
         userID = sharedPreferences.getString("userID", null);
-        System.out.println("USer ID : " + userID);
 
         //Connect to the database and get data
         new GetPlantInfo().execute(userID, plantName);
@@ -258,7 +269,6 @@ public class EditPlantActivity extends AppCompatActivity {
                 JSONObject jasonResult = new JSONObject(result.substring(result.indexOf("{"), result.lastIndexOf("}") + 1));
                 //JSONObject jasonResult = new JSONObject(result);
 
-
                 int success = Integer.parseInt(jasonResult.getString("success"));
                 if (success == 1) {
                     JSONArray plants = jasonResult.getJSONArray("plants");
@@ -311,35 +321,57 @@ public class EditPlantActivity extends AppCompatActivity {
 
     // Edit Plant in the database
     public void editPlantButton(View view) {
-        id = plantInfo[0];
-        userID = plantInfo[1];
-        nameBySpecies = editOldPlantType.getText().toString();
-        //nameByUser = plantInfo[3];
-        nameByUser = editOldPlantName.getText().toString();
-        temperature = plantInfo[4];
-        moisture = plantInfo[5];
-        previousMoisturesLevel = plantInfo[6];
-        image = plantInfo[7];
-        wiki = plantInfo[8];
+        if(!checkNetworkConnection()){
+            Toast.makeText(this, "No internet Connection", Toast.LENGTH_SHORT).show();
+        } else{
+            id = plantInfo[0];
+            userID = plantInfo[1];
+            nameBySpecies = editOldPlantType.getText().toString();
+            //nameByUser = plantInfo[3];
+            nameByUser = editOldPlantName.getText().toString();
+            temperature = plantInfo[4];
+            moisture = plantInfo[5];
+            previousMoisturesLevel = plantInfo[6];
+            image = plantInfo[7];
+            wiki = plantInfo[8];
 
-        if(!nameByUser.trim().isEmpty()) {
+            if(!nameByUser.trim().isEmpty()) {
+                PlantDbHelper plantDbHelper = new PlantDbHelper(this);
+                PlantInfoDB plantInfoDB = new PlantInfoDB(Integer.parseInt(plantID), userID, nameBySpecies, nameByUser, temperature, moisture, previousMoisturesLevel, image, wiki, PlantConfig.SYNC_STATUS_OK);
+                plantDbHelper.updateLocalDatabase(plantInfoDB);
+                //plantDbHelper.updateLocalDatabase(new PlantInfoDB(userID, nameBySpecies, nameByUser, temperature, moisture, previousMoisturesLevel, image, wiki, PlantConfig.SYNC_STATUS_OK));
+                plantDbHelper.close();
 
-            EditPlants editPlants = new EditPlants(this);
-            editPlants.execute(id, userID, nameBySpecies, nameByUser, temperature, moisture, previousMoisturesLevel, image, wiki);
-        }else{
-            Toast.makeText(this, "Please enter a valid name", Toast.LENGTH_SHORT).show();
+                EditPlants editPlants = new EditPlants(this);
+                editPlants.execute(id, userID, nameBySpecies, nameByUser, temperature, moisture, previousMoisturesLevel, image, wiki);
+            }else{
+                Toast.makeText(this, "Please enter a valid name", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
     // Delete Plant from the database
     public void deletePlantButton(View view) {
-        id = plantInfo[0];
+        if(!checkNetworkConnection()){
+            Toast.makeText(this, "No internet Connection", Toast.LENGTH_SHORT).show();
+        } else{
+            id = plantInfo[0];
+            PlantDbHelper plantDbHelper = new PlantDbHelper(this);
+            plantDbHelper.deletePlant(plantInfo[3]);
+            plantDbHelper.close();
 
-        DeletePlants deletePlants = new DeletePlants(this);
-        deletePlants.execute(id);
+            DeletePlants deletePlants = new DeletePlants(this);
+            deletePlants.execute(id);
 
-        Intent intent = new Intent(this, PlantActivity.class);
-        startActivity(intent);
+            Intent intent = new Intent(this, PlantActivity.class);
+            startActivity(intent);
+        }
+    }
+
+    public boolean checkNetworkConnection(){
+        ConnectivityManager connectivityManager = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+        return (networkInfo!= null && networkInfo.isConnected());
     }
 
 }

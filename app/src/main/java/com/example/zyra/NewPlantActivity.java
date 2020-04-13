@@ -6,6 +6,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
@@ -22,6 +24,8 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.zyra.Database.AddPlants;
+import com.example.zyra.PlantLocalDatabase.PlantConfig;
+import com.example.zyra.PlantLocalDatabase.PlantDbHelper;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.PermissionToken;
 import com.karumi.dexter.listener.PermissionDeniedResponse;
@@ -62,7 +66,8 @@ public class NewPlantActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_newplant);
         Log.d(TAG, "onCreate: Started");
-        getSupportActionBar().setTitle("To My Plant List");
+
+        getSupportActionBar().setTitle("Add New Plant");
 
         // get user id from SharedPreferences
         SharedPreferences sharedPreferences = getSharedPreferences("PlantName", Context.MODE_PRIVATE);
@@ -206,14 +211,31 @@ public class NewPlantActivity extends AppCompatActivity {
 
         if (!nameByUser.trim().isEmpty()) {
 
-            AddPlants addPlants = new AddPlants(this);
-            addPlants.execute(type, userID, nameBySpecies, nameByUser, temperature, moisture, previousMoisturesLevel, image, wiki);
+            if(checkNetworkConnection()){
+                AddPlants addPlants = new AddPlants(this);
+                addPlants.execute(type, userID, nameBySpecies, nameByUser, temperature, moisture, previousMoisturesLevel, image, wiki);
+                saveToLocalStorage(new PlantInfoDB(userID, nameBySpecies, nameByUser, temperature, moisture, previousMoisturesLevel, image, wiki, PlantConfig.SYNC_STATUS_OK));
+            } else{
+                saveToLocalStorage(new PlantInfoDB(userID, nameBySpecies, nameByUser, temperature, moisture, previousMoisturesLevel, image, wiki, PlantConfig.SYNC_STATUS_FAILED));
+            }
 
             Intent intent = new Intent(this, PlantActivity.class);
             startActivity(intent);
         }else{
             Toast.makeText(this, "Please fill in all the information", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private void saveToLocalStorage(PlantInfoDB plantInfoDB){
+        PlantDbHelper plantDbHelper = new PlantDbHelper(this);
+        plantDbHelper.saveToLocalDatabase(plantInfoDB);
+        plantDbHelper.close();
+    }
+
+    public boolean checkNetworkConnection(){
+        ConnectivityManager connectivityManager = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+        return (networkInfo!= null && networkInfo.isConnected());
     }
 }
 

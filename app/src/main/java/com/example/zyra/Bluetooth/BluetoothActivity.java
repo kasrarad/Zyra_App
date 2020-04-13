@@ -43,7 +43,12 @@ public class BluetoothActivity extends AppCompatActivity {
     private Button search;
     private Button connect;
     private ListView listView;
+  
+    protected String plantName;
+    protected String plantID;
+
     private TextView textInstructions;
+
     private BluetoothAdapter mBTAdapter;
     private static final int BT_ENABLE_REQUEST = 10; // This is the code we use for BT Enable
     private static final int SETTINGS = 20;
@@ -61,9 +66,16 @@ public class BluetoothActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bluetooth);
 
+
+        plantName = getIntent().getStringExtra("nameByUser");
+        plantID = getIntent().getStringExtra("plantID");
+
+        getSupportActionBar().setTitle("To My Plant List");
+
         textInstructions = findViewById(R.id.textViewInstructions);
         search = findViewById(R.id.search);
         connect = findViewById(R.id.connect);
+
 
         connect.setVisibility(View.INVISIBLE);
 
@@ -92,7 +104,7 @@ public class BluetoothActivity extends AppCompatActivity {
             public void onClick(View arg0) {
                 mBTAdapter = BluetoothAdapter.getDefaultAdapter();
                 if (mBTAdapter == null) {
-                    Toast.makeText(getApplicationContext(), "Bluetooth not found.\nPlease unable your bluetooth by following the instructions.",
+                    Toast.makeText(getApplicationContext(), "Bluetooth not found.\nPlease enable your bluetooth by following the instructions.",
                             Toast.LENGTH_LONG).show();
                 } else if (!mBTAdapter.isEnabled()) {
                     Intent enableBT = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
@@ -112,6 +124,8 @@ public class BluetoothActivity extends AppCompatActivity {
                 intent.putExtra(DEVICE_EXTRA, device);
                 intent.putExtra(DEVICE_UUID, mDeviceUUID.toString());
                 intent.putExtra(BUFFER_SIZE, mBufferSize);
+                intent.putExtra("plantID", plantID);
+                intent.putExtra("nameByUser", plantName);
                 startActivity(intent);
             }
         });

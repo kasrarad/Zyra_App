@@ -101,21 +101,6 @@ public class PlantInfoActivity extends AppCompatActivity {
 
     private ProgressDialog progressDialog;
 
-//    private Button btnSearch;
-//    private Button btnConnect;
-//    private ListView listView;
-//    private BluetoothAdapter mBTAdapter;
-//    private static final int BT_ENABLE_REQUEST = 10; // This is the code we use for BT Enable
-//    private static final int SETTINGS = 20;
-//    private UUID mDeviceUUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
-//    private int mBufferSize = 50000; //Default
-//    public static final String DEVICE_EXTRA = "com.example.bluetoothtest.SOCKET";
-//    public static final String DEVICE_UUID = "com.example.bluetoothtest.uuid";
-//    private static final String DEVICE_LIST = "com.example.bluetoothtest.devicelist";
-//    private static final String DEVICE_LIST_SELECTED = "com.example.bluetoothtest.devicelistselected";
-//    public static final String BUFFER_SIZE = "com.example.bluetoothtest.buffersize";
-//    private static final String TAG = "BlueTest5-MainActivity";
-
     protected double x,y;
 
     private static final int IMAGE_PICK_CODE = 1000;
@@ -130,12 +115,9 @@ public class PlantInfoActivity extends AppCompatActivity {
         getSupportActionBar().setTitle("My Plant List");
 
         // get plant's name
-        String badPlantName = getIntent().getStringExtra("nameByUser");
-        String[] plantNameSplit = badPlantName.split("\n");
-        plantName = plantNameSplit[0];
-        System.out.println(plantName);
+        plantName = getIntent().getStringExtra("nameByUser");
+        System.out.println("nameByUser: " + plantName);
         textMyPlantName.setText(plantName);
-
 
         plantSpecies = getIntent().getStringExtra("nameBySpecies");
         textMyPlantType.setText(plantSpecies);
@@ -168,232 +150,12 @@ public class PlantInfoActivity extends AppCompatActivity {
         setGraph();
     }
 
-/*
-        btnImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                checkPermission();
-            }
-        });
-
-
-//        if (savedInstanceState != null) {
-//            ArrayList<BluetoothDevice> list = savedInstanceState.getParcelableArrayList(DEVICE_LIST);
-//            if (list != null) {
-//                initList(list);
-//                MyAdapter adapter = (MyAdapter) listView.getAdapter();
-//                int selectedIndex = savedInstanceState.getInt(DEVICE_LIST_SELECTED);
-//                if (selectedIndex != -1) {
-//                    adapter.setSelectedIndex(selectedIndex);
-//                    btnConnect.setEnabled(true);
-//                }
-//            } else {
-//                initList(new ArrayList<BluetoothDevice>());
-//            }
-//
-//        } else {
-//            initList(new ArrayList<BluetoothDevice>());
-//        }
-//        btnSearch.setOnClickListener(new View.OnClickListener() {
-//
-//            @Override
-//            public void onClick(View arg0) {
-//                mBTAdapter = BluetoothAdapter.getDefaultAdapter();
-//
-//                if (mBTAdapter == null) {
-//                    Toast.makeText(getApplicationContext(), "Bluetooth not found", Toast.LENGTH_SHORT).show();
-//                } else if (!mBTAdapter.isEnabled()) {
-//                    Intent enableBT = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-//                    startActivityForResult(enableBT, BT_ENABLE_REQUEST);
-//                } else {
-//                    new SearchDevices().execute();
-//                }
-//            }
-//        });
-//
-//        btnConnect.setOnClickListener(new View.OnClickListener() {
-//
-//            @Override
-//            public void onClick(View arg0) {
-//                BluetoothDevice device = ((MyAdapter) (listView.getAdapter())).getSelectedItem();
-//                Intent intent = new Intent(getApplicationContext(), MonitoringScreen.class);
-//                intent.putExtra(DEVICE_EXTRA, device);
-//                intent.putExtra(DEVICE_UUID, mDeviceUUID.toString());
-//                intent.putExtra(BUFFER_SIZE, mBufferSize);
-//                startActivity(intent);
-//            }
-//        });
-
-    }
-
-    private void pickImageFromGallery() {
-        //intent to pick plant image
-        Intent intent = new Intent(Intent.ACTION_PICK);
-        intent.setType("image/*");
-        startActivityForResult(intent, IMAGE_PICK_CODE);
-    }
-
-    //handle result of runtime permission
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        switch (requestCode) {
-            case PERMISSION_CODE:{
-                if (grantResults.length >0 && grantResults[0] ==
-                        PackageManager.PERMISSION_GRANTED) {
-                    //permission was granted
-                    pickImageFromGallery();
-                }
-                else {
-                    //permission was denied
-                    Toast.makeText(this, "Permission denied.", Toast.LENGTH_SHORT).show();
-                }
-            }
-        }
-    }
-
-    public void checkPermission() {
-        Dexter.withActivity(PlantInfoActivity.this)
-                .withPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
-                .withListener(new PermissionListener() {
-                    @Override
-                    public void onPermissionGranted(PermissionGrantedResponse response) {
-                        CropImage.activity()
-                                .setGuidelines(CropImageView.Guidelines.ON)
-                                .start(PlantInfoActivity.this);
-                    }
-
-                    @Override
-                    public void onPermissionDenied(PermissionDeniedResponse response) {
-                        if(response.isPermanentlyDenied()) {
-                            AlertDialog.Builder builder = new AlertDialog.Builder(PlantInfoActivity.this);
-                            builder.setTitle("Permission Required")
-                                    .setMessage("Permission to access gallery is required to choose a plant image." +
-                                            "Please go to settings to enable storage permission. ")
-                                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            Intent intent = new Intent();
-                                            intent.setAction(Settings.ACTION_ACCESSIBILITY_SETTINGS);
-                                            intent.setData(Uri.fromParts("package", getPackageName(), null));
-                                            startActivityForResult(intent, 100);
-                                        }
-                                    })
-                                    .setNegativeButton("Cancel", null)
-                                    .show();
-                        }
-                    }
-
-                    @Override
-                    public void onPermissionRationaleShouldBeShown(PermissionRequest permission, PermissionToken token) {
-                        token.continuePermissionRequest();
-                    }
-                })
-                .check();
-    }
-
-
-
-    //handle result of picked image
-    @SuppressLint("SourceLockedOrientationActivity")
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
-            CropImage.ActivityResult result = CropImage.getActivityResult(data);
-            if (resultCode == RESULT_OK) {
-
-                final Uri resultUri = result.getUri();
-                circleImgPlant.setImageURI(resultUri);
-                btnConfirm.setVisibility(View.VISIBLE);
-
-                btnConfirm.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        File imageFile = new File(resultUri.getPath());
-                        progressDialog.show();
-
-                        //would make it "fold" and it will not only be invisible but also won't take up space in the layuout either
-                        btnConfirm.setVisibility(View.GONE);
-
-                        AndroidNetworking.upload("http://zyraproject.ca/insertimage.php")
-                                .addMultipartFile("image", imageFile)
-                                .addMultipartParameter("userId", String.valueOf(11))
-                                .setPriority(Priority.HIGH)
-                                .build()
-                                .setUploadProgressListener(new UploadProgressListener() {
-                                    @Override
-                                    public void onProgress(long bytesUploaded, long totalBytes) {
-                                        float progress = (float) bytesUploaded/totalBytes * 100;
-                                        progressDialog.setProgress((int) progress);
-                                    }
-                                })
-                                .getAsString(new StringRequestListener() {
-                                    @Override
-                                    public void onResponse(String response) {
-                                        try {
-                                            progressDialog.dismiss();
-                                            JSONObject jsonObject = new JSONObject(response);
-                                            int status = jsonObject.getInt("status");
-                                            String message = jsonObject.getString("message");
-                                            if(status == 0) {
-                                                Toast.makeText(PlantInfoActivity.this, "Unable to upload image" + message,
-                                                        Toast.LENGTH_SHORT).show();
-                                            } else {
-                                                Toast.makeText(PlantInfoActivity.this, message, Toast.LENGTH_SHORT).show();
-                                            }
-                                        } catch (JSONException e) {
-                                            e.printStackTrace();
-                                        }
-                                    }
-
-                                    @Override
-                                    public void onError(ANError anError) {
-                                        progressDialog.dismiss();
-                                        anError.printStackTrace();
-                                        Toast.makeText(PlantInfoActivity.this,
-                                                "Error Uploading Image", Toast.LENGTH_SHORT);
-                                    }
-                                });
-                    }
-                });
-            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
-                Exception error = result.getError();
-            }
-        }
-
-//        switch (requestCode) {
-//            case BT_ENABLE_REQUEST:
-//                if (resultCode == RESULT_OK) {
-//                    msg("Bluetooth Enabled successfully");
-//                    new SearchDevices().execute();
-//                } else {
-//                    msg("Bluetooth couldn't be enabled");
-//                }
-//
-//                break;
-//            case SETTINGS: //If the settings have been updated
-//                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-//                String uuid = prefs.getString("prefUuid", "Null");
-//                mDeviceUUID = UUID.fromString(uuid);
-//                Log.d(TAG, "UUID: " + uuid);
-//                String bufSize = prefs.getString("prefTextBuffer", "Null");
-//                mBufferSize = Integer.parseInt(bufSize);
-//                break;
-//            default:
-//                break;
-//        }
-//        super.onActivityResult(requestCode, resultCode, data);
-    }
-*/
     public void setupUI() {
         textMyPlantName = findViewById(R.id.textViewPlantName);
         textMyPlantType = findViewById(R.id.textViewPlantType);
         graphXLabel = findViewById(R.id.graphXLabel);
 
         graphXLabel.setText("Number of hours ago");
-       // btnConfirm = findViewById(R.id.buttonConfirm);
-       // btnImage = findViewById(R.id.buttonImage);
-//        btnSearch = findViewById(R.id.search);
-//        btnConnect = findViewById(R.id.connect);
         circleImgPlant = findViewById(R.id.plantImage);
 
         progressDialog = new ProgressDialog(PlantInfoActivity.this);

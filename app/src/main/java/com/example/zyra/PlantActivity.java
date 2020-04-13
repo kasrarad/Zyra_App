@@ -1,12 +1,17 @@
 package com.example.zyra;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -15,6 +20,8 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.zyra.Database.EditMoisture;
+import com.example.zyra.PlantLocalDatabase.PlantConfig;
+import com.example.zyra.PlantLocalDatabase.PlantDbHelper;
 import com.example.zyra.PlantsListView.PlantListViewAdapter;
 
 import org.json.JSONArray;
@@ -36,28 +43,45 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Random;
 
 interface AsyncResponse1 {
     void processFinish(ArrayList<String> output);
 }
 
-public class PlantActivity extends AppCompatActivity implements AsyncResponse1 {
+//public class PlantActivity extends AppCompatActivity implements AsyncResponse1 {
+public class PlantActivity extends AppCompatActivity{
+
+    private final NetworkMonitor mybroadcast = new NetworkMonitor();
+    /*
+    BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            readFromLocalDatabase();
+        }
+    };
+
+     */
 
     protected ImageButton imgAddPlant;
 //    protected Button refreshButton;
     protected ImageButton imgBT;
     protected TextView textPlantList;
+    protected TextView textAddPlant;
 
-    GetPlantInfo getPlantInfo = new GetPlantInfo();
+    //GetPlantInfo getPlantInfo = new GetPlantInfo();
+    protected PlantDbHelper plantDbHelper;
 
     protected ListView plantsNameListView;
     protected PlantListViewAdapter adapter;
     protected ArrayList<String> allPlants;
+    protected ArrayList<Integer> plantsID;
     protected ArrayList<String> plantNames;
     protected ArrayList<String> plantSpecies;
     protected ArrayList<String> plantPrevMoi;
     protected ArrayList<String> plantImage;
+    protected ArrayList<Integer> plantSyncStatus;
     LinkedList<Integer> moistureData=new LinkedList<Integer>();
     int plantListSize;
     int time = 0;
@@ -86,15 +110,20 @@ public class PlantActivity extends AppCompatActivity implements AsyncResponse1 {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_plantlist);
 
+
+        plantDbHelper = new PlantDbHelper(this);
+      
         getSupportActionBar().setTitle("To Home");
 
+
         //this to set delegate/listener back to this class
-        getPlantInfo.delegate = this;
+        //getPlantInfo.delegate = this;
 
         textPlantList = findViewById(R.id.textViewPlantList);
         plantsNameListView = findViewById(R.id.plantsNameListView);
         imgAddPlant = findViewById(R.id.imageButtonAdd);
         imgBT = findViewById(R.id.imageBT);
+        textAddPlant = findViewById(R.id.textViewAddPlant);
 
 //        refreshButton.setEnabled(false);
         // Add back button
@@ -104,8 +133,16 @@ public class PlantActivity extends AppCompatActivity implements AsyncResponse1 {
         SharedPreferences sharedPreferences = getSharedPreferences("PlantName", Context.MODE_PRIVATE);
         userID = sharedPreferences.getString("userID", null);
 
-        //new GetPlantInfo().execute(userID);
-        getPlantInfo.execute(userID);
+        readFromLocalDatabase();
+/*
+        if(checkNetworkConnection()){
+            //new GetPlantInfo().execute(userID);
+            getPlantInfo.execute(userID);
+        } else{
+            readFromLocalDatabase();
+        }
+
+ */
 
         try {
             Thread.sleep(1000);
@@ -164,11 +201,41 @@ public class PlantActivity extends AppCompatActivity implements AsyncResponse1 {
 
     }
 
+    public void onResume() {
+        super.onResume();
+/*
+        IntentFilter intentFilter = new IntentFilter(PlantConfig.UI_UPDATE_BROADCAST);
+        intentFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
+        registerReceiver(broadcastReceiver, intentFilter);
+
+ */
+        //plantDbHelper = new PlantDbHelper(this);
+
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
+        registerReceiver(mybroadcast, intentFilter);
+
+        //readFromLocalDatabase();
+
+/*
+        IntentFilter filter = new IntentFilter();
+        filter.addAction("android.provider.Telephony.SMS_RECEIVED");
+        registerReceiver(mybroadcast, filter);
+
+ */
+    }
+
+    public void onPause() {
+        super.onPause();
+
+        unregisterReceiver(mybroadcast);
+    }
+
     public void goToNewPlantActivity(){
         Intent intent = new Intent(PlantActivity.this, NewPlantActivity.class);
         startActivity(intent);
     }
-
+/*
     @Override
     public void processFinish(ArrayList<String> output) {
         if (output.size() > 0) {
@@ -179,7 +246,56 @@ public class PlantActivity extends AppCompatActivity implements AsyncResponse1 {
             Toast.makeText(PlantActivity.this, "No plants", Toast.LENGTH_SHORT).show();
         }
     }
+ */
 
+    private void readFromLocalDatabase(){
+
+        List<PlantInfoDB> plants = plantDbHelper.readFromLocalDatabase();
+
+        allPlants = new ArrayList<>();
+        plantsID = new ArrayList<>();
+        plantNames = new ArrayList<>();
+        plantSpecies = new ArrayList<>();
+        plantPrevMoi = new ArrayList<>();
+        plantImage = new ArrayList<>();
+        plantSyncStatus = new ArrayList<>();
+
+        for (int i=0; i<plants.size(); i++){
+            //line is what will be displayed on screen
+            String line = plants.get(i).getNameByUser() + "\n" + plants.get(i).getMoisture() + "% Moisture";
+            allPlants.add(line);
+            plantsID.add(plants.get(i).getID());
+            plantNames.add(plants.get(i).getNameByUser());
+            plantSpecies.add(plants.get(i).getNameBySpecies());
+            plantPrevMoi.add(plants.get(i).getPreviousMoisturesLevel());
+            plantImage.add(plants.get(i).getImage());
+            plantSyncStatus.add(plants.get(i).getSyncstatus());
+        }
+
+        // Display information on the List View
+        if (allPlants.size() > 0) {
+           // adapter = new PlantListViewAdapter(PlantActivity.this, allPlants);
+            //plantsNameListView.setAdapter(adapter);
+            adapter = new PlantListViewAdapter(PlantActivity.this ,allPlants, plantsID, plantNames, plantSpecies , plantPrevMoi, plantImage, plantSyncStatus);
+            plantsNameListView.setAdapter(adapter);
+        } else {
+            Toast.makeText(PlantActivity.this, "No plants", Toast.LENGTH_SHORT).show();
+        }
+
+        plantDbHelper.close();
+
+    }
+/*
+    public boolean checkNetworkConnection(){
+
+        ConnectivityManager connectivityManager = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+        return (networkInfo!= null && networkInfo.isConnected());
+
+    }
+
+ */
+/*
     //Get Plants Info
     class GetPlantInfo extends AsyncTask<String, Void, String> {
 
@@ -279,14 +395,7 @@ public class PlantActivity extends AppCompatActivity implements AsyncResponse1 {
                         }
 
                         delegate.processFinish(allPlants);
-/*
-                        if (allPlants.size() > 0) {
-                            adapter = new PlantListViewAdapter(PlantActivity.this, allPlants);
-                            plantsNameListView.setAdapter(adapter);
-                        } else {
-                            Toast.makeText(PlantActivity.this, "No plants", Toast.LENGTH_SHORT).show();
-                        }
- */
+
                     }
 
                 } catch (JSONException e) {
@@ -304,11 +413,14 @@ public class PlantActivity extends AppCompatActivity implements AsyncResponse1 {
 
     }
 
+ */
+/*
     protected void goToPlantInfoActivity() {
         Intent intent = new Intent(PlantActivity.this, PlantInfoActivity.class);
         startActivity(intent);
     }
-
+ */
+/*
     protected void refreshData() throws JSONException {
 
         randomNumber(moistureData);
@@ -321,7 +433,8 @@ public class PlantActivity extends AppCompatActivity implements AsyncResponse1 {
 
 
     }
-
+ */
+/*
     protected LinkedList randomNumber(LinkedList number){
 
         Random random = new Random();
@@ -337,7 +450,8 @@ public class PlantActivity extends AppCompatActivity implements AsyncResponse1 {
 
         return number;
     }
-
+ */
+/*
     protected void addCurrentMoisture(LinkedList currentMoisture, int hour) throws JSONException {
 
 //        fakeTime = fakeTime + 2;
@@ -452,7 +566,6 @@ public class PlantActivity extends AppCompatActivity implements AsyncResponse1 {
 //        }
 
     }
-
-
+*/
 
 }
