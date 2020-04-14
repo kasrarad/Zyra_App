@@ -3,10 +3,15 @@ package com.example.zyra.PlantsListView;
 import android.content.Context;
 import android.content.Intent;
 
+import android.graphics.Color;
 import android.media.Image;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
+import android.os.health.SystemHealthManager;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -162,7 +167,48 @@ public class PlantListViewAdapter extends ArrayAdapter<String> {
             viewHolder = (ViewHolder) convertView.getTag();
         }
 
-        viewHolder.textViewPlantName.setText(plantsText.get(position));
+//
+//        System.out.println("PlantText: " + plantsText.get(position));
+        String badPlantName = plantsText.get(position);
+        String[] plantNameSize = badPlantName.split("\n");
+        String plantName = plantNameSize[0];
+        plantNameSize[0].length();
+//        System.out.println(plantName);
+
+
+        SpannableString ss = new SpannableString(plantsText.get(position));
+
+        ForegroundColorSpan fcsRed = new ForegroundColorSpan(0xF4D02020);
+        ForegroundColorSpan fcsGreen = new ForegroundColorSpan(0XF42FA404);
+        ForegroundColorSpan fcsBlue = new ForegroundColorSpan(0XF40724FF);
+
+        String moistureNumberOnly= plantNameSize[1].replaceAll("[^0-9]", "");
+//        System.out.println("Moisture: " + moistureNumberOnly);
+
+
+
+        if(Integer.parseInt(moistureNumberOnly) < 70){
+//            System.out.println("size0: " + plantNameSize[0].length());
+//            System.out.println("size1: " + plantNameSize[1].length());
+            ss.setSpan(fcsGreen,plantNameSize[0].length() + 1, badPlantName.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        }
+
+        if(Integer.parseInt(moistureNumberOnly) < 30){
+//            System.out.println("size0: " + plantNameSize[0].length());
+//            System.out.println("size1: " + plantNameSize[1].length());
+        ss.setSpan(fcsRed,plantNameSize[0].length() + 1, badPlantName.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        }
+
+        if(Integer.parseInt(moistureNumberOnly) > 69){
+//            System.out.println("size0: " + plantNameSize[0].length());
+//            System.out.println("size1: " + plantNameSize[1].length());
+            ss.setSpan(fcsBlue,plantNameSize[0].length() + 1, badPlantName.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        }
+        viewHolder.textViewPlantName.setText(ss);
+
         if(!plantsImage.get(position).equals(null)){
             Uri uri = Uri.parse(plantsImage.get(position));
             viewHolder.plantImg.setImageURI(uri);
