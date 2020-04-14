@@ -141,7 +141,7 @@ public class PlantInfoActivity extends AppCompatActivity {
         System.out.println("Plant Moisture: " + plantPreviousMoisture);
 
         plantCurrentMoisture = getIntent().getStringExtra("currentMoisture");
-        textMyPlantMoisture.setText(plantCurrentMoisture);
+        textMyPlantMoisture.setText("Last Read: " + plantCurrentMoisture);
 
 
         //test numbers
