@@ -21,16 +21,17 @@
         android:textSize="20dp"
         android:textStyle="bold" />
 
+
     <ListView
         android:id="@+id/plantsNameListView"
-        android:layout_width="match_parent"
-        android:layout_height="379dp"
+        android:layout_width="409dp"
+        android:layout_height="325dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginStart="0dp"
-        android:layout_marginTop="42dp"
-        android:layout_marginEnd="0dp"
+        android:layout_marginStart="2dp"
+        android:layout_marginTop="51dp"
+        android:layout_marginEnd="-1dp"
         android:layout_marginBottom="100dp"
         android:clickable="true"
         android:gravity="center"
@@ -38,7 +39,6 @@
         android:scrollbars="vertical">
 
     </ListView>
-
 
     <ImageButton
         android:id="@+id/imageButtonAdd"
@@ -54,12 +54,12 @@
         app:srcCompat="@android:drawable/ic_input_add" />
 
     <pl.droidsonroids.gif.GifImageView
-        android:layout_width="224dp"
-        android:layout_height="180dp"
+        android:layout_width="wrap_content"
+        android:layout_height="153dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginEnd="187dp"
+        android:layout_marginEnd="201dp"
         android:src="@drawable/plantgrowth" />
 
     <TextView
@@ -68,10 +68,95 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginEnd="17dp"
+        android:layout_marginEnd="23dp"
         android:layout_marginBottom="15dp"
         android:text="Add New Plant"
-        android:textStyle="italic"/>
+        android:textStyle="italic" />
+
+    <TextView
+        android:id="@+id/textViewLegend"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="22dp"
+        android:layout_marginBottom="164dp"
+        android:text="Color Indicator"
+        android:textSize="20dp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/textViewLegendGreen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="67dp"
+        android:layout_marginBottom="110dp"
+        android:text="Good to water"
+        android:textColor="#F42FA404" />
+
+    <TextView
+        android:id="@+id/textViewLegendRed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="23dp"
+        android:layout_marginBottom="83dp"
+        android:text="Urgently needs water"
+        android:textColor="#F4D02020" />
+
+    <TextView
+        android:id="@+id/textViewLegendBlue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="135dp"
+        android:text="Sufficiently watered"
+        android:textColor="#F40724FF" />
+
+    <ImageView
+        android:layout_width="43dp"
+        android:layout_height="25dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="380dp"
+        android:layout_marginEnd="353dp"
+        android:src="@drawable/checkmarktransparent" />
+
+    <ImageView
+        android:layout_width="43dp"
+        android:layout_height="25dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="416dp"
+        android:layout_marginEnd="353dp"
+        android:src="@drawable/sync" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="60dp"
+        android:layout_marginTop="385dp"
+        android:layout_marginEnd="244dp"
+        android:text="Database sync'd!" />
+
+    <TextView
+        android:layout_width="147dp"
+        android:layout_height="23dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="60dp"
+        android:layout_marginTop="418dp"
+        android:layout_marginEnd="206dp"
+        android:text="Database not sync'd!" />
 
 
 </RelativeLayout>

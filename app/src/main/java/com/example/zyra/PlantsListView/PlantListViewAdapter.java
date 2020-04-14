@@ -146,6 +146,11 @@ public class PlantListViewAdapter extends ArrayAdapter<String> {
                 }
             });
 
+            String badPlantName = plantsText.get(position);
+            final String[] plantNameSize = badPlantName.split("\n");
+            String plantName = plantNameSize[0];
+            plantNameSize[0].length();
+
             viewHolder.textViewPlantName.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -158,6 +163,7 @@ public class PlantListViewAdapter extends ArrayAdapter<String> {
                     intent.putExtra("nameBySpecies", plantSpecies.get(position));
                     intent.putExtra("previousMoisture", plantsPreviousMoisture.get(position));
                     intent.putExtra("image", plantsImage.get(position));
+                    intent.putExtra( "currentMoisture", plantNameSize[1]);
                     context.startActivity(intent);
                 }
             });
@@ -194,7 +200,7 @@ public class PlantListViewAdapter extends ArrayAdapter<String> {
 
         }
 
-        if(Integer.parseInt(moistureNumberOnly) < 30){
+        if(Integer.parseInt(moistureNumberOnly) < 10){
 //            System.out.println("size0: " + plantNameSize[0].length());
 //            System.out.println("size1: " + plantNameSize[1].length());
         ss.setSpan(fcsRed,plantNameSize[0].length() + 1, badPlantName.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);

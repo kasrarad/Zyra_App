@@ -109,28 +109,28 @@
         android:id="@+id/btnRegister"
         android:layout_width="145dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="48dp"
         android:layout_marginTop="496dp"
+        android:layout_marginEnd="48dp"
         android:background="@drawable/button_rounded"
         android:text="Register"
         android:textColor="#ffffff"
         android:textSize="22sp"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/btnCancel"
         android:layout_width="145dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="48dp"
         android:layout_marginTop="496dp"
-        android:layout_marginEnd="48dp"
+        android:layout_toRightOf="@id/btnRegister"
         android:background="@drawable/button_rounded"
         android:text="Cancel"
         android:textColor="#ffffff"
         android:textSize="22sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_toRightOf="@id/btnRegister"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textViewSignUp"
