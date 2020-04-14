@@ -8,22 +8,24 @@
 
     <EditText
         android:id="@+id/editTextOldType"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="249dp"
+        android:layout_height="43dp"
         android:layout_marginTop="144dp"
         android:ems="10"
-        android:hint="Enter the plant type"
+        android:hint="(Optional) Enter the plant type"
         android:inputType="textPersonName"
+        android:maxLength="15"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/editTextOldName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="249dp"
+        android:layout_height="43dp"
         android:layout_marginTop="84dp"
         android:ems="10"
+        android:maxLength="15"
         android:hint="Enter the plant name"
         android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="parent"
