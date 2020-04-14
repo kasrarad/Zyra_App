@@ -169,7 +169,7 @@ public class PlantListViewAdapter extends ArrayAdapter<String> {
         }
         int sync_status = plantSyncStatus.get(position);
         if(sync_status == PlantConfig.SYNC_STATUS_OK){
-            viewHolder.plantSyncImg.setImageResource(R.drawable.tick);
+            viewHolder.plantSyncImg.setImageResource(R.drawable.check);
         } else {
             viewHolder.plantSyncImg.setImageResource(R.drawable.sync);
         }
