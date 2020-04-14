@@ -54,11 +54,11 @@ public class BluetoothActivity extends AppCompatActivity {
     private static final int SETTINGS = 20;
     private UUID mDeviceUUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
     private int mBufferSize = 50000; //Default
-    public static final String DEVICE_EXTRA = "com.example.anysensormonitoring.SOCKET";
-    public static final String DEVICE_UUID = "com.example.anysensormonitoring.uuid";
-    private static final String DEVICE_LIST = "com.example.anysensormonitoring.devicelist";
-    private static final String DEVICE_LIST_SELECTED = "com.example.anysensormonitoring.devicelistselected";
-    public static final String BUFFER_SIZE = "com.example.anysensormonitoring.buffersize";
+    public static final String DEVICE_EXTRA = "com.example.zyra.SOCKET";
+    public static final String DEVICE_UUID = "com.example.zyra.uuid";
+    private static final String DEVICE_LIST = "com.example.zyra.devicelist";
+    private static final String DEVICE_LIST_SELECTED = "com.example.zyra.devicelistselected";
+    public static final String BUFFER_SIZE = "com.example.zyra.buffersize";
     private static final String TAG = "BlueTest5-MainActivity";
 
     @Override
