@@ -126,6 +126,12 @@ public class MonitoringScreen extends Activity {
             @Override
             public void onClick(View v) {
                 stopWorker = true;
+                //TESTING THIS TOMORROW WOO
+                try {
+                    mBTSocket.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 goToPlantActivity();
             }
         });
@@ -161,6 +167,7 @@ public class MonitoringScreen extends Activity {
         public void run() {
             InputStream inputStream;
 
+
             try {
                 inputStream = mBTSocket.getInputStream();
                 while (!bStop) {
@@ -168,9 +175,9 @@ public class MonitoringScreen extends Activity {
                     if (inputStream.available() > 0) {
                         inputStream.read(buffer);
                         int i = 0;
-                        /*
-                         * This is needed because new String(buffer) is taking the entire buffer i.e. 256 chars on Android 2.3.4 http://stackoverflow.com/a/8843462/1287554
-                         */
+
+                         //This is needed because new String(buffer) is taking the entire buffer
+
                         for (i = 0; i < buffer.length && buffer[i] != 0; i++) {
                         }
                         final String strInput = new String(buffer, 0, i);
@@ -231,6 +238,8 @@ public class MonitoringScreen extends Activity {
             mIsBluetoothConnected = false;
             if (mIsUserInitiatedDisconnect) {
                 finish();
+                // test below line
+//                stopWorker = true;
             }
         }
 
