@@ -33,6 +33,8 @@ public class SignupActivity extends AppCompatActivity {
         setContentView(R.layout.activity_signup);
         Log.d(TAG, "onCreate: Started");
 
+        getSupportActionBar().setTitle("Sign Up");
+
         setupUI();
 
         btnRegister.setOnClickListener(new View.OnClickListener() {
