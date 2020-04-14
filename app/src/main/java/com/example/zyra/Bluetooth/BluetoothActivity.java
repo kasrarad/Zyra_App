@@ -122,6 +122,10 @@ public class BluetoothActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View arg0) {
+                SharedPreferences preferences = getSharedPreferences("callingActivity", Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = preferences.edit();
+                editor.putString("checkActivity", "MonitoringScreen");
+                editor.apply();
                 BluetoothDevice device = ((MyAdapter) (listView.getAdapter())).getSelectedItem();
                 Intent intent = new Intent(getApplicationContext(), MonitoringScreen.class);
                 intent.putExtra(DEVICE_EXTRA, device);

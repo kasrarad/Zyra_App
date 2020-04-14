@@ -3,6 +3,7 @@ package com.example.zyra.PlantsListView;
 import android.content.Context;
 import android.content.Intent;
 
+import android.content.SharedPreferences;
 import android.media.Image;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -146,16 +147,19 @@ public class PlantListViewAdapter extends ArrayAdapter<String> {
             viewHolder.textViewPlantName.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    SharedPreferences preferences = context.getSharedPreferences("callingActivity", Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = preferences.edit();
+                    editor.putString("checkActivity", "PlantListViewAdapter");
+                    editor.apply();
                     Intent intent = new Intent(context, PlantInfoActivity.class);
                     // send the value(plant's name)
-
                     intent.putExtra("plantID", Integer.toString(position));
                     System.out.println("PlantID: "+ Integer.toString(position));
                     intent.putExtra("nameByUser", plantsName.get(position));
                     intent.putExtra("nameBySpecies", plantSpecies.get(position));
                     intent.putExtra("previousMoisture", plantsPreviousMoisture.get(position));
                     intent.putExtra("image", plantsImage.get(position));
-                    intent.putExtra("checkActivity", "PlantListViewAdapter");
+                    //intent.putExtra("checkActivity", "PlantListViewAdapter");
                     context.startActivity(intent);
                 }
             });

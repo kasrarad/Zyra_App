@@ -430,7 +430,6 @@ public class MonitoringScreen extends Activity {
                                             savePlant(currentMoisture, previousMoistures);
                                             System.out.println(previousMoistures);
 
-                                            // store the value(user's id) in the SharedPreferences
                                             SharedPreferences preferences = getSharedPreferences("sensorData", Context.MODE_PRIVATE);
                                             SharedPreferences.Editor editor = preferences.edit();
                                             editor.putString("currentMoisture", currentMoisture);

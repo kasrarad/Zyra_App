@@ -120,9 +120,11 @@ public class PlantInfoActivity extends AppCompatActivity {
         setupUI();
         getSupportActionBar().setTitle("My Plant List");
 
-        checkActivity = getIntent().getStringExtra("checkActivity");
-        if(!checkActivity.equals("PlantListViewAdapter")){
-            System.out.println("kasraaaaaa");
+        //checkActivity = getIntent().getStringExtra("checkActivity");
+        SharedPreferences sharedPreferences1 = getSharedPreferences("callingActivity", Context.MODE_PRIVATE);
+        checkActivity = sharedPreferences1.getString("checkActivity", null);
+
+        if(checkActivity.equals("MonitoringScreen")){
             SharedPreferences sharedPreferences = getSharedPreferences("sensorData", Context.MODE_PRIVATE);
             String currentMoisture = sharedPreferences.getString("currentMoisture", null);
             textCurrentMoisture.setText(currentMoisture);
@@ -136,7 +138,7 @@ public class PlantInfoActivity extends AppCompatActivity {
                 Uri uri = Uri.parse(plantImage);
                 circleImgPlant.setImageURI(uri);
             }
-        } else {
+        } else if(checkActivity.equals("PlantListViewAdapter")){
             // get plant's name
             plantName = getIntent().getStringExtra("nameByUser");
             System.out.println("nameByUser: " + plantName);
