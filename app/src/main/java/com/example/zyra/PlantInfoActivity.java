@@ -94,11 +94,13 @@ public class PlantInfoActivity extends AppCompatActivity {
     protected TextView textMyPlantName;
     protected TextView textMyPlantType;
     protected TextView graphXLabel;
+    protected TextView textMyPlantMoisture;
     protected CircleImageView circleImgPlant;
     protected Button btnConfirm;
     String plantName;
     String plantSpecies;
     String plantPreviousMoisture;
+    String plantCurrentMoisture;
     String plantImage;
 
     private ProgressDialog progressDialog;
@@ -138,6 +140,9 @@ public class PlantInfoActivity extends AppCompatActivity {
         }
         System.out.println("Plant Moisture: " + plantPreviousMoisture);
 
+        plantCurrentMoisture = getIntent().getStringExtra("currentMoisture");
+        textMyPlantMoisture.setText(plantCurrentMoisture);
+
 
         //test numbers
 //        plantPreviousMoisture = "998070605040302010009985756545352515059980503000";
@@ -156,6 +161,7 @@ public class PlantInfoActivity extends AppCompatActivity {
         textMyPlantName = findViewById(R.id.textViewPlantName);
         textMyPlantType = findViewById(R.id.textViewPlantType);
         graphXLabel = findViewById(R.id.graphXLabel);
+        textMyPlantMoisture = findViewById(R.id.textViewPlantMoisture);
 
         graphXLabel.setText("Number of hours ago");
         circleImgPlant = findViewById(R.id.plantImage);
