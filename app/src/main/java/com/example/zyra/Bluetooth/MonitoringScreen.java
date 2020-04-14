@@ -51,6 +51,9 @@ import com.example.zyra.R;
 
 public class MonitoringScreen extends Activity {
 
+    protected Thread workerThread = new Thread();
+
+    protected String data = "";
     private static final String TAG = "BlueTest5-MainActivity";
     private int mMaxChars = 50000;//Default
     private UUID mDeviceUUID;
@@ -68,7 +71,7 @@ public class MonitoringScreen extends Activity {
 
     // All controls here
     private TextView mTxtReceive;
-    private Button mBtnClearInput;
+//    private Button mBtnClearInput;
     //    private ScrollView scrollView;
     private CheckBox chkScroll;
     private CheckBox chkReceiveText;
@@ -111,18 +114,24 @@ public class MonitoringScreen extends Activity {
 
 //        mTxtReceive.setMovementMethod(new ScrollingMovementMethod());
 
-
-        mBtnClearInput.setOnClickListener(new OnClickListener() {
-
-            @Override
-            public void onClick(View arg0) {
-                mTxtReceive.setText("");
-            }
-        });
+//        mBtnClearInput.setOnClickListener(new OnClickListener() {
+//
+//            @Override
+//            public void onClick(View arg0) {
+//                mTxtReceive.setText("");
+//            }
+//        });
 
         mBtnBack.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
+                stopWorker = true;
+                //TESTING THIS TOMORROW WOO
+                try {
+                    mBTSocket.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 goToPlantActivity();
             }
         });
@@ -158,6 +167,7 @@ public class MonitoringScreen extends Activity {
         public void run() {
             InputStream inputStream;
 
+
             try {
                 inputStream = mBTSocket.getInputStream();
                 while (!bStop) {
@@ -165,9 +175,9 @@ public class MonitoringScreen extends Activity {
                     if (inputStream.available() > 0) {
                         inputStream.read(buffer);
                         int i = 0;
-                        /*
-                         * This is needed because new String(buffer) is taking the entire buffer i.e. 256 chars on Android 2.3.4 http://stackoverflow.com/a/8843462/1287554
-                         */
+
+                         //This is needed because new String(buffer) is taking the entire buffer
+
                         for (i = 0; i < buffer.length && buffer[i] != 0; i++) {
                         }
                         final String strInput = new String(buffer, 0, i);
@@ -228,6 +238,8 @@ public class MonitoringScreen extends Activity {
             mIsBluetoothConnected = false;
             if (mIsUserInitiatedDisconnect) {
                 finish();
+                // test below line
+//                stopWorker = true;
             }
         }
 
@@ -322,7 +334,7 @@ public class MonitoringScreen extends Activity {
         } catch (IOException e) {
         }
 
-        Thread workerThread = new Thread(new Runnable() {
+         workerThread = new Thread(new Runnable() {
             @RequiresApi(api = Build.VERSION_CODES.O)
             public void run() {
                 while (!Thread.currentThread().isInterrupted() && !stopWorker) {
@@ -336,19 +348,23 @@ public class MonitoringScreen extends Activity {
                                 if (b == 10) {
                                     byte[] encodedBytes = new byte[readBufferPosition];
                                     System.arraycopy(readBuffer, 0, encodedBytes, 0, encodedBytes.length);
-                                    final String data = new String(encodedBytes, "US-ASCII");
+                                    data = new String(encodedBytes, "US-ASCII");
                                     time = LocalTime.now().getHour();
                                     time = time * 2;
                                     readBufferPosition = 0;
+                                    data = "54";
                                     handler.post(new Runnable() {
                                         public void run() {
 
                                             String moistureNumberOnly= data.replaceAll("[^0-9]", "");
+
+//                                            System.out.println("data: " + data);
+
                                             if(Integer.parseInt(moistureNumberOnly) >= 100){
                                                 String data2  = "Moisture: 100%";
                                                 mTxtReading.setText(data2);
                                                 moistureNumberOnly = "100";
-
+//                                                System.out.println("data2: " + data);
                                             }
                                             else{
                                                 mTxtReading.setText(data);
@@ -403,11 +419,15 @@ public class MonitoringScreen extends Activity {
                                             StringBuilder replacePrev = new StringBuilder(previousMoistureLevel);
                                             replacePrev.setCharAt(time, previousMoisture.charAt(0));
                                             replacePrev.setCharAt((time + 1),previousMoisture.charAt(1));
+                                            System.out.println("replacePrev" + replacePrev);
+                                            System.out.println("prevMoisturelvl " + previousMoistureLevel);
+                                            System.out.println("prevMoisture " + previousMoisture);
 
                                             //Now send replacePrev string to the database in the part of the previous moisture readings
                                             //Database Previous moisture readings  = replacePrev
                                             String previousMoistures = replacePrev.toString();
                                             savePlant(currentMoisture, previousMoistures);
+                                            System.out.println(previousMoistures);
 
                                         }
                                     });
@@ -416,6 +436,7 @@ public class MonitoringScreen extends Activity {
                                 }
                             }
                         }
+
                     } catch (IOException ex) {
                         stopWorker = true;
                     }
@@ -423,9 +444,12 @@ public class MonitoringScreen extends Activity {
             }
         });
         workerThread.start();
+
     }
 
     private void readFromLocalDatabase(){
+
+        plantDbHelper = new PlantDbHelper(this);
 
         List<PlantInfoDB> plants = plantDbHelper.readFromLocalDatabase();
 
@@ -454,9 +478,9 @@ public class MonitoringScreen extends Activity {
         if(checkNetworkConnection()){
             UpdateMoisture updateMoisture = new UpdateMoisture(this);
             updateMoisture.execute(userID, nameBySpecies, nameByUser, temperature, currentMoisture, previousMoistures, image, wiki);
-            editLocalStorage(new PlantInfoDB(userID, nameBySpecies, nameByUser, temperature, currentMoisture, previousMoistures, image, wiki, PlantConfig.SYNC_STATUS_OK));
+            editLocalStorage(new PlantInfoDB(id,userID, nameBySpecies, nameByUser, temperature, currentMoisture, previousMoistures, image, wiki, PlantConfig.SYNC_STATUS_OK));
         } else{
-            editLocalStorage(new PlantInfoDB(userID, nameBySpecies, nameByUser, temperature, currentMoisture, previousMoistures, image, wiki, PlantConfig.SYNC_STATUS_FAILED));
+            editLocalStorage(new PlantInfoDB(id, userID, nameBySpecies, nameByUser, temperature, currentMoisture, previousMoistures, image, wiki, PlantConfig.SYNC_STATUS_FAILED));
         }
     }
 

@@ -332,7 +332,7 @@ public class BluetoothActivity extends AppCompatActivity {
                 holder.tv.setBackgroundColor(Color.WHITE);
             }
             BluetoothDevice device = myList.get(position);
-            holder.tv.setText(device.getName() + "\n " + device.getAddress());
+            holder.tv.setText(device.getName() + "\n ");
 
             return vi;
         }
