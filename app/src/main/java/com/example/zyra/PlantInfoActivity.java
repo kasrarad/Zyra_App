@@ -88,11 +88,15 @@ public class PlantInfoActivity extends AppCompatActivity {
 
     private LineGraphSeries<DataPoint> series2;
     private PointsGraphSeries<DataPoint> series1;
+
+    String checkActivity = "";
+
     protected SimpleDateFormat sdf = new SimpleDateFormat("kk");
     protected SimpleDateFormat sdf2 = new SimpleDateFormat("E");
     protected ImageButton btnImage;
     protected TextView textMyPlantName;
     protected TextView textMyPlantType;
+    protected TextView textCurrentMoisture;
     protected TextView graphXLabel;
     protected CircleImageView circleImgPlant;
     protected Button btnConfirm;
@@ -116,45 +120,65 @@ public class PlantInfoActivity extends AppCompatActivity {
         setupUI();
         getSupportActionBar().setTitle("My Plant List");
 
-        // get plant's name
-        plantName = getIntent().getStringExtra("nameByUser");
-        System.out.println("nameByUser: " + plantName);
-        textMyPlantName.setText(plantName);
-
-        plantSpecies = getIntent().getStringExtra("nameBySpecies");
-        textMyPlantType.setText(plantSpecies);
-        System.out.println("Plant Species:" + plantSpecies);
-
-        plantPreviousMoisture = getIntent().getStringExtra("previousMoisture");
-        System.out.println("Plant Moisture: " + plantPreviousMoisture);
-
-        if ( plantPreviousMoisture.charAt(0) == '[' || (plantPreviousMoisture.length() < 47) ) {
-
-            plantPreviousMoisture = "";
-            for(int i = 0; i < 48 ;i ++){
-                plantPreviousMoisture +="0";
+        checkActivity = getIntent().getStringExtra("checkActivity");
+        if(!checkActivity.equals("PlantListViewAdapter")){
+            System.out.println("kasraaaaaa");
+            SharedPreferences sharedPreferences = getSharedPreferences("sensorData", Context.MODE_PRIVATE);
+            String currentMoisture = sharedPreferences.getString("currentMoisture", null);
+            textCurrentMoisture.setText(currentMoisture);
+            plantPreviousMoisture = sharedPreferences.getString("previousMoistureLevel", null);
+            plantName = sharedPreferences.getString("plantName", null);
+            textMyPlantName.setText(plantName);
+            plantSpecies = sharedPreferences.getString("plantSpecies", null);
+            textMyPlantType.setText(plantSpecies);
+            plantImage = sharedPreferences.getString("plantsImage", null);
+            if(!plantImage.equals("")){
+                Uri uri = Uri.parse(plantImage);
+                circleImgPlant.setImageURI(uri);
             }
+        } else {
+            // get plant's name
+            plantName = getIntent().getStringExtra("nameByUser");
+            System.out.println("nameByUser: " + plantName);
+            textMyPlantName.setText(plantName);
 
-        }
-        System.out.println("Plant Moisture: " + plantPreviousMoisture);
+            plantSpecies = getIntent().getStringExtra("nameBySpecies");
+            textMyPlantType.setText(plantSpecies);
+            System.out.println("Plant Species:" + plantSpecies);
+
+            plantPreviousMoisture = getIntent().getStringExtra("previousMoisture");
+            System.out.println("Plant Moisture: " + plantPreviousMoisture);
+
+            if ( plantPreviousMoisture.charAt(0) == '[' || (plantPreviousMoisture.length() < 47) ) {
+
+                plantPreviousMoisture = "";
+                for(int i = 0; i < 48 ;i ++){
+                    plantPreviousMoisture +="0";
+                }
+
+            }
+            System.out.println("Plant Moisture: " + plantPreviousMoisture);
 
 
-        //test numbers
+            //test numbers
 //        plantPreviousMoisture = "998070605040302010009985756545352515059980503000";
 
 
-        plantImage = getIntent().getStringExtra("image");
-        if(!plantImage.equals("")){
-            Uri uri = Uri.parse(plantImage);
-            circleImgPlant.setImageURI(uri);
+            plantImage = getIntent().getStringExtra("image");
+            if(!plantImage.equals("")){
+                Uri uri = Uri.parse(plantImage);
+                circleImgPlant.setImageURI(uri);
+            }
         }
 
         setGraph();
+
     }
 
     public void setupUI() {
         textMyPlantName = findViewById(R.id.textViewPlantName);
         textMyPlantType = findViewById(R.id.textViewPlantType);
+        textCurrentMoisture = findViewById(R.id.textViewReadSensor);
         graphXLabel = findViewById(R.id.graphXLabel);
 
         graphXLabel.setText("Number of hours ago");

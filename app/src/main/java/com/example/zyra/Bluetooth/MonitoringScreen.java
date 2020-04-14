@@ -18,6 +18,7 @@ import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
@@ -91,6 +92,8 @@ public class MonitoringScreen extends Activity {
     protected PlantDbHelper plantDbHelper;
     protected String plantName;
     protected String plantID;
+    protected String plantSpecies;
+    protected String plantsImage;
     protected String userID, nameBySpecies, nameByUser, temperature, moisture, previousMoisturesLevel, image, wiki;
     protected Integer id, syncstatus;
 
@@ -110,6 +113,8 @@ public class MonitoringScreen extends Activity {
         // get plant's name and ID
         plantName = intent.getStringExtra("nameByUser");
         plantID = intent.getStringExtra("plantID");
+        plantSpecies = intent.getStringExtra("plantSpecies");
+        plantsImage = intent.getStringExtra("plantsImage");
         Log.d(TAG, "Ready");
 
 //        mTxtReceive.setMovementMethod(new ScrollingMovementMethod());
@@ -129,6 +134,11 @@ public class MonitoringScreen extends Activity {
                 goToPlantActivity();
             }
         });
+
+        Intent i = new Intent(this, PlantInfoActivity.class);
+        i.setAction(Intent.ACTION_MAIN);
+        i.addCategory(Intent.CATEGORY_HOME);
+        this.startActivity(i);
 
     }
 
@@ -419,6 +429,16 @@ public class MonitoringScreen extends Activity {
                                             String previousMoistures = replacePrev.toString();
                                             savePlant(currentMoisture, previousMoistures);
                                             System.out.println(previousMoistures);
+
+                                            // store the value(user's id) in the SharedPreferences
+                                            SharedPreferences preferences = getSharedPreferences("sensorData", Context.MODE_PRIVATE);
+                                            SharedPreferences.Editor editor = preferences.edit();
+                                            editor.putString("currentMoisture", currentMoisture);
+                                            editor.putString("previousMoistureLevel", previousMoistures);
+                                            editor.putString("plantName", plantName);
+                                            editor.putString("plantSpecies", plantSpecies);
+                                            editor.putString("plantsImage", plantsImage);
+                                            editor.apply();
 
                                         }
                                     });

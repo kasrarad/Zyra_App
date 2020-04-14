@@ -46,6 +46,8 @@ public class BluetoothActivity extends AppCompatActivity {
   
     protected String plantName;
     protected String plantID;
+    protected String plantSpecies;
+    protected String plantsImage;
 
     private TextView textInstructions;
 
@@ -69,13 +71,14 @@ public class BluetoothActivity extends AppCompatActivity {
 
         plantName = getIntent().getStringExtra("nameByUser");
         plantID = getIntent().getStringExtra("plantID");
+        plantSpecies = getIntent().getStringExtra("plantSpecies");
+        plantsImage = getIntent().getStringExtra("plantsImage");
 
         getSupportActionBar().setTitle("To My Plant List");
 
         textInstructions = findViewById(R.id.textViewInstructions);
         search = findViewById(R.id.search);
         connect = findViewById(R.id.connect);
-
 
         connect.setVisibility(View.INVISIBLE);
 
@@ -126,6 +129,8 @@ public class BluetoothActivity extends AppCompatActivity {
                 intent.putExtra(BUFFER_SIZE, mBufferSize);
                 intent.putExtra("plantID", plantID);
                 intent.putExtra("nameByUser", plantName);
+                intent.putExtra("plantSpecies", plantSpecies);
+                intent.putExtra("plantsImage", plantsImage);
                 startActivity(intent);
             }
         });

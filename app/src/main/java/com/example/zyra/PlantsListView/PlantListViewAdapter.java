@@ -137,6 +137,8 @@ public class PlantListViewAdapter extends ArrayAdapter<String> {
                     Intent intent = new Intent(context, BluetoothActivity.class);
                     intent.putExtra("plantID", Integer.toString(position));
                     intent.putExtra("nameByUser", plantsName.get(position));
+                    intent.putExtra("plantSpecies", plantSpecies.get(position));
+                    intent.putExtra("plantsImage", plantsImage.get(position));
                     context.startActivity(intent);
                 }
             });
@@ -153,6 +155,7 @@ public class PlantListViewAdapter extends ArrayAdapter<String> {
                     intent.putExtra("nameBySpecies", plantSpecies.get(position));
                     intent.putExtra("previousMoisture", plantsPreviousMoisture.get(position));
                     intent.putExtra("image", plantsImage.get(position));
+                    intent.putExtra("checkActivity", "PlantListViewAdapter");
                     context.startActivity(intent);
                 }
             });
