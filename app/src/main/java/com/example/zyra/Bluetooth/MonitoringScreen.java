@@ -357,7 +357,7 @@ public class MonitoringScreen extends Activity {
                                                 mTxtReading.setText(data2);
                                                 moistureNumberOnly = "100";
 //                                                System.out.println("data2: " + data);
-                                            } else if(Integer.parseInt(moistureNumberOnly) <= 0){
+                                            } else if(Integer.parseInt(moistureNumberOnly) <= 1){
                                                 String data2  = "Moisture: 0 %";
                                                 mTxtReading.setText(data2);
                                                 moistureNumberOnly = "0";
