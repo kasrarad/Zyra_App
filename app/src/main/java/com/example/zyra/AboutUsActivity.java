@@ -24,7 +24,7 @@ public class AboutUsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_aboutus);
 
-        getSupportActionBar().setTitle("Go To Settings");
+        getSupportActionBar().setTitle("To Settings");
 
         setupUI();
 
