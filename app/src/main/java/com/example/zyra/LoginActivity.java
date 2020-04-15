@@ -5,17 +5,24 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.method.LinkMovementMethod;
+import android.text.style.ClickableSpan;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.zyra.Database.Register;
 import com.example.zyra.LocalDatabase.DatabaseHelper;
 import com.example.zyra.PlantLocalDatabase.PlantConfig;
 import com.example.zyra.PlantLocalDatabase.PlantDbHelper;
@@ -42,7 +49,7 @@ public class LoginActivity extends AppCompatActivity {
 
     protected EditText editUsername;
     protected EditText editPw;
-    protected Button btnRegister;
+    protected TextView textRegister;
     protected Button btnLogin;
 
     protected String[] userData = new String[4];
@@ -82,15 +89,21 @@ public class LoginActivity extends AppCompatActivity {
             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
             startActivity(intent);
         } else{
-            btnRegister.setOnClickListener(new View.OnClickListener() {
+
+            String text = "Don't have an account? Register";
+            SpannableString ss = new SpannableString(text);
+
+            ClickableSpan clickableSpan = new ClickableSpan() {
                 @Override
-                public void onClick(View v) {
-                    Log.d(TAG, "onClick: Register");
+                public void onClick(@NonNull View widget) {
                     btnSignUp();
                 }
-            });
+            };
 
+            ss.setSpan(clickableSpan, 23,31, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 
+            textRegister.setText(ss);
+            textRegister.setMovementMethod(LinkMovementMethod.getInstance());
 
             btnLogin.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -129,8 +142,8 @@ public class LoginActivity extends AppCompatActivity {
     public void setupUI(){
         editUsername = findViewById(R.id.editTextUsername);
         editPw = findViewById(R.id.editTextPassword);
+        textRegister = findViewById(R.id.textViewRegister);
         btnLogin = findViewById(R.id.btnLogin);
-        btnRegister = findViewById(R.id.btnRegister);
     }
 
     //Login and user's info

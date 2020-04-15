@@ -79,8 +79,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginEnd="22dp"
-        android:layout_marginBottom="164dp"
+        android:layout_marginEnd="21dp"
+        android:layout_marginBottom="176dp"
         android:text="Color Indicator"
         android:textSize="20dp"
         android:textStyle="bold" />
@@ -92,7 +92,7 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
         android:layout_marginEnd="67dp"
-        android:layout_marginBottom="110dp"
+        android:layout_marginBottom="128dp"
         android:text="Good to water"
         android:textColor="#F42FA404" />
 
@@ -102,6 +102,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
+
         android:layout_marginEnd="77dp"
         android:layout_marginBottom="83dp"
         android:text="Needs water"
@@ -114,7 +115,7 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
         android:layout_marginEnd="32dp"
-        android:layout_marginBottom="135dp"
+        android:layout_marginBottom="151dp"
         android:text="Sufficiently watered"
         android:textColor="#F40724FF" />
 

@@ -148,10 +148,6 @@ public class BluetoothActivity extends AppCompatActivity {
     }
 
 
-
-
-
-
     protected void onPause() {
 // TODO Auto-generated method stub
         super.onPause();
