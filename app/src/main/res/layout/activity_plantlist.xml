@@ -102,9 +102,9 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginEnd="23dp"
+        android:layout_marginEnd="77dp"
         android:layout_marginBottom="83dp"
-        android:text="Urgently needs water"
+        android:text="Needs water"
         android:textColor="#F4D02020" />
 
     <TextView
