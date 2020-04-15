@@ -16,7 +16,7 @@ public class PreferencesActivity extends PreferenceActivity implements OnSharedP
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ActivityHelper.initialize(this);
+//        ActivityHelper.initialize(this);
 // Using this for compatibility with Android 2.2 devices
     }
 
@@ -26,7 +26,7 @@ public class PreferencesActivity extends PreferenceActivity implements OnSharedP
         if (pref instanceof ListPreference) {
             ListPreference listPref = (ListPreference) pref;
             pref.setSummary(listPref.getEntry());
-            ActivityHelper.initialize(this);
+//            ActivityHelper.initialize(this);
         }
 
         if (pref instanceof EditTextPreference) {

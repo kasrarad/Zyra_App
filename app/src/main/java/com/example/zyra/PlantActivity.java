@@ -9,6 +9,8 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.SpannableString;
+import android.text.style.UnderlineSpan;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -69,6 +71,7 @@ public class PlantActivity extends AppCompatActivity{
     protected ImageButton imgBT;
     protected TextView textPlantList;
     protected TextView textAddPlant;
+    protected TextView textColorIndicator;
 
     //GetPlantInfo getPlantInfo = new GetPlantInfo();
     protected PlantDbHelper plantDbHelper;
@@ -124,6 +127,14 @@ public class PlantActivity extends AppCompatActivity{
         imgAddPlant = findViewById(R.id.imageButtonAdd);
         imgBT = findViewById(R.id.imageBT);
         textAddPlant = findViewById(R.id.textViewAddPlant);
+        textColorIndicator = findViewById(R.id.textViewLegend);
+
+        String text = "Color Indicator";
+        SpannableString ss = new SpannableString(text);
+
+        SpannableString content = new SpannableString(text);
+        content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
+        textColorIndicator.setText(content);
 
 //        refreshButton.setEnabled(false);
         // Add back button
@@ -263,6 +274,7 @@ public class PlantActivity extends AppCompatActivity{
         for (int i=0; i<plants.size(); i++){
             //line is what will be displayed on screen
             String line = plants.get(i).getNameByUser() + "\n" + plants.get(i).getMoisture() + "% Moisture";
+//            String line = plants.get(i).getNameByUser() + "\n" + "55" + "% Moisture";
             allPlants.add(line);
             plantsID.add(plants.get(i).getID());
             plantNames.add(plants.get(i).getNameByUser());
@@ -270,6 +282,7 @@ public class PlantActivity extends AppCompatActivity{
             plantPrevMoi.add(plants.get(i).getPreviousMoisturesLevel());
             plantImage.add(plants.get(i).getImage());
             plantSyncStatus.add(plants.get(i).getSyncstatus());
+
         }
 
         // Display information on the List View
