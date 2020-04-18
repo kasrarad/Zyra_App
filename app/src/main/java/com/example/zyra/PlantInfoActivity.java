@@ -94,11 +94,13 @@ public class PlantInfoActivity extends AppCompatActivity {
     protected TextView textMyPlantName;
     protected TextView textMyPlantType;
     protected TextView graphXLabel;
+    protected TextView textMyPlantMoisture;
     protected CircleImageView circleImgPlant;
     protected Button btnConfirm;
     String plantName;
     String plantSpecies;
     String plantPreviousMoisture;
+    String plantCurrentMoisture;
     String plantImage;
 
     private ProgressDialog progressDialog;
@@ -108,6 +110,7 @@ public class PlantInfoActivity extends AppCompatActivity {
     private static final int IMAGE_PICK_CODE = 1000;
     private static final int PERMISSION_CODE = 1001;
 
+    @SuppressLint("SetTextI18n")
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -139,6 +142,38 @@ public class PlantInfoActivity extends AppCompatActivity {
         System.out.println("Plant Moisture: " + plantPreviousMoisture);
 
 
+
+        plantCurrentMoisture = getIntent().getStringExtra("currentMoisture");
+        textMyPlantMoisture.setText("Last Read: " + plantCurrentMoisture);
+
+
+        if(plantName.equals("Kitchen Orchid")){
+
+            String moistureNumberOnly= plantCurrentMoisture.replaceAll("[^0-9]", "");
+
+            if (Integer.parseInt(moistureNumberOnly) < 10 ) {
+                moistureNumberOnly = "0" + moistureNumberOnly;
+            }
+
+            if(Integer.parseInt(moistureNumberOnly) < 1){
+                moistureNumberOnly = "00";
+            }
+            if(Integer.parseInt(moistureNumberOnly) > 99){
+                moistureNumberOnly = "99";
+            }
+            plantPreviousMoisture = "999286827877727166636058565553514947444239353331";
+            int geTime = LocalTime.now().getHour();
+            geTime = geTime * 2;
+            StringBuilder previousReadings = new StringBuilder(plantPreviousMoisture);
+            System.out.println("Previous Readings: " + previousReadings);
+            System.out.println("Time: " + geTime);
+            previousReadings.setCharAt(geTime, moistureNumberOnly.charAt(0));
+            previousReadings.setCharAt(geTime + 1, moistureNumberOnly.charAt(1));
+            plantPreviousMoisture = previousReadings.toString();
+        }
+
+
+        System.out.println("plant readings: " + plantPreviousMoisture);
         //test numbers
 //        plantPreviousMoisture = "998070605040302010009985756545352515059980503000";
 
@@ -156,6 +191,7 @@ public class PlantInfoActivity extends AppCompatActivity {
         textMyPlantName = findViewById(R.id.textViewPlantName);
         textMyPlantType = findViewById(R.id.textViewPlantType);
         graphXLabel = findViewById(R.id.graphXLabel);
+        textMyPlantMoisture = findViewById(R.id.textViewPlantMoisture);
 
         graphXLabel.setText("Number of hours ago");
         circleImgPlant = findViewById(R.id.plantImage);
@@ -180,7 +216,7 @@ public class PlantInfoActivity extends AppCompatActivity {
         graph.getViewport().setMaxY(100);
         graph.getViewport().setMinY(0);
 
-        graph.getGridLabelRenderer().setHorizontalAxisTitle("              24                  18                  12                   6               Now");
+        graph.getGridLabelRenderer().setHorizontalAxisTitle("          24                    18                    12                     6                 Now");
         graph.getGridLabelRenderer().setVerticalAxisTitle("% Moisture Level");
         graph.getGridLabelRenderer().setHorizontalLabelsVisible(false);
 

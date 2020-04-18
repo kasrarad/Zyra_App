@@ -98,7 +98,7 @@ public class MonitoringScreen extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_monitoring);
-        ActivityHelper.initialize(this);
+//        ActivityHelper.initialize(this);
 
         setupUI();
 
@@ -125,13 +125,6 @@ public class MonitoringScreen extends Activity {
         mBtnBack.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                stopWorker = true;
-                //TESTING THIS TOMORROW WOO
-                try {
-                    mBTSocket.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
                 goToPlantActivity();
             }
         });
@@ -352,7 +345,6 @@ public class MonitoringScreen extends Activity {
                                     time = LocalTime.now().getHour();
                                     time = time * 2;
                                     readBufferPosition = 0;
-                                    data = "54";
                                     handler.post(new Runnable() {
                                         public void run() {
 
@@ -361,12 +353,17 @@ public class MonitoringScreen extends Activity {
 //                                            System.out.println("data: " + data);
 
                                             if(Integer.parseInt(moistureNumberOnly) >= 100){
-                                                String data2  = "Moisture: 100%";
+                                                String data2  = "Moisture: 100 %";
                                                 mTxtReading.setText(data2);
                                                 moistureNumberOnly = "100";
 //                                                System.out.println("data2: " + data);
+                                            } else if(Integer.parseInt(moistureNumberOnly) <= 1){
+                                                String data2  = "Moisture: 0 %";
+                                                mTxtReading.setText(data2);
+                                                moistureNumberOnly = "0";
+//                                                System.out.println("data2: " + data);
                                             }
-                                            else{
+                                            else {
                                                 mTxtReading.setText(data);
                                             }
 
@@ -414,6 +411,7 @@ public class MonitoringScreen extends Activity {
                                                 }
 
                                             }
+
 
                                             //replace part of the string based on current time
                                             StringBuilder replacePrev = new StringBuilder(previousMoistureLevel);
