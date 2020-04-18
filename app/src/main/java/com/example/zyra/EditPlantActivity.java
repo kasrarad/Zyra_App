@@ -91,13 +91,7 @@ public class EditPlantActivity extends AppCompatActivity {
         editOldPlantName = (EditText) findViewById(R.id.editTextOldName);
         editOldPlantType = findViewById(R.id.editTextOldType);
 
-        // get plant's name
-        /*
-        String badPlantName = getIntent().getStringExtra("nameByUser");
-        String[] plantNameSplit = badPlantName.split("\n");
-        String plantName = plantNameSplit[0];
-        System.out.println(plantName);
-         */
+
         plantName = getIntent().getStringExtra("nameByUser");
         plantID = getIntent().getStringExtra("plantsID");
 
