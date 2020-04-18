@@ -189,27 +189,20 @@ public class PlantListViewAdapter extends ArrayAdapter<String> {
         ForegroundColorSpan fcsBlue = new ForegroundColorSpan(0XF40724FF);
 
         String moistureNumberOnly= plantNameSize[1].replaceAll("[^0-9]", "");
-//        System.out.println("Moisture: " + moistureNumberOnly);
 
 
 
         if(Integer.parseInt(moistureNumberOnly) < 70){
-//            System.out.println("size0: " + plantNameSize[0].length());
-//            System.out.println("size1: " + plantNameSize[1].length());
             ss.setSpan(fcsGreen,plantNameSize[0].length() + 1, badPlantName.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 
         }
 
         if(Integer.parseInt(moistureNumberOnly) < 20){
-//            System.out.println("size0: " + plantNameSize[0].length());
-//            System.out.println("size1: " + plantNameSize[1].length());
         ss.setSpan(fcsRed,plantNameSize[0].length() + 1, badPlantName.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 
         }
 
         if(Integer.parseInt(moistureNumberOnly) > 69){
-//            System.out.println("size0: " + plantNameSize[0].length());
-//            System.out.println("size1: " + plantNameSize[1].length());
             ss.setSpan(fcsBlue,plantNameSize[0].length() + 1, badPlantName.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 
         }

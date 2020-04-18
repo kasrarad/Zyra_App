@@ -113,17 +113,6 @@ public class MoistureActivity extends AppCompatActivity implements AsyncResponse
         System.out.println("wiki: " + plantInfo[8]);
 
         // Do whatever you want here(all the information about the plant are stored in planInfo array)
-        /*
-        id = plantInfo[0];
-        String userID = plantInfo[1];
-        String nameBySpecies = plantInfo[2];
-        String nameByUser = plantInfo[3];
-        String temperature = plantInfo[4];
-        String  moisture = plantInfo[5];
-        String previousMoisturesLevel = plantInfo[6];
-        String image = plantInfo[7];
-        String wiki = plantInfo[8];
-         */
         // You should change the plantInfo[5] and plantInfo[6]
         // As an example I added some dummy value
         // Add dummy values to Moisture data
