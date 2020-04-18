@@ -151,6 +151,10 @@ public class PlantInfoActivity extends AppCompatActivity {
 
             String moistureNumberOnly= plantCurrentMoisture.replaceAll("[^0-9]", "");
 
+            if (Integer.parseInt(moistureNumberOnly) < 10 ) {
+                moistureNumberOnly = "0" + moistureNumberOnly;
+            }
+
             if(Integer.parseInt(moistureNumberOnly) < 1){
                 moistureNumberOnly = "00";
             }

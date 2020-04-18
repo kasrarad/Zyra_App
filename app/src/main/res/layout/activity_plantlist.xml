@@ -104,7 +104,7 @@
         android:layout_alignParentBottom="true"
 
         android:layout_marginEnd="77dp"
-        android:layout_marginBottom="83dp"
+        android:layout_marginBottom="105dp"
         android:text="Needs water"
         android:textColor="#F4D02020" />
 
@@ -138,15 +138,15 @@
         android:src="@drawable/sync" />
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="140dp"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:layout_marginStart="60dp"
         android:layout_marginTop="385dp"
-        android:layout_marginEnd="244dp"
-        android:text="Database sync'd!" />
+        android:layout_marginEnd="211dp"
+        android:text="Linked to account!" />
 
     <TextView
         android:layout_width="147dp"
@@ -157,7 +157,7 @@
         android:layout_marginStart="60dp"
         android:layout_marginTop="418dp"
         android:layout_marginEnd="206dp"
-        android:text="Database not sync'd!" />
+        android:text="Need WiFi connection!" />
 
 
 </RelativeLayout>

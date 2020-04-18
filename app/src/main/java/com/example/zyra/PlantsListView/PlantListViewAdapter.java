@@ -200,7 +200,7 @@ public class PlantListViewAdapter extends ArrayAdapter<String> {
 
         }
 
-        if(Integer.parseInt(moistureNumberOnly) < 10){
+        if(Integer.parseInt(moistureNumberOnly) < 20){
 //            System.out.println("size0: " + plantNameSize[0].length());
 //            System.out.println("size1: " + plantNameSize[1].length());
         ss.setSpan(fcsRed,plantNameSize[0].length() + 1, badPlantName.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
