@@ -111,16 +111,6 @@ public class PlantListViewAdapter extends ArrayAdapter<String> {
 //            System.out.println(" AT POSITION: " + plantSpecies.get(position));
 
 
-//            viewHolder.moistureButton.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    Intent intent = new Intent(context, MoistureActivity.class);
-//                    // send the value(plant's name)
-//                    intent.putExtra("nameByUser", plantsName.get(position));
-//                    context.startActivity(intent);
-//                }
-//            });
-
             viewHolder.EditPlantButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

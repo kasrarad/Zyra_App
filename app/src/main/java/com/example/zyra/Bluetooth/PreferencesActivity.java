@@ -16,8 +16,7 @@ public class PreferencesActivity extends PreferenceActivity implements OnSharedP
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        ActivityHelper.initialize(this);
-// Using this for compatibility with Android 2.2 devices
+
     }
 
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
@@ -26,7 +25,7 @@ public class PreferencesActivity extends PreferenceActivity implements OnSharedP
         if (pref instanceof ListPreference) {
             ListPreference listPref = (ListPreference) pref;
             pref.setSummary(listPref.getEntry());
-//            ActivityHelper.initialize(this);
+
         }
 
         if (pref instanceof EditTextPreference) {
@@ -48,7 +47,7 @@ public class PreferencesActivity extends PreferenceActivity implements OnSharedP
         Map<String, ?> keys = PreferenceManager.getDefaultSharedPreferences(this).getAll();
 
         for (Map.Entry<String, ?> entry : keys.entrySet()) {
-// Log.d("map values", entry.getKey() + ": " + entry.getValue().toString());
+
             Preference pref = findPreference(entry.getKey());
             if (pref != null) {
                 pref.setSummary(entry.getValue().toString());

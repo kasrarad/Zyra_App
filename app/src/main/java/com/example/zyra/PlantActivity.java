@@ -145,22 +145,14 @@ public class PlantActivity extends AppCompatActivity{
         userID = sharedPreferences.getString("userID", null);
 
         readFromLocalDatabase();
-/*
-        if(checkNetworkConnection()){
-            //new GetPlantInfo().execute(userID);
-            getPlantInfo.execute(userID);
-        } else{
-            readFromLocalDatabase();
-        }
 
- */
 
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-//        refreshButton.setEnabled(true);
+
         imgAddPlant.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -168,72 +160,17 @@ public class PlantActivity extends AppCompatActivity{
             }
         });
 
-//        refreshButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                refreshButton.setEnabled(false);
-//                try {
-//                    ViewGroup layout = (ViewGroup) refreshButton.getParent();
-//                    layout.removeView(refreshButton);
-//                    refreshData();
-//                    finish();
-//                    overridePendingTransition(0, 0);
-//                    startActivity(getIntent());
-//                    overridePendingTransition(0, 0);
-//                } catch (JSONException e) {
-//                    e.printStackTrace();
-//                }
-//                refreshButton.setEnabled(true);
-//
-//            }
-//        });
-
-
-        /*
-        btnPlantInfoTest.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                goToPlantInfoActivity();
-            }
-        });
-         */
-
-
-//        plantsNameListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                Intent intentBundle = new Intent(PlantActivity.this, PlantInfoActivity.class);
-//                Bundle selectedPlantBundle = new Bundle();
-//                selectedPlantBundle.putLong("selectedPlant", id);
-//                intentBundle.putExtras(selectedPlantBundle);
-//                startActivity(intentBundle);
-//            }
-//        });
-
     }
 
     public void onResume() {
         super.onResume();
-/*
-        IntentFilter intentFilter = new IntentFilter(PlantConfig.UI_UPDATE_BROADCAST);
-        intentFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
-        registerReceiver(broadcastReceiver, intentFilter);
 
- */
-        //plantDbHelper = new PlantDbHelper(this);
 
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
         registerReceiver(mybroadcast, intentFilter);
 
-        //readFromLocalDatabase();
 
-/*
-        IntentFilter filter = new IntentFilter();
-        filter.addAction("android.provider.Telephony.SMS_RECEIVED");
-        registerReceiver(mybroadcast, filter);
-
- */
     }
 
     public void onPause() {
@@ -246,18 +183,7 @@ public class PlantActivity extends AppCompatActivity{
         Intent intent = new Intent(PlantActivity.this, NewPlantActivity.class);
         startActivity(intent);
     }
-/*
-    @Override
-    public void processFinish(ArrayList<String> output) {
-        if (output.size() > 0) {
-            adapter = new PlantListViewAdapter(PlantActivity.this, output);
-            plantsNameListView.setAdapter(adapter);
-            adapter = new PlantListViewAdapter(PlantActivity.this ,plantNames, plantSpecies , plantPrevMoi, plantImage);
-        } else {
-            Toast.makeText(PlantActivity.this, "No plants", Toast.LENGTH_SHORT).show();
-        }
-    }
- */
+
 
     private void readFromLocalDatabase(){
 

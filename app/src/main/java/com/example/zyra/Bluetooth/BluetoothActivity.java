@@ -110,7 +110,7 @@ public class BluetoothActivity extends AppCompatActivity {
                     Intent enableBT = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
                     startActivityForResult(enableBT, BT_ENABLE_REQUEST);
                 } else {
-                    new SearchDevices().execute();
+                    new searchDevices().execute();
                 }
             }
         });
@@ -166,7 +166,7 @@ public class BluetoothActivity extends AppCompatActivity {
             case BT_ENABLE_REQUEST:
                 if (resultCode == RESULT_OK) {
                     msg("Bluetooth Enabled successfully");
-                    new SearchDevices().execute();
+                    new searchDevices().execute();
                     connect.setEnabled(true);
                 } else {
                     msg("Bluetooth couldn't be enabled");
@@ -224,11 +224,10 @@ public class BluetoothActivity extends AppCompatActivity {
     }
 
 
-//     Searches for paired devices. Doesn't do a scan!
-//     Only devices which are paired through Settings->Bluetooth
-//     will show up with this.
+//     Searches for paired devices.
+//     Only devices which are paired through Settings->Bluetooth will show up with this.
 
-    private class SearchDevices extends AsyncTask<Void, Void, List<BluetoothDevice>> {
+    private class searchDevices extends AsyncTask<Void, Void, List<BluetoothDevice>> {
 
         @Override
         protected List<BluetoothDevice> doInBackground(Void... params) {
@@ -309,17 +308,17 @@ public class BluetoothActivity extends AppCompatActivity {
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            View vi = convertView;
+            View view = convertView;
             ViewHolder holder;
             if (convertView == null) {
-                vi = LayoutInflater.from(context).inflate(R.layout.list_item_reading, null);
+                view = LayoutInflater.from(context).inflate(R.layout.list_item_reading, null);
                 holder = new ViewHolder();
 
-                holder.tv = (TextView) vi.findViewById(R.id.lstContent);
+                holder.tv = (TextView) view.findViewById(R.id.lstContent);
 
-                vi.setTag(holder);
+                view.setTag(holder);
             } else {
-                holder = (ViewHolder) vi.getTag();
+                holder = (ViewHolder) view.getTag();
             }
 
             if (selectedIndex != -1 && position == selectedIndex) {
@@ -330,15 +329,13 @@ public class BluetoothActivity extends AppCompatActivity {
             BluetoothDevice device = myList.get(position);
             holder.tv.setText(device.getName() + "\n ");
 
-            return vi;
+            return view;
         }
 
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-// Inflate the menu; this adds items to the action bar if it is present.
-        //getMenuInflater().inflate(R.menu.homescreen, menu);
         return true;
     }
 

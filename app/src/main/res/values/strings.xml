@@ -7,21 +7,5 @@
     <string name="hello_world">Bluetooth Address</string>
 
     <string name="underlinedPlantList"> <u>My Plant List</u></string>
-
-
-    <string-array name="plants">
-        <item>Spider Plant</item>
-        <item>Aloe Vera</item>
-        <item>Peace Lily</item>
-        <item>Jade Plant</item>
-        <item>Weeping Fig</item>
-        <item>Others</item>
-    </string-array>
-
-    <string-array name="frequency">
-        <item>5 minutes</item>
-        <item>10 minutes</item>
-        <item>30 minutes</item>
-        <item>1 hour</item>
-    </string-array>
+    
 </resources>

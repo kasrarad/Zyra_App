@@ -98,7 +98,6 @@ public class MonitoringScreen extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_monitoring);
-//        ActivityHelper.initialize(this);
 
         setupUI();
 
@@ -112,15 +111,6 @@ public class MonitoringScreen extends Activity {
         plantID = intent.getStringExtra("plantID");
         Log.d(TAG, "Ready");
 
-//        mTxtReceive.setMovementMethod(new ScrollingMovementMethod());
-
-//        mBtnClearInput.setOnClickListener(new OnClickListener() {
-//
-//            @Override
-//            public void onClick(View arg0) {
-//                mTxtReceive.setText("");
-//            }
-//        });
 
         mBtnBack.setOnClickListener(new OnClickListener() {
             @Override
@@ -132,11 +122,6 @@ public class MonitoringScreen extends Activity {
     }
 
     public void setupUI() {
-//        mTxtReceive = findViewById(R.id.txtReceive);
-//        chkScroll = findViewById(R.id.chkScroll);
-//        chkReceiveText = findViewById(R.id.chkReceiveText);
-//        scrollView = findViewById(R.id.viewScroll);
-//        mBtnClearInput = findViewById(R.id.btnClearInput);
         mBtnBack = findViewById(R.id.btnBack);
         mTxtReading = findViewById(R.id.textViewRead);
     }

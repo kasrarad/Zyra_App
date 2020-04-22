@@ -10,7 +10,6 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ViewHolder {
 
-    //    Button moistureButton;
     Button EditPlantButton;
     ImageButton PlantBluetooth;
     TextView textViewPlantName;
