@@ -68,7 +68,6 @@ public class MainActivity extends AppCompatActivity {
         buttonPlantList = findViewById(R.id.btnPlantList);
         buttonSettings = findViewById(R.id.btnSettings);
 
-//        blueToothActivityButton = findViewById(R.id.bluetoothActivityButton);
 
         buttonPlantList.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -84,12 +83,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-//        blueToothActivityButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                goToBlueToothTest();
-//            }
-//        });
+
     }
 
     public void goToSettings(){
@@ -102,10 +96,6 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-//
-//    public void goToBlueToothTest(){
-//        Intent intent = new Intent(MainActivity.this, BlueToothTestActivity.class);
-//        startActivity(intent);
-//    }
+
 
 }
